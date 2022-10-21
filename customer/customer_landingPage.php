@@ -110,8 +110,8 @@
 
         function getDateTime(){
             document.getElementById("myPopupDateTime").style.visibility = 'visible';
-            document.getElementById("timeSelect").value = "";
-            document.getElementById("dateSelect").value = "";
+            //document.getElementById("timeSelect").value = "";
+            //document.getElementById("dateSelect").value = "";
 
             var today = new Date();
             var dd = today.getDate();
@@ -123,10 +123,42 @@
             if(mm<10){
             mm='0'+mm
             } 
-
+            var curTime;
+            if(String(today.getMinutes()).length == 1){
+                curTime = String(today.getHours()) + "0" + String(today.getMinutes());
+            }
+            else{
+                curTime = String(today.getHours()) + String(today.getMinutes());
+            }
             today = yyyy+'-'+mm+'-'+dd;
             document.getElementById("dateSelect").setAttribute("min", today);
-
+            if(document.getElementById("dateSelect").value == ""){
+                document.getElementById("dateSelect").value = today;
+            }
+            var getDate = document.getElementById("dateSelect").value;
+            if(getDate = ""){
+                getDate = today;
+            }
+            else{
+                getDate = document.getElementById("dateSelect").value;
+            }
+            var optionList = document.getElementById('timeSelect');
+            var checkTF = false;
+            for (var x=0; x < optionList.length; x++){
+                //
+                console.log(parseInt(curTime));
+                if(getDate <= today && parseInt(curTime) > parseInt(optionList[x].value.replaceAll(":", ""))){
+                    document.getElementById(optionList[x].value).disabled = true;
+                }
+                else{
+                    document.getElementById(optionList[x].value).disabled = false;
+                    if(checkTF == false){
+                        document.getElementById("timeSelect").value = document.getElementById(optionList[x].value).value;
+                        checkTF = true;
+                    }
+                }
+                //console.log(optionList[x].value);
+            }            
             checkDateTimeFunction();
         }
 
@@ -164,6 +196,10 @@
 
         function closePopupDateTime(){
             document.getElementById("myPopupDateTime").style.visibility = 'hidden';
+        }
+
+        function deliverNow(){
+            console.log("Deliver now");
         }
     </script>
     <style>
@@ -247,19 +283,20 @@
     </style>
     <body onload="profileDetails();">
         <form>
-            <div style="width:1100px;margin-left:auto;margin-right:auto;">
+            <div style="width:1100px;margin-left:auto;margin-right:auto;background-color:#FEF2E5;">
                 <div style="float:right;border-bottom:5px solid grey;width:100%;height:120px">
-                    <div class="buttonEffects" style="margin-left:470px;float:left;display:inline-block;background-color:#A8A1A166;height:42px;margin-top:25px;padding:5px" onclick="getCurrentLocation()">
-                        <img src="../MoshiQ2 Assets/Address.png" style="float:left">
+                    <a href="../LogIn/homepage.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="float:left;margin-left:0px;width:300px;height:auto;display:block;"></a>
+                    <div class="buttonEffects" style="margin-left:170px;float:left;display:inline-block;background-color:#A8A1A166;height:42px;margin-top:25px;padding:5px" onclick="getCurrentLocation()">
+                        <img src="../MoshiQ2 IMG Assets/Address.png" style="float:left">
                         <input id="deliveryAddressButton" type="button" style="background-color:transparent;display:inline-block;border:none;cursor:pointer;width:150px;white-space:normal;" value="Enter a delivery address">
                     </div>  
-                    <div class="buttonEffects" style="float:left;display:inline-block;background-color:#A8A1A166;margin-left:10px;height:42px;margin-top:25px;padding:5px" onclick="getDateTime()">
-                        <img src="../MoshiQ2 Assets/Time.png" style="float:left">
+                    <div class="buttonEffects" style="float:left;display:inline-block;background-color:#A8A1A166;margin-left:10px;height:42px;margin-top:25px;padding:5px" onclick="getDateTime()" onchange="getDateTime()">
+                        <img src="../MoshiQ2 IMG Assets/Time.png" style="float:left">
                         <input id="dateTimeButton" type="button" style="background-color:transparent;display:inline-block;border:none;cursor:pointer;width:150px;white-space:normal;" value="Select date and time">
                     </div> 
             
-                    <img src="../MoshiQ2 Assets/Cart.png" style="margin-top:20px;cursor:pointer;margin-left:10px;float:left;margin-right:10px;display:block;width:100px;height:auto">
-                    <img src="../MoshiQ2 Assets/Profile Icon.png" style="cursor:pointer;display:block;float:left;width:70px;height:auto;margin-left:auto" onclick="profileClicked()"></br>
+                    <img src="../MoshiQ2 IMG Assets/Cart.png" style="margin-top:20px;cursor:pointer;margin-left:10px;float:left;margin-right:10px;display:block;width:100px;height:auto">
+                    <img src="../MoshiQ2 IMG Assets/Profile Icon.png" style="cursor:pointer;display:block;float:left;width:70px;height:auto;margin-left:auto" onclick="profileClicked()"></br>
                     <div id="displayProfile" name="displayProfile" style="float:right;margin-top:10px;padding:5px;z-index:1;position:relative" hidden>
                         <text style="margin-left:10%;margin-right:auto;display:inline-block" id="accountNameDetails"></text></br>
                         <input type="button" id="accountDrop" name="accountDrop" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25B2;" style="color:gray;margin-top:5px;height:30px;width:200px;" onclick="clickedDrop()">
@@ -269,15 +306,15 @@
                 </div>
             
                 <div>
-                    <img src="../MoshiQ2 Assets/Customer Landing Page.png" style="float:right;width:600px;height:auto;display:block;">
-                    <img src="../MoshiQ2 Assets/Logo.png" style="margin-left:0px;width:500px;height:200px;display:block;"></br>
-                    <input class="mouseOverEffects" type="button" value="Menu" style="float:left;margin-top:30px;margin-left:50px;display:inline-block;border-radius:15px;width:200px;height:70px;font-size:30px" onclick="menuFunction()">
-                    <input class="mouseOverEffects" type="button" value="Reservation" style="margin-top:30px;margin-left:20px;display:inline-block;border-radius:15px;width:200px;height:70px;font-size:30px" onclick="reservationFunction()"></br>
+                    <center><input class="mouseOverEffects" type="button" value="Menu" style="margin-top:30px;margin-left:50px;display:inline-block;border-radius:15px;width:200px;height:70px;font-size:30px" onclick="menuFunction()">
+                    <input class="mouseOverEffects" type="button" value="Reservation" style="margin-top:30px;margin-left:60px;display:inline-block;border-radius:15px;width:200px;height:70px;font-size:30px" onclick="reservationFunction()"></center></br>
+                    <center><img src="../MoshiQ2 IMG Assets/banner.png" style="width:70%;height:auto;display:block;padding:10px"></center>
+                    <center><img src="../MoshiQ2 IMG Assets/checkPromos.png" style="width:50%;height:auto;display:block;"></center>
                 </div>
 
-                <div style="margin-top:100px;">
-                    <img src="../MoshiQ2 Assets/Promo 1.png" style="float:left;width:550px;height:auto;display:inline-block">
-                    <img src="../MoshiQ2 Assets/Promo 2.png" style="width:550px;height:auto;display:inline-block">
+                <div style="margin-top:20px;">
+                    <img src="../MoshiQ2 IMG Assets/Promo 1.png" style="float:left;width:550px;height:800px;display:inline-block">
+                    <img src="../MoshiQ2 IMG Assets/Promo 2.png" style="width:550px;height:800px;display:inline-block">
                 </div>
             </div>
             <div class="popupAddress">
@@ -300,19 +337,21 @@
                 <div style="margin-top:30px;margin:auto;display:block">
                     <input type="button" value="x" style="display:block;position:absolute;margin-left:64%;float:left;top:10px" onclick="closePopupDateTime()">
                     <b><u><text>Select date and time</text></u></b></br></br>
-                    <text>Date : </text><input id="dateSelect" type="date" onchange="checkDateTimeFunction()" min="<?= date('Y-m-d'); ?>"><br><br>
+                    <text>Date : </text><input id="dateSelect" type="date" onchange="getDateTime();checkDateTimeFunction()" min="<?= date('Y-m-d'); ?>"><br><br>
                     <text>Time slot: </text><select id="timeSelect" style="width:60px;text-align:center" onchange="checkDateTimeFunction()">
-                        <option value="11:00">11:00</option>
-                        <option value="12:00">12:00</option>
-                        <option value="13:00">13:00</option>
-                        <option value="14:00">14:00</option>
-                        <option value="15:00">15:00</option>
-                        <option value="16:00">16:00</option>
-                        <option value="17:00">17:00</option>
-                        <option value="18:00">18:00</option>
-                        <option value="19:00">19:00</option>
-                        <option value="20:00">20:00</option>
+                        <option value="11:00" id="11:00">11:00</option>
+                        <option value="12:00" id="12:00">12:00</option>
+                        <option value="13:00" id="13:00">13:00</option>
+                        <option value="14:00" id="14:00">14:00</option>
+                        <option value="15:00" id="15:00">15:00</option>
+                        <option value="16:00" id="16:00">16:00</option>
+                        <option value="17:00" id="17:00">17:00</option>
+                        <option value="18:00" id="18:00">18:00</option>
+                        <option value="19:00" id="19:00">19:00</option>
+                        <option value="20:00" id="20:00">20:00</option>
                     </select></br></br>
+                    <center>or deliver</center>
+                    <center><input type="button" value="now" style="width:80px;display:block;margin-auto;" onclick="deliverNow()"></center></br>
                     <input id="confirmDateTimeButton" type="button" style="width:100px;height:30px;margin:auto;display:block" value="Confirm" onclick="confirmDateTime()" disabled>
                 </div>
                 </span>

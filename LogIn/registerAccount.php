@@ -271,7 +271,7 @@ require_once("accountDB.php");
     <body onload="checkPassword();checkName();checkEmail();checkContact();checkRegister()">
         <form>
             <div style="margin-left:auto;margin-right:auto;width:1200px;display:block">
-                <img src="../MoshiQ2 Assets/Logo.png" style="margin-left:auto;margin-right:auto;width:500px;height:200px;display:block">
+                <img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:auto;margin-right:auto;width:500px;height:200px;display:block">
                 <text id="registerText" name="registerText" style="margin-left:40%;margin-right:auto;width:300px;font-size:30px;display:block">REGISTER ACCOUNT</text></br></br>
                 <text id="nameText" name="nameText" style="margin-left:26%;float:left;margin-top:15px;margin-right:auto;width:150px;display:block">Full Name</text>
                 <input type="text" id="nameInput" name="nameInput" style="background-color:#D9D9D9;border-radius:15px;border:0px;;font-size:15px;padding:10px;height:40px;width:300px" onkeyup="checkName();checkRegister()" required></br>
@@ -292,7 +292,7 @@ require_once("accountDB.php");
                 <input type="button" class="buttonEffects" id="registerButton" name="registerButton" value="Register" style="margin-left:55%;margin-right:auto;width:100px;height:30px;font-size:15px;text-align:center;display:block" onclick="registerFunction();">
                 <div class="popup">
                     <span class="popuptext" id="myPopup" style="align-items:center;justify-content:flex-end;font-size:30px;" hidden>
-                    <img src="../MoshiQ2 Assets/Unsuccessful.png">
+                    <img src="../MoshiQ2 IMG Assets/Unsuccessful.png">
                     Error, unable to register account
                     <input type="button" id="returnButton" name="returnButton" value="Return" style="background-color:#4F4F4F;border-radius:10px;border:0px;color:white;height:40px;font-size:15px;width:90%;margin-left:auto;margin-right:auto" onclick="returnFunction()" onmouseover="mouseOver()" onmouseout="mouseOut()">
                     </span></br>

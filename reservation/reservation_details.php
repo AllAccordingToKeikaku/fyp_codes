@@ -536,6 +536,30 @@ require_once('promoCodesDB.php');
         }
       }
     }
+
+    var actualBookedArray1 = [];
+    function countTotalReservations(){
+      
+      var slotArrays = '<?php echo json_encode($dataArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+      var slotArray = slotArrays.split('].');
+      var bookedArray = [];
+      var x;
+      var tempString = "";
+      var tempString1 = "";
+      var tempLocation = document.getElementById("outletLocation").value;
+      var tempDate = document.getElementById("dateSelect").value;;
+      var tempTime = document.getElementById("timeSelect").value;;
+      for (x=0;x<slotArray.length;x++)
+      {
+        bookedArray.push(slotArray[x]);
+      }
+      for (x=0;x<bookedArray.length;x++){
+        tempString = String(bookedArray[x]).replaceAll('[','').replaceAll(']','');
+        tempString = tempString.split(',');
+        actualBookedArray1.push(tempString);
+      }
+      document.getElementById("reservationCount").innerHTML = actualBookedArray1.length;
+    }
   </script>
 
   <style>
@@ -552,212 +576,216 @@ require_once('promoCodesDB.php');
   }
   </style>
 
-  <body style="background-color:#518196" onload="profileDetails();enableSubmitButton();">
-  <a href="../LogIn/homepage.php"><img src="../MoshiQ2 Assets/Logo.png" style="width:300px;margin-left:auto;margin-right:auto;width:500px;display:block"></a></br>
-  <p style="color:white;text-align:center;">Reserve a place! Enjoy the ambience!</p>
+  <body style="background-color:#FEF2E5;" onload="profileDetails();enableSubmitButton();countTotalReservations()">
+    <div style="width:700px;margin-left:auto;margin-right:auto;">
+    <a href="../LogIn/homepage.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="width:300px;margin-left:auto;margin-right:auto;width:500px;display:block"></a></br>
+      <div style="">
+        <p style="margin-left:15%;font-size:12px">Total reservations made: <text id="reservationCount"></text></p>
+        <p style="text-align:center;"><b>Reserve a place! Enjoy the ambience!</b></p>
+      </div>
+    <form action="reservation_details_data.php/" method="POST">
+      <fieldset style="width:454px;margin:auto;">
+      <fieldset style="width:434px">
+        <legend style="color:black">Enter personal details</legend>
+        <text style="color:black">Account ID<span style="margin-left:18px"></span>: </text><input id="accountIdText" type="text" style="display:inline-block" disabled><br>
+        <text style="color:black">Name<span style="margin-left:55px"></span>: </text><input id="name" style="margin-top:5px" type="text" onchange="enableSubmitButton()" onkeyup="enableSubmitButton()" onkeydown="enableSubmitButton()"><br>
+        <text style="color:black">Email address<span style="margin-left:3px"></span>: </text><input id="emailAddress" style="margin-top:5px" type="email" onchange="enableSubmitButton()" onkeyup="enableSubmitButton()" onkeydown="enableSubmitButton()"><br>
+        <text style="color:black">Phone number: </text><input id="phoneNumber" style="margin-top:5px" type="text" onkeypress="return /[0-9]/i.test(event.key)" onchange="enableSubmitButton()" onkeyup="enableSubmitButton()" onkeydown="enableSubmitButton()"><br>
+      </fieldset><br>
 
-  <form action="reservation_details_data.php/" method="POST">
-    <fieldset style="width:454px;margin:auto;background-color:#518196">
-    <fieldset style="width:434px">
-      <legend style="color:antiquewhite">Enter personal details</legend>
-      <text style="color:rgb(218, 216, 214)">Account ID<span style="margin-left:18px"></span>: </text><input id="accountIdText" type="text" style="display:inline-block" disabled><br>
-      <text style="color:rgb(218, 216, 214)">Name<span style="margin-left:55px"></span>: </text><input id="name" style="margin-top:5px" type="text" onchange="enableSubmitButton()" onkeyup="enableSubmitButton()" onkeydown="enableSubmitButton()"><br>
-      <text style="color:rgb(218, 216, 214)">Email address<span style="margin-left:3px"></span>: </text><input id="emailAddress" style="margin-top:5px" type="email" onchange="enableSubmitButton()" onkeyup="enableSubmitButton()" onkeydown="enableSubmitButton()"><br>
-      <text style="color:rgb(218, 216, 214)">Phone number: </text><input id="phoneNumber" style="margin-top:5px" type="text" onkeypress="return /[0-9]/i.test(event.key)" onchange="enableSubmitButton()" onkeyup="enableSubmitButton()" onkeydown="enableSubmitButton()"><br>
-    </fieldset><br>
+      <fieldset style="width:434px">
+        <legend style="color:black">Select Outlet</legend>
+        <text style="color:black">Location: </text><select name="outletLocation" id="outletLocation" style="width:120px;text-align:center" onchange="selectedPax();selectedArea();enableSubmitButton()">
+          <option value="CHANGI">Changi</option>
+          <option value="TAMPINES">Tampines</option>
+          <option value="KALLANG">Kallang</option>
+          <option value="SENTOSA">Sentosa</option>
+          <option value="YISHUN">Yishun</option>
+        </select>
+      </fieldset><br>
 
-    <fieldset style="width:434px">
-      <legend style="color:antiquewhite">Select Outlet</legend>
-      <text style="color:rgb(218, 216, 214)">Location: </text><select name="outletLocation" id="outletLocation" style="width:120px;text-align:center" onchange="selectedPax();selectedArea();enableSubmitButton()">
-        <option value="CHANGI">Changi</option>
-        <option value="TAMPINES">Tampines</option>
-        <option value="KALLANG">Kallang</option>
-        <option value="SENTOSA">Sentosa</option>
-        <option value="YISHUN">Yishun</option>
-      </select>
-    </fieldset><br>
+      <fieldset style="width:434px">
+        <legend style="color:black">Select Date, Timeslot and Pax amount</legend>
+        <text style="color:black">Date : </text><input id="dateSelect" type="date" onchange="selectedPax();selectedArea()"><br><br>
+        <text style="color:black">Time slot: </text><select name="timeSelect" id="timeSelect" style="width:60px;text-align:center" onchange="selectedPax();selectedArea();enableSubmitButton()">
+          <option value="timeSlot1">11:00</option>
+          <option value="timeSlot2">12:00</option>
+          <option value="timeSlot3">13:00</option>
+          <option value="timeSlot4">14:00</option>
+          <option value="timeSlot5">15:00</option>
+          <option value="timeSlot6">16:00</option>
+          <option value="timeSlot7">17:00</option>
+          <option value="timeSlot8">18:00</option>
+          <option value="timeSlot9">19:00</option>
+          <option value="timeSlot10">20:00</option>
+        </select><br><br>
+        <text style="color:black">Amount of people: </text><select name="pax" id="pax" style="width:60px;text-align:center" onchange="selectedPax();selectedArea();enableSubmitButton()">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5+</option>
+        </select>
+      </fieldset><br>
 
-    <fieldset style="width:434px">
-      <legend style="color:antiquewhite">Select Date, Timeslot and Pax amount</legend>
-      <text style="color:rgb(218, 216, 214)">Date : </text><input id="dateSelect" type="date" onchange="selectedPax();selectedArea()"><br><br>
-      <text style="color:rgb(218, 216, 214)">Time slot: </text><select name="timeSelect" id="timeSelect" style="width:60px;text-align:center" onchange="selectedPax();selectedArea();enableSubmitButton()">
-        <option value="timeSlot1">11:00</option>
-        <option value="timeSlot2">12:00</option>
-        <option value="timeSlot3">13:00</option>
-        <option value="timeSlot4">14:00</option>
-        <option value="timeSlot5">15:00</option>
-        <option value="timeSlot6">16:00</option>
-        <option value="timeSlot7">17:00</option>
-        <option value="timeSlot8">18:00</option>
-        <option value="timeSlot9">19:00</option>
-        <option value="timeSlot10">20:00</option>
-      </select><br><br>
-      <text style="color:rgb(218, 216, 214)">Amount of people: </text><select name="pax" id="pax" style="width:60px;text-align:center" onchange="selectedPax();selectedArea();enableSubmitButton()">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5+</option>
-      </select>
-    </fieldset><br>
+      <fieldset style="width:434px">
+        <legend style="color:black">Please select seating area(s)</legend>
+        <input type="checkbox" id="A" class="seatingArea" name="A" value="A" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="A" onchange="enableSubmitButton()">A</label><br>
+        <input type="checkbox" id="B" class="seatingArea" name="B" value="B" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="B" onchange="enableSubmitButton()">B</label><br>
+        <input type="checkbox" id="C" class="seatingArea" name="C" value="C" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="C" onchange="enableSubmitButton()">C</label><br>
+        <input type="checkbox" id="D" class="seatingArea" name="D" value="D" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="D" onchange="enableSubmitButton()">D</label><br>
+        <input type="checkbox" id="E" class="seatingArea" name="E" value="E" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="E" onchange="enableSubmitButton()">E</label><br>
+        <input type="checkbox" id="F" class="seatingArea" name="F" value="F" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="F" onchange="enableSubmitButton()">F</label><br>
+        <input type="checkbox" id="G" class="seatingArea" name="G" value="G" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="G" onchange="enableSubmitButton()">G</label><br>
+        <input type="checkbox" id="H" class="seatingArea" name="H" value="H" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="H" onchange="enableSubmitButton()">H</label><br>
+        <input type="checkbox" id="I" class="seatingArea" name="I" value="I" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="I" onchange="enableSubmitButton()">I</label><br>
+        <input type="checkbox" id="J" class="seatingArea" name="J" value="J" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="J" onchange="enableSubmitButton()">J</label><br>
+      </fieldset><br>
 
-    <fieldset style="width:434px">
-      <legend style="color:antiquewhite">Please select seating area(s)</legend>
-      <input type="checkbox" id="A" class="seatingArea" name="A" value="A" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="A" onchange="enableSubmitButton()">A</label><br>
-      <input type="checkbox" id="B" class="seatingArea" name="B" value="B" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="B" onchange="enableSubmitButton()">B</label><br>
-      <input type="checkbox" id="C" class="seatingArea" name="C" value="C" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="C" onchange="enableSubmitButton()">C</label><br>
-      <input type="checkbox" id="D" class="seatingArea" name="D" value="D" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="D" onchange="enableSubmitButton()">D</label><br>
-      <input type="checkbox" id="E" class="seatingArea" name="E" value="E" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="E" onchange="enableSubmitButton()">E</label><br>
-      <input type="checkbox" id="F" class="seatingArea" name="F" value="F" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="F" onchange="enableSubmitButton()">F</label><br>
-      <input type="checkbox" id="G" class="seatingArea" name="G" value="G" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="G" onchange="enableSubmitButton()">G</label><br>
-      <input type="checkbox" id="H" class="seatingArea" name="H" value="H" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="H" onchange="enableSubmitButton()">H</label><br>
-      <input type="checkbox" id="I" class="seatingArea" name="I" value="I" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="I" onchange="enableSubmitButton()">I</label><br>
-      <input type="checkbox" id="J" class="seatingArea" name="J" value="J" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="J" onchange="enableSubmitButton()">J</label><br>
-    </fieldset><br>
-
-    <fieldset style="width:434px">
-      <legend style="color:antiquewhite">Selected area(s)</legend>
-      <text style="color:red">Red indicates taken seating area(s)</text></br>
-      <text style="color:#7FFF00">Green indicates your chosen seating area(s)</text></br>
-      <text style="color:white">White indicates the available seating area(s)</text></br></br>
-
-      <table>
-        <table>
-          <tr>
-            <td><input style="margin-left:74px" id="A1" type="button" class="seatA" value="A" disabled="true"></td>
-            <td><input id="A2" type="button" value="A" class="seatA" disabled="true"></td>
-            <td><input style="margin-left:16px" id="B1" type="button" class="seatB" value="B" disabled="true"></td>
-            <td><input id="B2" type="button" value="B" class="seatB" disabled="true"></td>
-            <td><input style="margin-left:16px" id="C1" type="button" class="seatC" value="C" disabled="true"></td>
-            <td><input id="C2" type="button" value="C" class="seatC" disabled="true"></td>
-            <td><input style="margin-left:16px" id="D1" type="button" class="seatD" value="D" disabled="true"></td>
-            <td><input id="D2" type="button" value="D" class="seatD" disabled="true"></td>
-          </tr>
-        </table>
+      <fieldset style="width:434px">
+        <legend style="color:black">Selected area(s)</legend>
+        <text style="color:red">Red indicates taken seating area(s)</text></br>
+        <text style="color:green">Green indicates your chosen seating area(s)</text></br>
+        <text style="color:grey">Light grey indicates the available seating area(s)</text></br></br>
 
         <table>
-          <tr>
-            <td><text style="margin-left:68px" disabled="true"></td>
-            <td><input style="margin-left:2px" id="A3" type="button" class="seatA" value="A" disabled="true"></td>
-            <td><input id="A4" type="button" value="A" class="seatA" disabled="true"></td>
-            <td><input style="margin-left:165px" id="D3" type="button" class="seatD" value="D" disabled="true"></td>
-            <td><input id="D4" type="button" value="D" class="seatD" disabled="true"></td>
-            <td><text style="margin-left:3px"></td>
-          </tr>
+          <table>
+            <tr>
+              <td><input style="margin-left:74px" id="A1" type="button" class="seatA" value="A" disabled="true"></td>
+              <td><input id="A2" type="button" value="A" class="seatA" disabled="true"></td>
+              <td><input style="margin-left:16px" id="B1" type="button" class="seatB" value="B" disabled="true"></td>
+              <td><input id="B2" type="button" value="B" class="seatB" disabled="true"></td>
+              <td><input style="margin-left:16px" id="C1" type="button" class="seatC" value="C" disabled="true"></td>
+              <td><input id="C2" type="button" value="C" class="seatC" disabled="true"></td>
+              <td><input style="margin-left:16px" id="D1" type="button" class="seatD" value="D" disabled="true"></td>
+              <td><input id="D2" type="button" value="D" class="seatD" disabled="true"></td>
+            </tr>
+          </table>
+
+          <table>
+            <tr>
+              <td><text style="margin-left:68px" disabled="true"></td>
+              <td><input style="margin-left:2px" id="A3" type="button" class="seatA" value="A" disabled="true"></td>
+              <td><input id="A4" type="button" value="A" class="seatA" disabled="true"></td>
+              <td><input style="margin-left:165px" id="D3" type="button" class="seatD" value="D" disabled="true"></td>
+              <td><input id="D4" type="button" value="D" class="seatD" disabled="true"></td>
+              <td><text style="margin-left:3px"></td>
+            </tr>
+          </table>
+
+          <table>
+            <tr style="margin-top:50px">
+              <td><text class="outdoorViewLeft" style="margin-left:10px" id="verticalLeftOutdoor">Outdoor<br>
+                <text id="verticalLeftView" style="margin-left:10px">view</td>
+              <td><text style="margin-left:120px;" id="counter">Counter</td>
+              <td><text class="outdoorViewRight" style="margin-left:120px" id="verticalRightOutdoor">Outdoor<br>
+                <text id="verticalRightView" style="margin-left:10px">view</td>
+            </tr>
+          </table>
+
+          <table style="margin-top:20px">
+            <tr>
+              <td><input style="margin-left:74px" id="E1" type="button" class="seatE" value="E" disabled="true"></td>
+              <td><input id="E2" type="button" value="E" class="seatE" disabled="true"></td>
+              <td><input style="margin-left:165px" id="H1" type="button" class="seatH" value="H" disabled="true"></td>
+              <td><input id="H2" type="button" value="H" class="seatH" disabled="true"></td>
+            </tr>
+          </table>
+
+          <table>
+            <tr>
+              <td><input style="margin-left:74px" id="E3" type="button" value="E" class="seatE" disabled="true"></td>
+              <td><input id="E4" type="button" value="E" class="seatE" disabled="true"></td>
+              <td><input style="margin-left:16px" id="F1" type="button" value="F" class="seatF" disabled="true"></td>
+              <td><input id="F2" type="button" value="F" class="seatF" disabled="true"></td>
+              <td><input style="margin-left:16px" id="G1" type="button" value="G" class="seatG" disabled="true"></td>
+              <td><input id="G2" type="button" value="G" class="seatG" disabled="true"></td>
+              <td><input style="margin-left:16px" id="H3" type="button" value="H" class="seatH" disabled="true"></td>
+              <td><input id="H4" type="button" value="H" class="seatH" disabled="true"></td>
+            </tr>
+          </table>
+
+          <table>
+            <tr>
+              <td><text style="margin-left:90px" id="empty"></td>
+            </tr>
+          </table>
+
+          <table>
+            <tr>
+              <td><input style="margin-left:74px;width:25px" id="I1" type="button" value="I" class="seatI" disabled="true"></td>
+              <td><input style="width:25px" id="I2" type="button" value="I" class="seatI" disabled="true"></td>
+              <td><input style="width:25px" id="I3" type="button" value="I" class="seatI" disabled="true"></td>
+              <td><input style="margin-left:108px;width:25px" id="J1" type="button" value="J" class="seatJ" disabled="true"></td>
+              <td><input style="width:25px"id="J2" type="button" value="J" class="seatJ" disabled="true"></td>
+              <td><input style="width:25px" id="J3" type="button" value="J" class="seatJ" disabled="true"></td>
+            </tr>
+          </table>
+
+          <table>
+            <tr>
+              <td><input style="margin-left:74px;width:25px" id="I4" type="button" value="I" class="seatI" disabled="true"></td>
+              <td><input style="margin-left:29px;width:25px" id="I5" type="button" value="I" class="seatI" disabled="true"></td>
+              <td><input style="margin-left:108px;width:25px" id="J4" type="button" value="J" class="seatJ" disabled="true"></td>
+              <td><input style="margin-left:29px;width:25px" id="J5" type="button" value="J" class="seatJ" disabled="true"></td>
+            </tr>
+          </table>
+
+          <table>
+            <tr>
+              <td><input style="margin-left:74px;width:25px" id="I6" type="button" value="I" class="seatI" disabled="true"></td>
+              <td><input style="width:25px" id="I7" type="button" value="I" class="seatI" disabled="true"></td>
+              <td><input style="width:25px" id="I8" type="button" value="I" class="seatI" disabled="true"></td>
+              <td><text style="margin-left:20px" id="entrance">|Entrance|</td>
+              <td><input style="margin-left:21px;width:25px" id="J6" type="button" value="J" class="seatJ" disabled="true"></td>
+              <td><input style="width:25px" id="J7" type="button" value="J" class="seatJ" disabled="true"></td>
+              <td><input style="width:25px" id="J8" type="button" value="J" class="seatJ" disabled="true"></td>
+            </tr>
+          </table>       
         </table>
+      </fieldset></br>
 
-        <table>
-          <tr style="margin-top:50px">
-            <td><text class="outdoorViewLeft" style="margin-left:10px" id="verticalLeftOutdoor">Outdoor<br>
-              <text id="verticalLeftView" style="margin-left:10px">view</td>
-            <td><text style="margin-left:120px;" id="counter">Counter</td>
-            <td><text class="outdoorViewRight" style="margin-left:120px" id="verticalRightOutdoor">Outdoor<br>
-              <text id="verticalRightView" style="margin-left:10px">view</td>
-          </tr>
-        </table>
+      <fieldset style="width:434px">
+        <legend style="color:black">Pre-order</legend>
+        <text style="color:black">Items in this section are at a discounted rate!</text></br></br>
+        <input type="checkbox" id="item1" class="preorderItems" name="Hawaiian Salmon" value="Hawaiian Salmon"/><label for="Hawaiian Salmon" style="color:black">Hawaiian Salmon <s>(U.P. $15.50)</s> $15</label></br>
+        <input type="checkbox" id="item2" class="preorderItems" name="Colourful Goddess" value="Colourful Goddess"/><label for="Colourful Goddess" style="color:black">Colourful Goddess <s>(U.P. $15.50)</s> $15</label></br>
+        <input type="checkbox" id="item3" class="preorderItems" name="Shoyu Tuna Specials" value="Shoyu Tuna Specials"/><label for="Shoyu Tuna Specials" style="color:black">Shoyu Tuna Specials <s>(U.P. $12.80)</s> $11.90</label></br>
+        <input type="checkbox" id="item4" class="preorderItems" name="Summer Fling" value="Summer Fling"/><label for="Summer Fling" style="color:black">Summer Fling <s>(U.P. $8.90)</s> $7.50</label></br>
+        <input type="checkbox" id="item5" class="preorderItems" name="Spidey Senses" value="Spidey Senses"/><label for="Spidey Senses" style="color:black">Spidey Senses <s>(U.P. $5.60)</s> $4.90</label></br></br>
+        <input type="button" id="clearSelected" name="clearSelected" value="Clear Selection" style="margin-left:auto;margin-right:auto;display:block" onclick="clearSelection()"></br>
+      </fieldset>
 
-        <table style="margin-top:20px">
-          <tr>
-            <td><input style="margin-left:74px" id="E1" type="button" class="seatE" value="E" disabled="true"></td>
-            <td><input id="E2" type="button" value="E" class="seatE" disabled="true"></td>
-            <td><input style="margin-left:165px" id="H1" type="button" class="seatH" value="H" disabled="true"></td>
-            <td><input id="H2" type="button" value="H" class="seatH" disabled="true"></td>
-          </tr>
-        </table>
+      <fieldset style="width:434px">
+        <legend style="color:black">Apply promocode</legend>
+        <input type="text" id="applyPromo" style="width:200px;display:inline-block">
+        <input type="button" style="margin-left:5px;display:inline-block;width:100px;cursor:pointer" value="Apply" onclick="applyPromoCode()">
+        <text id="validityText" style="margin-left:5px;"></text>
+      </fieldset>
 
-        <table>
-          <tr>
-            <td><input style="margin-left:74px" id="E3" type="button" value="E" class="seatE" disabled="true"></td>
-            <td><input id="E4" type="button" value="E" class="seatE" disabled="true"></td>
-            <td><input style="margin-left:16px" id="F1" type="button" value="F" class="seatF" disabled="true"></td>
-            <td><input id="F2" type="button" value="F" class="seatF" disabled="true"></td>
-            <td><input style="margin-left:16px" id="G1" type="button" value="G" class="seatG" disabled="true"></td>
-            <td><input id="G2" type="button" value="G" class="seatG" disabled="true"></td>
-            <td><input style="margin-left:16px" id="H3" type="button" value="H" class="seatH" disabled="true"></td>
-            <td><input id="H4" type="button" value="H" class="seatH" disabled="true"></td>
-          </tr>
-        </table>
-
-        <table>
-          <tr>
-            <td><text style="margin-left:90px" id="empty"></td>
-          </tr>
-        </table>
-
-        <table>
-          <tr>
-            <td><input style="margin-left:74px;width:25px" id="I1" type="button" value="I" class="seatI" disabled="true"></td>
-            <td><input style="width:25px" id="I2" type="button" value="I" class="seatI" disabled="true"></td>
-            <td><input style="width:25px" id="I3" type="button" value="I" class="seatI" disabled="true"></td>
-            <td><input style="margin-left:108px;width:25px" id="J1" type="button" value="J" class="seatJ" disabled="true"></td>
-            <td><input style="width:25px"id="J2" type="button" value="J" class="seatJ" disabled="true"></td>
-            <td><input style="width:25px" id="J3" type="button" value="J" class="seatJ" disabled="true"></td>
-          </tr>
-        </table>
-
-        <table>
-          <tr>
-            <td><input style="margin-left:74px;width:25px" id="I4" type="button" value="I" class="seatI" disabled="true"></td>
-            <td><input style="margin-left:29px;width:25px" id="I5" type="button" value="I" class="seatI" disabled="true"></td>
-            <td><input style="margin-left:108px;width:25px" id="J4" type="button" value="J" class="seatJ" disabled="true"></td>
-            <td><input style="margin-left:29px;width:25px" id="J5" type="button" value="J" class="seatJ" disabled="true"></td>
-          </tr>
-        </table>
-
-        <table>
-          <tr>
-            <td><input style="margin-left:74px;width:25px" id="I6" type="button" value="I" class="seatI" disabled="true"></td>
-            <td><input style="width:25px" id="I7" type="button" value="I" class="seatI" disabled="true"></td>
-            <td><input style="width:25px" id="I8" type="button" value="I" class="seatI" disabled="true"></td>
-            <td><text style="margin-left:20px" id="entrance">|Entrance|</td>
-            <td><input style="margin-left:21px;width:25px" id="J6" type="button" value="J" class="seatJ" disabled="true"></td>
-            <td><input style="width:25px" id="J7" type="button" value="J" class="seatJ" disabled="true"></td>
-            <td><input style="width:25px" id="J8" type="button" value="J" class="seatJ" disabled="true"></td>
-          </tr>
-        </table>       
-      </table>
-    </fieldset></br>
-
-    <fieldset style="width:434px">
-      <legend style="color:antiquewhite">Pre-order</legend>
-      <text style="color:rgb(218, 216, 214)">Items in this section are at a discounted rate!</text></br></br>
-      <input type="checkbox" id="item1" class="preorderItems" name="Hawaiian Salmon" value="Hawaiian Salmon"/><label for="Hawaiian Salmon" style="color:rgb(218, 216, 214)">Hawaiian Salmon <s>(U.P. $15.50)</s> $15</label></br>
-      <input type="checkbox" id="item2" class="preorderItems" name="Colourful Goddess" value="Colourful Goddess"/><label for="Colourful Goddess" style="color:rgb(218, 216, 214)">Colourful Goddess <s>(U.P. $15.50)</s> $15</label></br>
-      <input type="checkbox" id="item3" class="preorderItems" name="Shoyu Tuna Specials" value="Shoyu Tuna Specials"/><label for="Shoyu Tuna Specials" style="color:rgb(218, 216, 214)">Shoyu Tuna Specials <s>(U.P. $12.80)</s> $11.90</label></br>
-      <input type="checkbox" id="item4" class="preorderItems" name="Summer Fling" value="Summer Fling"/><label for="Summer Fling" style="color:rgb(218, 216, 214)">Summer Fling <s>(U.P. $8.90)</s> $7.50</label></br>
-      <input type="checkbox" id="item5" class="preorderItems" name="Spidey Senses" value="Spidey Senses"/><label for="Spidey Senses" style="color:rgb(218, 216, 214)">Spidey Senses <s>(U.P. $5.60)</s> $4.90</label></br></br>
-      <input type="button" id="clearSelected" name="clearSelected" value="Clear Selection" style="margin-left:auto;margin-right:auto;display:block" onclick="clearSelection()"></br>
+      <br><text id="showBookings" name="showBookings"></text>
+      
+      <p hidden>
+        <br><text id="displaySubjectType" name="displaySubjectType"></text>
+        <br><text id="displayCustomerID" name="displayCustomerID"></text>
+        <br><text id="displayCustomerName" name="displayCustomerName"></text>
+        <br><text id="displayCustomerEmailAddress" name="displayCustomerEmailAddress"></text>
+        <br><text id="displayCustomerPhoneNumber" name="displayCustomerPhoneNumber"></text>
+        <br><text id="displayCustomerOutletLocation" name="displayCustomerOutletLocation"></text>
+        <br><text id="displayCustomerDateSlot" name="displayCustomerDateSlot"></text>
+        <br><text id="displayCustomerTimeSlot" name="displayCustomerTimeSlot"></text>
+        <br><text id="displayCustomerPaxAmount" name="displayCustomerPaxAmount"></text>
+        <br><text id="displayCustomerSeatingArea" name="displayCustomerSeatingArea"></text>
+        <br><text id="displayCustomerDiscountCode" name="displayCustomerDiscountCode"></text>
+        <br><text id="item_1" name="item_1"></text>
+        <br><text id="item_2" name="item_2"></text>
+        <br><text id="item_3" name="item_3"></text>
+        <br><text id="item_4" name="item_4"></text>
+        <br><text id="item_5" name="item_5"></text>
+      </p>
+      <br><input type="button" name="submitDetails" id="submitDetails" value="Reserve a Table" style="margin-left:35%;width:30%" onclick="submittedDetails();return confirm('Are you sure?');">
+    </form>
     </fieldset>
-
-    <fieldset style="width:434px">
-      <legend style="color:antiquewhite">Apply promocode</legend>
-      <input type="text" id="applyPromo" style="width:200px;display:inline-block">
-      <input type="button" style="margin-left:5px;display:inline-block;width:100px;cursor:pointer" value="Apply" onclick="applyPromoCode()">
-      <text id="validityText" style="margin-left:5px;"></text>
-    </fieldset>
-
-    <br><text id="showBookings" name="showBookings"></text>
-    
-    <p hidden>
-      <br><text id="displaySubjectType" name="displaySubjectType"></text>
-      <br><text id="displayCustomerID" name="displayCustomerID"></text>
-      <br><text id="displayCustomerName" name="displayCustomerName"></text>
-      <br><text id="displayCustomerEmailAddress" name="displayCustomerEmailAddress"></text>
-      <br><text id="displayCustomerPhoneNumber" name="displayCustomerPhoneNumber"></text>
-      <br><text id="displayCustomerOutletLocation" name="displayCustomerOutletLocation"></text>
-      <br><text id="displayCustomerDateSlot" name="displayCustomerDateSlot"></text>
-      <br><text id="displayCustomerTimeSlot" name="displayCustomerTimeSlot"></text>
-      <br><text id="displayCustomerPaxAmount" name="displayCustomerPaxAmount"></text>
-      <br><text id="displayCustomerSeatingArea" name="displayCustomerSeatingArea"></text>
-      <br><text id="displayCustomerDiscountCode" name="displayCustomerDiscountCode"></text>
-      <br><text id="item_1" name="item_1"></text>
-      <br><text id="item_2" name="item_2"></text>
-      <br><text id="item_3" name="item_3"></text>
-      <br><text id="item_4" name="item_4"></text>
-      <br><text id="item_5" name="item_5"></text>
-    </p>
-    <br><input type="button" name="submitDetails" id="submitDetails" value="Reserve a Table" style="margin-left:35%;width:30%" onclick="submittedDetails();return confirm('Are you sure?');">
-  </form>
-  </fieldset>
+    </div>
   </body>
 </html>

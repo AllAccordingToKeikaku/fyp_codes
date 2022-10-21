@@ -135,7 +135,7 @@ require_once("inboxDB.php");
         <form>
             <div style="width:1100px;margin-left:auto;margin-right:auto">
                 <div style="float:right">
-                    <img src="../MoshiQ2 Assets/Profile Icon.png" style="display:block;margin-left:auto;width:70px;height:auto" onclick="profileClicked()"></br>
+                    <img src="../MoshiQ2 IMG Assets/Profile Icon.png" style="display:block;margin-left:auto;width:70px;height:auto" onclick="profileClicked()"></br>
                     <div id="displayProfile" name="displayProfile" hidden>
                         <text style="margin-left:10%;margin-right:auto;display:inline-block" id="accountNameDetails"></text></br>
                         <input type="button" id="accountDrop" name="accountDrop" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25B2;" style="color:gray;margin-left:10px;margin-top:5px;height:30px;" onclick="clickedDrop()">
@@ -145,7 +145,7 @@ require_once("inboxDB.php");
                 </div>
 
                 <div>
-                    <img src="../MoshiQ2 Assets/Logo.png" style="margin-left:0px;width:500px;height:200px;display:block"></br>
+                    <img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:0px;width:500px;height:200px;display:block"></br>
                 </div>
 
                 <div>

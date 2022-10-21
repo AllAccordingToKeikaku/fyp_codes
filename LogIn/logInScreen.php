@@ -149,7 +149,7 @@ require_once("accountDB.php");
         <form>
             <table style="margin-left:auto;margin-right:auto;width:800px;display:block">
                 <td style="width:800px;">
-                <img src="../MoshiQ2 Assets/Logo.png" style="margin-left:auto;margin-right:auto;width:500px;height:200px;display:block">
+                <img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:auto;margin-right:auto;width:500px;height:200px;display:block">
                 <text id="signInPrompt" name="singInPrompt" style="background-color:#E2B9B6;border-radius:5px;width:300px;margin-left:auto;margin-right:auto;font-size:20px;display:block"><center>Please sign-in to start ordering!</center></text></br></br>
                 <text id="welcomeText" name="welcomeText" style="margin-left:auto;margin-right:auto;width:250px;font-size:30px;display:block">WELCOME BACK</text></br></br>
                 <text id="emailText" name="emailText" style="margin-left:auto;margin-right:auto;width:250px;font-size:15px;display:block">Email Address</text>
@@ -161,7 +161,7 @@ require_once("accountDB.php");
                 <input type="button" class="buttonEffects" id="signUpButton" name="signUpButton" value="Sign Up" onclick="signUpFunction()"></br>
                 <div class="popup">
                     <span class="popuptext" id="myPopup" style="align-items:center;display:flex;justify-content:flex-end;font-size:30px;">
-                    <img src="../MoshiQ2 Assets/Unsuccessful.png">
+                    <img src="../MoshiQ2 IMG Assets/Unsuccessful.png">
                     Login error!
                     <input type="button" id="returnButton" name="returnButton" value="Return" style="background-color:#4F4F4F;border-radius:10px;border:0px;color:white;height:40px;font-size:15px;width:90%;margin-left:auto;margin-right:auto" onclick="returnFunction()" onmouseover="mouseOver()" onmouseout="mouseOut()">
                     </span></br>

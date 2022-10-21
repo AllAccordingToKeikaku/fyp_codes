@@ -367,9 +367,9 @@ require_once("promoCodesDB.php");
                                                                     '<text style="font-size:20px;">' + descriptionText + '</text></br>' +
 
                                                                     '<div style="background-color:orange;display:block;width:100%;height:55px;position:absolute;bottom:0px;left:0;">' +
-                                                                    '<text class="price" style="padding:10px;background-color:white;float:left;position:absolute;bottom:4px;display:block;margin-left:10%;font-size:25px"></text>' +
+                                                                    '<text class="price" style="padding:10px;background-color:transparent;;float:left;position:absolute;bottom:4px;display:block;margin-left:10%;font-size:25px"></text>' +
 
-                                                                    '<div class="wrapper" style="position:absolute;bottom:14px;margin-left:40%;background-color:white;">' +
+                                                                    '<div class="wrapper" style="position:absolute;bottom:14px;margin-left:40%;background-color:transparent;;">' +
                                                                     '<span id="minus' + descriptionID + '">-</span>' + 
                                                                     '<span id="num' + descriptionID + '" class="num">1</span>' +
                                                                     '<span id="plus' + descriptionID + '">+</span></div>' +
@@ -385,9 +385,9 @@ require_once("promoCodesDB.php");
                                                                     '<text style="font-size:20px;">' + descriptionText + '</text></br>' +
 
                                                                     '<div style="background-color:orange;display:block;width:100%;height:55px;position:absolute;bottom:0px;left:0;">' +
-                                                                    '<text class="price" style="padding:10px;background-color:white;float:left;position:absolute;bottom:4px;display:block;margin-left:10%;font-size:25px"></text>' +
+                                                                    '<text class="price" style="padding:10px;background-color:transparent;;float:left;position:absolute;bottom:4px;display:block;margin-left:10%;font-size:25px"></text>' +
 
-                                                                    '<div class="wrapper" style="position:absolute;bottom:14px;margin-left:40%;background-color:white;">' +
+                                                                    '<div class="wrapper" style="position:absolute;bottom:14px;margin-left:40%;background-color:transparent;;">' +
                                                                     '<span id="minus' + descriptionID + '">-</span>' + 
                                                                     '<span id="num' + descriptionID + '" class="num">01</span>' +
                                                                     '<span id="plus' + descriptionID + '">+</span></div>' +
@@ -561,7 +561,7 @@ require_once("promoCodesDB.php");
         function displayCartItems(itemName, itemPrice, itemAmount, itemID){    
             var cartItem = '<div  style="display:inline-block;width:100%">' +
                             '<text style="font-size:15px;float:left;width:330px;padding:5px">' + itemName + '</text>' +
-                            '<div class="wrapperCart" style="float:left;margin-left:10px;background-color:white;">'+
+                            '<div class="wrapperCart" style="float:left;margin-left:10px;background-color:transparent;;">'+
                                 '<span id="minusA' + itemID + '">-</span>'+
                                 '<span id="numA' + itemID + '" class="num1">' + itemAmount + '</span>' +
                                 '<span id="plusA' + itemID + '">+</span>' +
@@ -663,10 +663,12 @@ require_once("promoCodesDB.php");
     <style>
         .mouseOverEffects{
             border-left: 3px solid white;
+            cursor: pointer;
         }
 
         .mouseOverEffects:hover{
             border-left : 3px solid #437E96;
+            cursor: pointer;
         }
 
         .arrow {
@@ -870,26 +872,26 @@ require_once("promoCodesDB.php");
             cursor:pointer;
         }
     </style>
-    <body onload="profileDetails();createItemTables();displayCartNo()">
+    <body onload="profileDetails();createItemTables();displayCartNo()" style="background-color:#FEF2E5;">
         <form>
             <div style="width:1100px;margin-left:auto;margin-right:auto;">
                 <div style="float:right;border-bottom:5px solid grey;width:100%;height:120px">
                     <div style="float:left;">
-                        <img src="../MoshiQ2 Assets/Logo.png" style="margin-left:0px;width:300px;height:auto;display:block;">
+                        <a href="../LogIn/homepage.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:0px;width:300px;height:auto;display:block;"></a>
                     </div>
                     <div class="buttonEffects" style="margin-left:170px;float:left;display:inline-block;background-color:#A8A1A166;height:42px;margin-top:25px;padding:5px" onclick="getCurrentLocation()">
-                        <img src="../MoshiQ2 Assets/Address.png" style="float:left">
+                        <img src="../MoshiQ2 IMG Assets/Address.png" style="float:left">
                         <input id="deliveryAddressButton" type="button" style="background-color:transparent;display:inline-block;border:none;cursor:pointer;width:150px;white-space:normal;" value="Enter a delivery address">
                     </div>  
                     <div class="buttonEffects" style="float:left;display:inline-block;background-color:#A8A1A166;margin-left:10px;height:42px;margin-top:25px;padding:5px" onclick="getDateTime()">
-                        <img src="../MoshiQ2 Assets/Time.png" style="float:left">
+                        <img src="../MoshiQ2 IMG Assets/Time.png" style="float:left">
                         <input id="dateTimeButton" type="button" style="background-color:transparent;display:inline-block;border:none;cursor:pointer;width:150px;white-space:normal;" value="Select date and time">
                     </div> 
             
                     <div style="position:relative">
                         <span id="displayDot" class="dot"></span>
                         <text id="displayCartNumber" style="position:absolute;display:block;margin-left:970px;margin-top:20px;"></text>
-                        <img src="../MoshiQ2 Assets/Cart.png" style="margin-top:20px;cursor:pointer;margin-left:10px;float:left;margin-right:10px;display:block;width:100px;height:auto" onclick="cartClicked()">
+                        <img src="../MoshiQ2 IMG Assets/Cart.png" style="margin-top:20px;cursor:pointer;margin-left:10px;float:left;margin-right:10px;display:block;width:100px;height:auto" onclick="cartClicked()">
                         <div class="example" id="displayCart" style="margin-left:700px;margin-top:100px;padding:5px;z-index:2;position:absolute;width:500px;white-space:normal;height:auto;background-color:#999999;border:1px solid black;border-radius:5px;display:none;font-size:15px;overflow-y:auto;max-height:600px;">
                             <b><text style="float:left;font-size:30px;display:inline-block">Cart Tab</text></b>
                             <input type="button" value="x" style="cursor:pointer;float:right;position:absolute;margin-left:94%;display:block;top:10px" onclick="cartClicked()"></br></br></br>
@@ -952,8 +954,8 @@ require_once("promoCodesDB.php");
                             </div>
                         </div>
                     </div>
-                    <img src="../MoshiQ2 Assets/Profile Icon.png" style="cursor:pointer;display:block;float:left;width:70px;height:auto;margin-left:auto" onclick="profileClicked()"></br>
-                    <div id="displayProfile" name="displayProfile" style="float:right;margin-top:10px;padding:5px;z-index:1;position:relative;width:auto;height:auto;background-color:white;border:1px solid black;border-radius:5px;display:none">
+                    <img src="../MoshiQ2 IMG Assets/Profile Icon.png" style="cursor:pointer;display:block;float:left;width:70px;height:auto;margin-left:auto" onclick="profileClicked()"></br>
+                    <div id="displayProfile" name="displayProfile" style="float:right;margin-top:10px;padding:5px;z-index:1;position:relative;width:auto;height:auto;background-color:transparent;;border:1px solid black;border-radius:5px;display:none">
                         <text style="margin-left:10%;margin-right:auto;display:inline-block" id="accountNameDetails"></text></br>
                         <input type="button" id="accountDrop" name="accountDrop" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25B2;" style="color:gray;margin-top:5px;height:30px;width:200px;" onclick="clickedDrop()">
                         <input type="button" id="accountCollapse" name="accountCollapse" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25BC;" style="color:gray;margin-top:5px;width:200px;height:30px;" onclick="clickedCollapse()" hidden>
@@ -966,24 +968,24 @@ require_once("promoCodesDB.php");
                     <div>
                         <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                             <div class="mouseOverEffects" style="width:120px">
-                                <a href="#signatureDisplay"><input type="button" id="signatureButton" name="signatureButton" value="Signature" style="padding:10px;border:0px;background-color:white"></a></br>
+                                <a href="#signatureDisplay"><input type="button" id="signatureButton" name="signatureButton" value="Signature" style="padding:10px;border:0px;background-color:transparent;cursor:pointer"></a></br>
                             </div>
                         </div></br>
                         <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                             <div class="mouseOverEffects" style="width:120px">
-                                <a href="#diyDisplay"><input type="button" id="diyButton" name="diyButton" value="DIY moshiQ&#178; bowls" style="padding:10px;border:0px;background-color:white"></a></br>
-                            </div>
-                        </div></br>
-
-                        <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
-                            <div class="mouseOverEffects" style="width:120px">
-                                <a href="#acaiDisplay"><input type="button" id="acaiButton" name="acaiButton" value="Acai Bowls" style="padding:10px;border:0px;background-color:white"></a></br>
+                                <a href="#diyDisplay"><input type="button" id="diyButton" name="diyButton" value="DIY moshiQ&#178; bowls" style="padding:10px;border:0px;background-color:transparent;cursor:pointer"></a></br>
                             </div>
                         </div></br>
 
                         <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                             <div class="mouseOverEffects" style="width:120px">
-                                <a href="#beveragesDisplay"><input type="button" id="beveragesButton" name="beveragesButton" value="Beverages" style="padding:10px;border:0px;background-color:white"></a></br>
+                                <a href="#acaiDisplay"><input type="button" id="acaiButton" name="acaiButton" value="Acai Bowls" style="padding:10px;border:0px;background-color:transparent;cursor:pointer"></a></br>
+                            </div>
+                        </div></br>
+
+                        <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
+                            <div class="mouseOverEffects" style="width:120px">
+                                <a href="#beveragesDisplay"><input type="button" id="beveragesButton" name="beveragesButton" value="Beverages" style="padding:10px;border:0px;background-color:transparent;cursor:pointer"></a></br>
                             </div>
                         </div></br>
                     </div>
