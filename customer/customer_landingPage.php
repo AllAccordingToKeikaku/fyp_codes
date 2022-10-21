@@ -1,0 +1,322 @@
+<?php
+?>
+<!DOCTYPE html>
+<html>
+    <script>
+        isProfileClicked = false;
+
+        function clickedDrop(){
+            document.getElementById("accountDrop").style.display= "none";
+            document.getElementById("accountCollapse").style.display = "block";
+            document.getElementById("accountSignOut").style.display = "block";
+        }
+
+        function clickedCollapse(){
+            document.getElementById("accountDrop").style.display = "block";
+            document.getElementById("accountCollapse").style.display = "none";
+            document.getElementById("accountSignOut").style.display = "none";
+        }
+
+        function signOut(){
+            document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+            window.location.replace("../LogIn/homePage.php");
+        }
+
+        function profileClicked(){
+            if (isProfileClicked == false){
+                isProfileClicked = true;
+                document.getElementById("displayProfile").style.display = "block";
+            }
+            else{
+                isProfileClicked = false;
+                document.getElementById("displayProfile").style.display = "none";
+            }
+        }
+
+
+        function profileDetails(){
+            console.log(document.cookie);
+            var tempLogInName = getCookie("fullName");
+            var tempAddress;
+            var tempDateTime;
+            if(getCookie("area") == "" || getCookie("area") == null){
+                tempAddress = "Enter delivery address";
+            }
+            else{
+                tempAddress = getCookie("area") + ", " + getCookie("addressDetails") +', S(' + getCookie("postalCode") + ")";
+            }
+            if(getCookie("date") == "" || getCookie("date") == null){
+                tempDateTime = "Select date and time";
+            }
+            else{
+                tempDateTime = getCookie("date") + ", " + getCookie("time");
+            }
+            document.getElementById('accountNameDetails').innerHTML = tempLogInName;
+            document.getElementById("deliveryAddressButton").value = tempAddress;
+            document.getElementById("dateTimeButton").value = tempDateTime;
+        }
+
+        function getCookie(name){
+            const cDecoded = decodeURIComponent(document.cookie);
+            const cArray = cDecoded.split("; ");
+            let result = null;
+            
+            cArray.forEach(element => {
+                if(element.indexOf(name) == 0){
+                    result = element.substring(name.length + 1)
+                }
+            })
+            return result;
+        }
+
+        function menuFunction(){
+            window.location.replace("../menuItems/menuList.php");
+        }
+
+        function reservationFunction(){
+            window.location.replace("../reservation/reservation_details.php");
+        }
+
+        function getCurrentLocation(){
+            document.getElementById("myPopupAddress").style.visibility = 'visible';
+            document.getElementById("inputAddress").value = "";
+            document.getElementById("inputAddressDetails").value = "";
+            document.getElementById("inputPostalCode").value = "";
+            checkAddressFunction();
+        }
+
+        function checkAddressFunction(){
+            if(document.getElementById("inputAddress").value == "" || 
+            document.getElementById("inputAddressDetails").value == "" || 
+            document.getElementById("inputPostalCode").value == ""){
+                document.getElementById("confirmAddressButton").disabled = true;
+            }
+            else{
+                document.getElementById("confirmAddressButton").disabled = false;
+            }
+        }
+
+        function confirmAddress(){
+            var getInputAddress = document.getElementById("inputAddress").value;
+            var getInputAddressDetails = document.getElementById("inputAddressDetails").value;
+            var getInputPostalCode = document.getElementById("inputPostalCode").value;
+            var displayMyAddress = getInputAddress + ', ' + getInputAddressDetails + ', S(' + getInputPostalCode + ')';
+            document.getElementById("deliveryAddressButton").value = displayMyAddress;
+            document.getElementById("myPopupAddress").style.visibility = 'hidden';
+            setCookie("area", getInputAddress, 7);
+            setCookie("addressDetails", getInputAddressDetails, 7);
+            setCookie("postalCode", getInputPostalCode, 7);
+        }
+
+        function getDateTime(){
+            document.getElementById("myPopupDateTime").style.visibility = 'visible';
+            document.getElementById("timeSelect").value = "";
+            document.getElementById("dateSelect").value = "";
+
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0 so need to add 1 to make it 1!
+            var yyyy = today.getFullYear();
+            if(dd<10){
+            dd='0'+dd
+            } 
+            if(mm<10){
+            mm='0'+mm
+            } 
+
+            today = yyyy+'-'+mm+'-'+dd;
+            document.getElementById("dateSelect").setAttribute("min", today);
+
+            checkDateTimeFunction();
+        }
+
+        function checkDateTimeFunction(){
+
+            if(document.getElementById("timeSelect").value == "" ||
+            document.getElementById("dateSelect").value == ""){
+                document.getElementById("confirmDateTimeButton").disabled = true;
+            }
+            else{
+                document.getElementById("confirmDateTimeButton").disabled = false;
+            }
+        }
+
+        function confirmDateTime(){
+            var getTime = document.getElementById("timeSelect").value;
+            var getDate = document.getElementById("dateSelect").value;
+            var displayDateTime = getDate + ", " + getTime;
+            document.getElementById("dateTimeButton").value = displayDateTime;
+            document.getElementById("myPopupDateTime").style.visibility = 'hidden';
+            setCookie("date", getDate, 7);
+            setCookie("time", getTime, 7);
+        }
+
+        function setCookie(nameCookie, valueCookie, timeCookie){
+            const date = new Date();
+            date.setTime(date.getTime() +  (timeCookie * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + date.toUTCString();
+            document.cookie = `${nameCookie}=${valueCookie}; ${expires}; path=/`
+        }
+
+        function closePopupAddress(){
+            document.getElementById("myPopupAddress").style.visibility = 'hidden';
+        }
+
+        function closePopupDateTime(){
+            document.getElementById("myPopupDateTime").style.visibility = 'hidden';
+        }
+    </script>
+    <style>
+        .mouseOverEffects{
+            border: none;
+            cursor:pointer;
+            background-color:#437E96;
+            color: white;
+        }
+
+        .mouseOverEffects:hover{
+            border: 2px solid black;
+            cursor:pointer;
+            background-color:#437E96;
+            color: white;
+        }
+
+        .buttonEffects {
+            margin-top:15px;
+            border:none;
+            background-color:transparent;
+            display:inline-block;
+            cursor:pointer;
+        }
+        .buttonEffects:hover {
+            border: 2px solid black;
+            cursor:pointer;
+        }
+
+        .popupAddress {
+            display: inline-block;
+        }
+
+        .popupAddress .popuptextAddress {
+            visibility: hidden;
+            display: flex;
+
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            margin:auto;
+            left: 0;
+            right: 0;
+            top: 30%;
+
+            /* /Gray / White */
+
+            background: #FFFFFF;
+            /* Stroke/light */
+
+            border: 1.23011px solid #DEE2E6;
+            box-shadow: 0px 0px 2.46022px rgba(0, 0, 0, 0.12), 0px 24.6021px 24.6021px rgba(0, 0, 0, 0.08);
+            border-radius: 9.84086px;
+        }
+
+        .popupDateTime {
+            display: inline-block;
+        }
+
+        .popupDateTime .popuptextDateTime {
+            visibility: hidden;
+            display: flex;
+
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            margin:auto;
+            left: 0;
+            right: 0;
+            top: 30%;
+
+            /* /Gray / White */
+
+            background: #FFFFFF;
+            /* Stroke/light */
+
+            border: 1.23011px solid #DEE2E6;
+            box-shadow: 0px 0px 2.46022px rgba(0, 0, 0, 0.12), 0px 24.6021px 24.6021px rgba(0, 0, 0, 0.08);
+            border-radius: 9.84086px;
+        }
+    </style>
+    <body onload="profileDetails();">
+        <form>
+            <div style="width:1100px;margin-left:auto;margin-right:auto;">
+                <div style="float:right;border-bottom:5px solid grey;width:100%;height:120px">
+                    <div class="buttonEffects" style="margin-left:470px;float:left;display:inline-block;background-color:#A8A1A166;height:42px;margin-top:25px;padding:5px" onclick="getCurrentLocation()">
+                        <img src="../MoshiQ2 Assets/Address.png" style="float:left">
+                        <input id="deliveryAddressButton" type="button" style="background-color:transparent;display:inline-block;border:none;cursor:pointer;width:150px;white-space:normal;" value="Enter a delivery address">
+                    </div>  
+                    <div class="buttonEffects" style="float:left;display:inline-block;background-color:#A8A1A166;margin-left:10px;height:42px;margin-top:25px;padding:5px" onclick="getDateTime()">
+                        <img src="../MoshiQ2 Assets/Time.png" style="float:left">
+                        <input id="dateTimeButton" type="button" style="background-color:transparent;display:inline-block;border:none;cursor:pointer;width:150px;white-space:normal;" value="Select date and time">
+                    </div> 
+            
+                    <img src="../MoshiQ2 Assets/Cart.png" style="margin-top:20px;cursor:pointer;margin-left:10px;float:left;margin-right:10px;display:block;width:100px;height:auto">
+                    <img src="../MoshiQ2 Assets/Profile Icon.png" style="cursor:pointer;display:block;float:left;width:70px;height:auto;margin-left:auto" onclick="profileClicked()"></br>
+                    <div id="displayProfile" name="displayProfile" style="float:right;margin-top:10px;padding:5px;z-index:1;position:relative" hidden>
+                        <text style="margin-left:10%;margin-right:auto;display:inline-block" id="accountNameDetails"></text></br>
+                        <input type="button" id="accountDrop" name="accountDrop" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25B2;" style="color:gray;margin-top:5px;height:30px;width:200px;" onclick="clickedDrop()">
+                        <input type="button" id="accountCollapse" name="accountCollapse" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25BC;" style="color:gray;margin-top:5px;width:200px;height:30px;" onclick="clickedCollapse()" hidden>
+                        <input type="button" id="accountSignOut" name="accountSignOut" value="Sign out &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-top:5px;width:200px;height:30px;" onclick="signOut()" hidden>
+                    </div>
+                </div>
+            
+                <div>
+                    <img src="../MoshiQ2 Assets/Customer Landing Page.png" style="float:right;width:600px;height:auto;display:block;">
+                    <img src="../MoshiQ2 Assets/Logo.png" style="margin-left:0px;width:500px;height:200px;display:block;"></br>
+                    <input class="mouseOverEffects" type="button" value="Menu" style="float:left;margin-top:30px;margin-left:50px;display:inline-block;border-radius:15px;width:200px;height:70px;font-size:30px" onclick="menuFunction()">
+                    <input class="mouseOverEffects" type="button" value="Reservation" style="margin-top:30px;margin-left:20px;display:inline-block;border-radius:15px;width:200px;height:70px;font-size:30px" onclick="reservationFunction()"></br>
+                </div>
+
+                <div style="margin-top:100px;">
+                    <img src="../MoshiQ2 Assets/Promo 1.png" style="float:left;width:550px;height:auto;display:inline-block">
+                    <img src="../MoshiQ2 Assets/Promo 2.png" style="width:550px;height:auto;display:inline-block">
+                </div>
+            </div>
+            <div class="popupAddress">
+                <span class="popuptextAddress" id="myPopupAddress" style="font-size:20px;" hidden>   
+                <div style="margin-top:30px;margin:auto;display:block">
+                    <input type="button" value="x" style="display:block;position:absolute;margin-left:70%;float:left;top:10px" onclick="closePopupAddress()">
+                    <b><u><text>Enter your address details</text></u></b></br></br>
+                    <text>Address: </text></br>
+                    <input id="inputAddress" type="text" style="width:200px;height:20px" placeholder="Address" onchange="checkAddressFunction()" onkeyup="checkAddressFunction()" onkeydown="checkAddressFunction()"></br></br>
+                    <text>Address details: </text></br>
+                    <input id="inputAddressDetails" type="text" style="width:200px;height:20px" placeholder="E.g Floor, unit number" onchange="checkAddressFunction()" onkeyup="checkAddressFunction()" onkeydown="checkAddressFunction()"></br></br>
+                    <text>Postal code: </text></br>
+                    <input id="inputPostalCode" type="text" style="width:200px;height:20px" placeholder="Postal code" onchange="checkAddressFunction()" onkeyup="checkAddressFunction()" onkeydown="checkAddressFunction()"></br></br>
+                    <input id="confirmAddressButton" type="button" style="width:100px;height:30px;margin:auto;display:block" value="Confirm" onclick="confirmAddress()" disabled>
+                </div>
+                </span>
+            </div>
+            <div class="popupDateTime">
+                <span class="popuptextDateTime" id="myPopupDateTime" style="font-size:20px;" hidden>
+                <div style="margin-top:30px;margin:auto;display:block">
+                    <input type="button" value="x" style="display:block;position:absolute;margin-left:64%;float:left;top:10px" onclick="closePopupDateTime()">
+                    <b><u><text>Select date and time</text></u></b></br></br>
+                    <text>Date : </text><input id="dateSelect" type="date" onchange="checkDateTimeFunction()" min="<?= date('Y-m-d'); ?>"><br><br>
+                    <text>Time slot: </text><select id="timeSelect" style="width:60px;text-align:center" onchange="checkDateTimeFunction()">
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                    </select></br></br>
+                    <input id="confirmDateTimeButton" type="button" style="width:100px;height:30px;margin:auto;display:block" value="Confirm" onclick="confirmDateTime()" disabled>
+                </div>
+                </span>
+            </div>
+        </form>
+    </body>
+</html>

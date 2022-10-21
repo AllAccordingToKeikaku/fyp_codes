@@ -1,0 +1,1090 @@
+<?php
+require_once("menuDB.php");
+require_once("promoCodesDB.php");
+?>
+<!DOCTYPE html>
+<html>
+    <script>
+        isProfileClicked = false;
+        isCartClicked = false;
+        var getMenuArray;
+        var deliveryPrice = 6;
+
+        function clickedDrop(){
+            document.getElementById("accountDrop").style.display= "none";
+            document.getElementById("accountCollapse").style.display = "block";
+            document.getElementById("accountSignOut").style.display = "block";
+        }
+
+        function clickedCollapse(){
+            document.getElementById("accountDrop").style.display = "block";
+            document.getElementById("accountCollapse").style.display = "none";
+            document.getElementById("accountSignOut").style.display = "none";
+        }
+
+        function signOut(){
+            document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+            window.location.replace("../LogIn/homepage.php");
+        }
+
+        function profileClicked(){
+            if (isProfileClicked == false){
+                isProfileClicked = true;
+                document.getElementById("displayProfile").style.display = "block";
+            }
+            else{
+                isProfileClicked = false;
+                document.getElementById("displayProfile").style.display = "none";
+            }
+        }
+
+        function cartClicked(){
+            if (isCartClicked == false){
+                isCartClicked = true;
+                document.getElementById("displayCart").style.display = "block";
+                document.getElementById("toggleCheckout").style.display = "none";
+            }
+            else{
+                isCartClicked = false;
+                document.getElementById("displayCart").style.display = "none";
+                document.getElementById("toggleCheckout").style.display = "none";
+            }
+        }
+ 
+        function profileDetails(){
+            var deliveryRate = document.getElementById("deliveryPrice");
+            deliveryRate.innerHTML = "$" + deliveryPrice.toFixed(2);
+            
+            console.log(document.cookie);
+            var tempLogInName = getCookie("fullName");
+            var tempAddress;
+            var tempDateTime;
+            if(getCookie("area") == "" || getCookie("area") == null){
+                tempAddress = "Enter delivery address";       
+            }
+            else{
+                tempAddress = getCookie("area") + ", " + getCookie("addressDetails") +', S(' + getCookie("postalCode") + ")";
+                document.getElementById("confirmDeliveryText").innerHTML = getCookie("area") + ", " + getCookie("addressDetails") +', S(' + getCookie("postalCode") + ")";
+            }
+            if(getCookie("date") == "" || getCookie("date") == null){
+                tempDateTime = "Select date and time";   
+            }
+            else{
+                tempDateTime = getCookie("date") + ", " + getCookie("time");
+                document.getElementById("confirmDateTimeText").innerHTML = getCookie("date") + ", " + getCookie("time");
+            }
+            document.getElementById('accountNameDetails').innerHTML = tempLogInName;
+            document.getElementById("deliveryAddressButton").value = tempAddress;
+            document.getElementById("dateTimeButton").value = tempDateTime;
+        }
+
+        function getCookie(name){
+            const cDecoded = decodeURIComponent(document.cookie);
+            const cArray = cDecoded.split("; ");
+            let result = null;
+            
+            cArray.forEach(element => {
+                if(element.indexOf(name) == 0){
+                    result = element.substring(name.length + 1)
+                }
+            })
+            return result;
+        }
+
+        function getCurrentLocation(){
+            document.getElementById("myPopupAddress").style.visibility = 'visible';
+            document.getElementById("inputAddress").value = "";
+            document.getElementById("inputAddressDetails").value = "";
+            document.getElementById("inputPostalCode").value = "";
+            checkAddressFunction();
+        }
+
+        function checkAddressFunction(){
+            if(document.getElementById("inputAddress").value == "" || 
+            document.getElementById("inputAddressDetails").value == "" || 
+            document.getElementById("inputPostalCode").value == ""){
+                document.getElementById("confirmAddressButton").disabled = true;
+            }
+            else{
+                document.getElementById("confirmAddressButton").disabled = false;
+            }
+        }
+
+        function confirmAddress(){
+            var getInputAddress = document.getElementById("inputAddress").value;
+            var getInputAddressDetails = document.getElementById("inputAddressDetails").value;
+            var getInputPostalCode = document.getElementById("inputPostalCode").value;
+            var displayMyAddress = getInputAddress + ', ' + getInputAddressDetails + ', S(' + getInputPostalCode + ')';
+            document.getElementById("deliveryAddressButton").value = displayMyAddress;
+            document.getElementById("myPopupAddress").style.visibility = 'hidden';
+            setCookie("area", getInputAddress, 7);
+            setCookie("addressDetails", getInputAddressDetails, 7);
+            setCookie("postalCode", getInputPostalCode, 7);
+            profileDetails();
+        }
+
+        function getDateTime(){
+            document.getElementById("myPopupDateTime").style.visibility = 'visible';
+            document.getElementById("timeSelect").value = "";
+            document.getElementById("dateSelect").value = "";
+
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0 so need to add 1 to make it 1!
+            var yyyy = today.getFullYear();
+            if(dd<10){
+            dd='0'+dd
+            } 
+            if(mm<10){
+            mm='0'+mm
+            } 
+
+            today = yyyy+'-'+mm+'-'+dd;
+            document.getElementById("dateSelect").setAttribute("min", today);
+
+            checkDateTimeFunction();
+        }
+
+        function checkDateTimeFunction(){
+
+            if(document.getElementById("timeSelect").value == "" ||
+            document.getElementById("dateSelect").value == ""){
+                document.getElementById("confirmDateTimeButton").disabled = true;
+            }
+            else{
+                document.getElementById("confirmDateTimeButton").disabled = false;
+            }
+        }
+
+        function confirmDateTime(){
+            var getTime = document.getElementById("timeSelect").value;
+            var getDate = document.getElementById("dateSelect").value;
+            var displayDateTime = getDate + ", " + getTime;
+            document.getElementById("dateTimeButton").value = displayDateTime;
+            document.getElementById("myPopupDateTime").style.visibility = 'hidden';
+            setCookie("date", getDate, 7);
+            setCookie("time", getTime, 7);
+            profileDetails();
+        }
+
+        function setCookie(nameCookie, valueCookie, timeCookie){
+            const date = new Date();
+            date.setTime(date.getTime() +  (timeCookie * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + date.toUTCString();
+            document.cookie = `${nameCookie}=${valueCookie}; ${expires}; path=/`
+        }
+
+        function closePopupAddress(){
+            document.getElementById("myPopupAddress").style.visibility = 'hidden';
+        }
+
+        function closePopupDateTime(){
+            document.getElementById("myPopupDateTime").style.visibility = 'hidden';
+        }
+
+        function createItemTables(){
+            var itemArrays = '<?php echo json_encode($dataArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+            var itemArray = itemArrays.split('].');
+            var menuArray = [];
+            var actualMenuArray = [];
+            var x;
+            var y;
+            var tempString = "";
+            var tempString1 = "";
+            getMenuArray = [];
+
+            for (x=0;x<itemArray.length;x++)
+            {
+                menuArray.push(itemArray[x]);
+            }
+            for (x=0;x<menuArray.length;x++){
+                tempString = String(menuArray[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                actualMenuArray.push(tempString);
+                getMenuArray.push(tempString);
+            }
+            
+            var table;
+            var currentRow;
+            var row;
+
+            var signatureItemLength = 0;
+            var diyItemLength = 0;
+            var acaiItemLength = 0;
+            var beverageItemLength = 0;
+
+            var tempLength;
+            
+            for (x=0; x<actualMenuArray.length; x++){ 
+                if(actualMenuArray[x][1] == "signature"){
+                    signatureItemLength++;
+                }
+                else if(actualMenuArray[x][1] == "diy"){
+                    diyItemLength++;
+                }
+                else if(actualMenuArray[x][1] == "acai"){
+                    acaiItemLength++;
+                }
+                else if(actualMenuArray[x][1] == "beverages"){
+                    beverageItemLength++;
+                }
+            }
+
+            //Create menu list for signatureItems
+            table = document.getElementById("signatureItems");
+            currentRow = 0;
+            row = table.insertRow(currentRow);
+            tempLength = 0;
+            for (x=0; x<signatureItemLength; x++){              
+                if (x%3 == 0){
+                    currentRow++;
+                    row = table.insertRow(currentRow);
+                }
+                var cell = row.insertCell(x%3);
+                cell.innerHTML = '<text id="signatureItem' + String(x) + '"></text>'; 
+            }
+            for(y=0; y<actualMenuArray.length; y++){
+                if(actualMenuArray[y][1] == "signature"){
+                    document.getElementById("signatureItem"+String(tempLength)).innerHTML = createItemListing(actualMenuArray[y][0], actualMenuArray[y][2], actualMenuArray[y][4], actualMenuArray[y][5], actualMenuArray[y][6]); 
+                    tempLength++;
+                }
+                if(tempLength == signatureItemLength){
+                    break;
+                }
+            }
+            
+
+            //Create menu list for diyItems
+            table = document.getElementById("diyItems");
+            currentRow = 0;
+            row = table.insertRow(currentRow);
+            tempLength = 0;
+            for (x=0; x<diyItemLength; x++){              
+                if (x%3 == 0){
+                    currentRow++;
+                    row = table.insertRow(currentRow);
+                }
+                var cell = row.insertCell(x%3);
+                cell.innerHTML = '<text id="diyItem' + String(x) + '"></text>';
+            }
+            for(y=0; y<actualMenuArray.length; y++){
+                if(actualMenuArray[y][1] == "diy"){
+                    document.getElementById("diyItem"+String(tempLength)).innerHTML = createItemListing(actualMenuArray[y][0], actualMenuArray[y][2], actualMenuArray[y][4], actualMenuArray[y][5], actualMenuArray[y][6]);    
+                    tempLength++;
+                }
+                if(tempLength == diyItemLength){
+                    break;
+                }
+            }
+
+
+            //Create menu list for acaiItems
+            table = document.getElementById("acaiItems");
+            currentRow = 0;
+            row = table.insertRow(currentRow);
+            tempLength = 0;
+            for (x=0; x<acaiItemLength; x++){              
+                if (x%3 == 0){
+                    currentRow++;
+                    row = table.insertRow(currentRow);
+                }
+                var cell = row.insertCell(x%3);
+                cell.innerHTML = '<text id="acaiItem' + String(x) + '"></text>';
+            }
+            for(y=0; y<actualMenuArray.length; y++){
+                if(actualMenuArray[y][1] == "acai"){
+                    document.getElementById("acaiItem"+String(tempLength)).innerHTML = createItemListing(actualMenuArray[y][0], actualMenuArray[y][2], actualMenuArray[y][4], actualMenuArray[y][5], actualMenuArray[y][6]); 
+                    tempLength++;
+                }
+                if(tempLength == acaiItemLength){
+                    break;
+                }
+            }
+
+            //Create menu list for beverageItems
+            table = document.getElementById("beverageItems");
+            currentRow = 0;
+            row = table.insertRow(currentRow);
+            tempLength = 0;
+            for (x=0; x<beverageItemLength; x++){              
+                if (x%3 == 0){
+                    currentRow++;
+                    row = table.insertRow(currentRow);
+                }
+                var cell = row.insertCell(x%3);
+                cell.innerHTML = '<text id="beverageItem' + String(x) + '"></text>';
+            }
+            for(y=0; y<actualMenuArray.length; y++){
+                if(actualMenuArray[y][1] == "beverages"){
+                    document.getElementById("beverageItem"+String(tempLength)).innerHTML = createItemListing(actualMenuArray[y][0], actualMenuArray[y][2], actualMenuArray[y][4], actualMenuArray[y][5], actualMenuArray[y][6]); 
+                    tempLength++;
+                }
+                if(tempLength == beverageItemLength){
+                    break;
+                }
+            }
+        }
+
+        function createItemListing(menu_item_ID, item_name, item_picture, item_price, item_stock){
+            var checkItemAvailability = false;
+            var listingValueColor;
+            if (item_stock == "Available"){
+                listingValueColor = "#C3E3A2";
+                checkItemAvailability = true;
+            }
+            else{
+                listingValueColor = "#E09E9999";
+                checkItemAvailability = false;
+            }
+
+            var listing='<td><img src="' + item_picture + '" style="width:200px;height:200px">'+
+                            '</br><text>' + item_name + '</text></br></br>' +
+                            '<div style="float:left;">' +
+                                '<b><text>$' + item_price + '</text></b></br>' +
+                                '<input type="button" value="' + item_stock + '" style="background-color:' + listingValueColor + ';border:1px;border-radius:10px;margin-top:10px;font-weight:bold">' +
+                            '</div>' +
+                            '<input class="addButton" id="' + menu_item_ID + '" type="button" value="View" onclick="addFunction(this.id, ' + checkItemAvailability + ')"></td>';
+
+            return listing;
+        }
+
+        function addFunction(returned_ID, checkItemAvailability){
+            for(var x=0; x<getMenuArray.length; x++){
+                if(getMenuArray[x][0] == returned_ID){
+                    popupFunction(getMenuArray[x][0], getMenuArray[x][2], getMenuArray[x][3], getMenuArray[x][4], getMenuArray[x][5], checkItemAvailability);
+                    break;
+                }
+            }
+        }
+
+        function popupFunction(descriptionID, descriptionName, descriptionText, imgSrc, descriptionPrice, checkItemAvailability){
+            document.getElementById("descriptionBox").style.visibility = 'visible';
+            var itemAvailability;
+            if (checkItemAvailability == true){
+                document.getElementById("descriptionBox").innerHTML = '<img src="' + imgSrc + '" style="width:300px;height:auto;float:left">' +
+                                                                    '<input type="button" value="x" style="cursor:pointer;float:right;position:absolute;margin-left:90%;display:block;top:10px" onclick="returnFunction()">' +
+                                                                    '<b><text style="font-size:30px;">' + descriptionName + '</text></b></br></br></br>'+
+                                                                    '<text style="font-size:20px;">' + descriptionText + '</text></br>' +
+
+                                                                    '<div style="background-color:orange;display:block;width:100%;height:55px;position:absolute;bottom:0px;left:0;">' +
+                                                                    '<text class="price" style="padding:10px;background-color:white;float:left;position:absolute;bottom:4px;display:block;margin-left:10%;font-size:25px"></text>' +
+
+                                                                    '<div class="wrapper" style="position:absolute;bottom:14px;margin-left:40%;background-color:white;">' +
+                                                                    '<span id="minus' + descriptionID + '">-</span>' + 
+                                                                    '<span id="num' + descriptionID + '" class="num">1</span>' +
+                                                                    '<span id="plus' + descriptionID + '">+</span></div>' +
+
+                                                                    '<input type="button" class="addToCartButton" name="' + descriptionName + '" id="addToCartButton' + descriptionID + '" value="Add to cart"' +
+                                                                    'style="cursor:pointer;position:absolute;bottom:7px;background-color:#437E96;border-radius:10px;border:0px;color:white;height:40px;font-size:25px;width:20%;margin-left:70%;margin-right:auto;display:block"' + 
+                                                                    'onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onclick="addIntoCart(this.name, ' + descriptionPrice + ', '+ descriptionID +')"></div>';
+            }
+            else{
+                document.getElementById("descriptionBox").innerHTML = '<img src="' + imgSrc + '" style="width:300px;height:auto;float:left">' +
+                                                                    '<input type="button" value="x" style="cursor:pointer;float:right;position:absolute;margin-left:90%;display:block;top:10px" onclick="returnFunction()">' +
+                                                                    '<b><text style="font-size:30px;">' + descriptionName + '</text></b></br></br></br>'+
+                                                                    '<text style="font-size:20px;">' + descriptionText + '</text></br>' +
+
+                                                                    '<div style="background-color:orange;display:block;width:100%;height:55px;position:absolute;bottom:0px;left:0;">' +
+                                                                    '<text class="price" style="padding:10px;background-color:white;float:left;position:absolute;bottom:4px;display:block;margin-left:10%;font-size:25px"></text>' +
+
+                                                                    '<div class="wrapper" style="position:absolute;bottom:14px;margin-left:40%;background-color:white;">' +
+                                                                    '<span id="minus' + descriptionID + '">-</span>' + 
+                                                                    '<span id="num' + descriptionID + '" class="num">01</span>' +
+                                                                    '<span id="plus' + descriptionID + '">+</span></div>' +
+
+                                                                    '<input type="button" class="addToCartButton" name="' + descriptionName + '" id="addToCartButton' + descriptionID + '" value="Add to cart"' +
+                                                                    'style="cursor:normal;position:absolute;bottom:7px;background-color:grey;border-radius:10px;border:0px;color:white;height:40px;font-size:25px;width:20%;margin-left:70%;margin-right:auto;display:block" disabled></div>';
+            }
+            var plus = document.getElementById("plus"+descriptionID);
+            var minus = document.getElementById("minus"+descriptionID);
+            var num = document.getElementById("num"+descriptionID);
+            var price = document.querySelector(".price");
+            var startingValue = 1;
+            price.innerText = "$" + descriptionPrice;
+            addButtonListenerFunction(plus, minus, num, startingValue);
+        }
+
+        var tempGetAmount = 0;
+        function addButtonListenerFunction(plus, minus, num, startingValue){
+            tempGetAmount = startingValue;
+            plus.addEventListener("click" , ()=>{
+                startingValue++;
+                startingValue = (startingValue<10) ? startingValue : startingValue;
+                tempGetAmount = startingValue;
+                num.innerText = startingValue;
+            });
+
+            minus.addEventListener("click" , ()=>{
+                if(startingValue > 1){
+                    startingValue--;
+                    startingValue = (startingValue<10) ? startingValue : startingValue;
+                }
+                tempGetAmount = startingValue;
+                num.innerText = startingValue;
+            });
+        }
+
+        var itemListArray = [];
+        var itemPriceArray = [];
+        var subTotalPrice = 0;
+        var entireListArray = [];
+        function addIntoCart(foodName, foodPrice, foodID){
+            document.getElementById("displayEmpty").style.display = "none";
+            document.getElementById("checkoutButton").disabled = false;
+            for(var x=0; x<parseInt(tempGetAmount);x++){
+                itemListArray.push(foodName);
+                itemPriceArray.push(foodPrice);
+            }
+            displayCartNo(itemListArray.length);
+            document.getElementById("descriptionBox").style.visibility = 'hidden';
+            var countCart = {};
+            var tempCartArray = [];
+            var countPrice = {};
+            var tempPriceArray = [];
+            for (var x=0; x<itemListArray.length; x++) {
+                if (countCart[itemListArray[x]]){
+                    countCart[itemListArray[x]] += 1;
+                    countPrice[itemListArray[x]] += 1;
+                } 
+                else{
+                    countCart[itemListArray[x]] = 1;
+                    countPrice[itemListArray[x]] = 1;
+                    tempCartArray.push(itemListArray[x]);
+                    tempPriceArray.push(itemPriceArray[x]);
+                }
+            }
+
+            var table;
+            var currentRow;
+            var row;
+
+            table = document.getElementById("displayCartItems");
+            table.innerHTML = "";
+            var x;
+            for (x=0; x<Object.keys(countCart).length; x++){                               
+                row = table.insertRow(x);
+                var cell = row.insertCell(0);
+                cell.innerHTML = '<text id="displayListedItem' + String(x) + '"></text>';
+            }
+
+            subTotalPrice = 0;
+            entireListArray = [];
+            for (var x=0; x<tempCartArray.length; x++){
+                var getDisplayElement = document.getElementById('displayListedItem' + String(x));
+                getDisplayElement.innerHTML = displayCartItems(tempCartArray[x] , tempPriceArray[x], countCart[tempCartArray[x]], x);
+                var plus = document.getElementById("plusA" + x);
+                var minus = document.getElementById("minusA" + x);
+                var num = document.getElementById("numA" + x);
+                var startingValue = countCart[tempCartArray[x]];  
+                
+                subTotalPrice += tempPriceArray[x] * countCart[tempCartArray[x]];
+                entireListArray.push(tempCartArray[x], tempPriceArray[x], countCart[tempCartArray[x]]);  
+                addCartButtonListenerFunction(plus, minus, num, startingValue, tempCartArray[x], tempPriceArray[x], getDisplayElement);       
+            }
+            document.getElementById("cartPrice").innerHTML = "$" + subTotalPrice.toFixed(2);
+            if(discountedRates != 0){
+                document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice * discountedRates + deliveryPrice).toFixed(2);
+            }
+            else{
+                document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice + deliveryPrice).toFixed(2);
+            }
+        }
+
+        var tempCartGetAmount = 0;
+        function addCartButtonListenerFunction(plus, minus, num, startingValue, foodName, foodPrice, hideElement){
+            tempCartGetAmount = tempGetAmount + startingValue;
+            plus.addEventListener("click" , ()=>{
+                var tempStartValue = startingValue;
+                startingValue++;
+                startingValue = (startingValue<10) ? startingValue : startingValue;
+                tempCartGetAmount = startingValue;
+                itemListArray.push(foodName);
+                itemPriceArray.push(foodPrice);
+                num.innerText = startingValue;
+                subTotalPrice += foodPrice*(startingValue-tempStartValue);
+                document.getElementById("cartPrice").innerHTML = "$" + subTotalPrice.toFixed(2) ;
+                console.log(discountedRates);
+                if(discountedRates != 0){
+                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice * discountedRates + deliveryPrice).toFixed(2);
+                }
+                else{
+                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice + deliveryPrice).toFixed(2);
+                }
+                displayCartNo(itemListArray.length);
+            });
+
+            minus.addEventListener("click" , ()=>{
+                var tempStartValue = startingValue;
+                if(startingValue > 1){
+                    startingValue--;
+                    startingValue = (startingValue<10) ? startingValue : startingValue;
+                    var index = itemListArray.indexOf(foodName);
+                    if (index > -1) {
+                        itemListArray.splice(index, 1);
+                        itemPriceArray.splice(index, 1); 
+                    }              
+                }
+                else if(startingValue==1){
+                    startingValue--;
+                    var index = itemListArray.indexOf(foodName);
+                    if (index > -1) {
+                        itemListArray.splice(index, 1);
+                        itemPriceArray.splice(index, 1); 
+                    }
+                }
+                displayCartNo(itemListArray.length);
+                subTotalPrice += foodPrice*(startingValue-tempStartValue);
+                if(startingValue == 0 || startingValue == null){
+                    hideElement.style.display = "none";                    
+                }
+                else{
+                    hideElement.style.display = "block";
+                }
+                if(subTotalPrice == 0){
+                    document.getElementById("displayEmpty").style.display = "block";
+                    document.getElementById("checkoutButton").disabled = true;
+                    document.getElementById("toggleCheckout").style.display = "none";
+                }
+                document.getElementById("cartPrice").innerHTML = "$" + subTotalPrice.toFixed(2);
+                if(discountedRates != 0){
+                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice * discountedRates + deliveryPrice).toFixed(2);
+                }
+                else{
+                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice + deliveryPrice).toFixed(2);
+                }
+                tempCartGetAmount = startingValue;
+                num.innerText = startingValue;
+            });
+            
+        }
+
+        function displayCartItems(itemName, itemPrice, itemAmount, itemID){    
+            var cartItem = '<div  style="display:inline-block;width:100%">' +
+                            '<text style="font-size:15px;float:left;width:330px;padding:5px">' + itemName + '</text>' +
+                            '<div class="wrapperCart" style="float:left;margin-left:10px;background-color:white;">'+
+                                '<span id="minusA' + itemID + '">-</span>'+
+                                '<span id="numA' + itemID + '" class="num1">' + itemAmount + '</span>' +
+                                '<span id="plusA' + itemID + '">+</span>' +
+                            '</div>' +
+                            '<b><text style="margin-left:20px;float:right;display:block;font-size:15px;">$' + itemPrice.toFixed(2) + '</text></div></b>';     
+            return cartItem;
+        }
+
+        function returnFunction(){
+            document.getElementById("descriptionBox").style.visibility = 'hidden';
+        }
+
+        function mouseOver(buttonID){
+            document.getElementById(buttonID).style.border = "2px solid black";
+            document.getElementById(buttonID).style.borderColor = "black";
+        }
+
+        function mouseOut(buttonID){
+            document.getElementById(buttonID).style.border = "0px";
+            document.getElementById(buttonID).style.borderColor = "";
+        }
+
+        function displayCartNo(noOfItems){
+            if(itemListArray.length>0){
+                tempNo = (noOfItems<10) ? "0" + noOfItems : noOfItems;
+                document.getElementById("displayCartNumber").innerHTML = tempNo;
+                document.getElementById("displayCartNumber").style.display = "block";
+                document.getElementById("displayDot").style.display = "block";
+            }
+            else{
+                document.getElementById("displayCartNumber").innerHTML = "0";
+                document.getElementById("displayCartNumber").style.display = "none";
+                document.getElementById("displayDot").style.display = "none";
+            }
+        }
+
+        function checkoutFunction(){
+            document.getElementById("toggleCheckout").style.display = "block";
+            document.getElementById("displayCart").style.display = "none";
+        }
+
+        function closeCheckoutClicked(){
+            document.getElementById("toggleCheckout").style.display = "none";
+        }
+
+        function returnToCartFunction(){
+            document.getElementById("displayCart").style.display = "block";
+            document.getElementById("toggleCheckout").style.display = "none";
+        }
+
+        function orderFunction(){
+            console.log("Clicked on orderFunction");
+        }
+
+        var checkDiscount;
+        var discountedRates = 0;
+        function applyPromoCode(){
+            var slotArrays = '<?php echo json_encode($promoCodeArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+            var slotArray = slotArrays.split('].');
+            var promoCodeArray = [];
+            var actualPromoCodeArray = [];
+            var x;
+            var tempString = "";
+            var tempString1 = "";
+            var tempPromoCode = document.getElementById('applyPromo').value;
+            for (x=0;x<slotArray.length;x++)
+            {
+                promoCodeArray.push(slotArray[x]);
+            }
+            for (x=0;x<promoCodeArray.length;x++){
+                tempString = String(promoCodeArray[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                actualPromoCodeArray.push(tempString);
+            }
+            for (x=0;x<actualPromoCodeArray.length;x++)
+            {
+                console.log(actualPromoCodeArray[x]);
+                console.log(tempPromoCode);
+                if (actualPromoCodeArray[x][1] == tempPromoCode){        
+                    checkDiscount = actualPromoCodeArray[x][1];
+                    document.getElementById("validityText").innerHTML = "Valid";
+                    document.getElementById("validityText").style.color = "green";
+                    document.getElementById("discountRate").innerHTML = actualPromoCodeArray[x][2] + "%";
+                    discountedRates = parseInt(actualPromoCodeArray[x][2])/100;
+                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice * parseInt(actualPromoCodeArray[x][2])/100 + parseInt(deliveryPrice)).toFixed(2);
+                    break;
+                }
+                else{
+                    checkDiscount = "none";
+                    document.getElementById("validityText").innerHTML = "Invalid";
+                    document.getElementById("validityText").style.color = "red";
+                    document.getElementById("discountRate").innerHTML = "0%";
+                    discountedRates = 0;
+                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice + deliveryPrice).toFixed(2);
+                }
+            }
+        }
+    </script>
+    <style>
+        .mouseOverEffects{
+            border-left: 3px solid white;
+        }
+
+        .mouseOverEffects:hover{
+            border-left : 3px solid #437E96;
+        }
+
+        .arrow {
+            border: solid black;
+            border-width: 0 1px 1px 0;
+            display: inline-block;
+            padding: 3px;
+        }
+
+        .addButton{
+            border: none;
+            background-color:#437E96;
+            border-radius:10px;
+            margin-left:50px;
+            margin-top:10px;
+            color:white;
+            height:30px;
+            width:60px;
+            display:inline-block;
+        }
+
+        .addButton:hover{
+            cursor: pointer;
+            border: 2px solid black;
+        }
+
+        .example::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .example {
+            -ms-overflow-style: none;  /* IE and Edge */
+        }
+
+        .popup {
+            display: inline-block;
+        }
+
+        .popup .popuptext {
+            visibility: hidden;
+            display: inline-block;
+            padding: 44.2839px 49.2043px;
+            gap: 29.52px;
+
+            position: absolute;
+            width: 700px;
+            height: 400px;
+            margin:auto;
+            left: 0;
+            right: 0;
+            top: 30%;
+
+            /* /Gray / White */
+
+            background: #FFFFFF;
+            /* Stroke/light */
+
+            border: 1.23011px solid #DEE2E6;
+            box-shadow: 0px 0px 2.46022px rgba(0, 0, 0, 0.12), 0px 24.6021px 24.6021px rgba(0, 0, 0, 0.08);
+            border-radius: 9.84086px;
+        }
+
+        .popupAddress {
+            display: inline-block;
+        }
+
+        .popupAddress .popuptextAddress {
+            visibility: hidden;
+            display: flex;
+
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            margin:auto;
+            left: 0;
+            right: 0;
+            top: 30%;
+
+            /* /Gray / White */
+
+            background: #FFFFFF;
+            /* Stroke/light */
+
+            border: 1.23011px solid #DEE2E6;
+            box-shadow: 0px 0px 2.46022px rgba(0, 0, 0, 0.12), 0px 24.6021px 24.6021px rgba(0, 0, 0, 0.08);
+            border-radius: 9.84086px;
+        }
+
+        .popupDateTime {
+            display: inline-block;
+        }
+
+        .popupDateTime .popuptextDateTime {
+            visibility: hidden;
+            display: flex;
+
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            margin:auto;
+            left: 0;
+            right: 0;
+            top: 30%;
+
+            /* /Gray / White */
+
+            background: #FFFFFF;
+            /* Stroke/light */
+
+            border: 1.23011px solid #DEE2E6;
+            box-shadow: 0px 0px 2.46022px rgba(0, 0, 0, 0.12), 0px 24.6021px 24.6021px rgba(0, 0, 0, 0.08);
+            border-radius: 9.84086px;
+        }
+
+        .wrapper{
+            height: 30px;
+            min-width: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .wrapper span{
+            text-align: center;
+            font-size: 30px;
+            font-weight: 400;
+            width: 100%;
+            border-top: 2px solid rgba(0,0,0,0.2);
+            border-bottom: 2px solid rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
+        .wrapper span.num{
+            font-size:30px;
+            border-right: 2px solid rgba(0,0,0,0.2);
+            border-left: 2px solid rgba(0,0,0,0.2);
+            pointer-events: none;
+        }
+
+        .wrapperCart{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            width: 80px;
+        }
+
+        .wrapperCart span{
+            text-align: center;
+            font-size: 15px;
+            font-weight: 100;
+            width: 100%;
+            border-top: 2px solid rgba(0,0,0,0.2);
+            border-bottom: 2px solid rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
+        .wrapperCart span.num{
+            font-size: 15px;
+            border-right: 2px solid rgba(0,0,0,0.2);
+            border-left: 2px solid rgba(0,0,0,0.2);
+            pointer-events: none;
+        }
+
+        .dot {
+            height: 26px;
+            width: 26px;
+            background-color: #d69696;
+            border-radius: 50%;
+            display: none;
+            margin-left: 964px;
+            margin-top: 15px;
+            position: absolute;
+        }
+
+        .buttonEffects {
+            margin-top:15px;
+            border:none;
+            background-color:transparent;
+            display:inline-block;
+            cursor:pointer;
+        }
+        .buttonEffects:hover {
+            border: 2px solid black;
+            cursor:pointer;
+        }
+
+        .cartButtonEffects{
+            border-radius:5px;
+            border:none;
+            cursor:pointer;
+            width:150px;
+            height:auto;
+            display:inline-block;
+        }
+
+        .cartButtonEffects:hover {
+            border: 1px solid black;
+            cursor:pointer;
+        }
+    </style>
+    <body onload="profileDetails();createItemTables();displayCartNo()">
+        <form>
+            <div style="width:1100px;margin-left:auto;margin-right:auto;">
+                <div style="float:right;border-bottom:5px solid grey;width:100%;height:120px">
+                    <div style="float:left;">
+                        <img src="../MoshiQ2 Assets/Logo.png" style="margin-left:0px;width:300px;height:auto;display:block;">
+                    </div>
+                    <div class="buttonEffects" style="margin-left:170px;float:left;display:inline-block;background-color:#A8A1A166;height:42px;margin-top:25px;padding:5px" onclick="getCurrentLocation()">
+                        <img src="../MoshiQ2 Assets/Address.png" style="float:left">
+                        <input id="deliveryAddressButton" type="button" style="background-color:transparent;display:inline-block;border:none;cursor:pointer;width:150px;white-space:normal;" value="Enter a delivery address">
+                    </div>  
+                    <div class="buttonEffects" style="float:left;display:inline-block;background-color:#A8A1A166;margin-left:10px;height:42px;margin-top:25px;padding:5px" onclick="getDateTime()">
+                        <img src="../MoshiQ2 Assets/Time.png" style="float:left">
+                        <input id="dateTimeButton" type="button" style="background-color:transparent;display:inline-block;border:none;cursor:pointer;width:150px;white-space:normal;" value="Select date and time">
+                    </div> 
+            
+                    <div style="position:relative">
+                        <span id="displayDot" class="dot"></span>
+                        <text id="displayCartNumber" style="position:absolute;display:block;margin-left:970px;margin-top:20px;"></text>
+                        <img src="../MoshiQ2 Assets/Cart.png" style="margin-top:20px;cursor:pointer;margin-left:10px;float:left;margin-right:10px;display:block;width:100px;height:auto" onclick="cartClicked()">
+                        <div class="example" id="displayCart" style="margin-left:700px;margin-top:100px;padding:5px;z-index:2;position:absolute;width:500px;white-space:normal;height:auto;background-color:#999999;border:1px solid black;border-radius:5px;display:none;font-size:15px;overflow-y:auto;max-height:600px;">
+                            <b><text style="float:left;font-size:30px;display:inline-block">Cart Tab</text></b>
+                            <input type="button" value="x" style="cursor:pointer;float:right;position:absolute;margin-left:94%;display:block;top:10px" onclick="cartClicked()"></br></br></br>
+                            <div style="margin-top:10px;border-top:2px solid black;">
+                                <div style="padding-top:10px">
+                                    <table id="displayCartItems">  
+                                        <center>
+                                            <div>
+                                                <text id="displayEmpty" style="font-size:30px;">Your cart is empty!</text>
+                                            </div>
+                                        </center>                      
+                                    </table>
+                                </div>
+                                <div style="background-color:#a6a6a6">
+                                    <div>
+                                        <b><text id="cartPrice" style="float:right;margin-right:5px;display:block;padding-top:22px;font-size:15px">$0.00</text>
+                                        <text style="border-top:2px solid black;display:block;bottom:0px;padding-top:20px;font-size:15px;margin-left:8px">Subtotal:</text></b></br>
+                                        <b><text id="deliveryPrice" style="float:right;margin-right:5px;display:block;padding-top:2px;font-size:15px">$0.00</text>
+                                        <text style="border-bottom:2px solid black;display:block;bottom:0px;font-size:15px;margin-left:8px;padding-bottom:5px">Delivery fee:</text>                      
+                                    </div>
+                                    <div style="margin-top:10px;">
+                                        <div style="margin-top:10px;">
+                                            <b><text style="display:block;bottom:0px;font-size:15px;margin-left:8px;">Promo Code:</text></b>
+                                            <input type="text" id="applyPromo" style="margin-left:8px;width:150px;" placeholder="Got a coupon code?">
+                                            <input type="button" value="Apply" style="display:inline-block" onclick="applyPromoCode()">
+                                            <text id="validityText" style="margin-left:5px;"></text>
+                                            <text id="discountRate" style="float:right;display-inline-block;margin-right:5px"></text>
+                                        </div></br>
+                                        <div>
+                                            <b><text id="totalPrice" style="float:right;margin-right:5px;display:block;padding-top:2px;font-size:15px">$6.00</text>
+                                            <text style="border-bottom:2px solid black;display:block;bottom:0px;font-size:15px;margin-left:8px;padding-bottom:5px">Total:</text>   
+                                        </div></br>
+                                    </div>
+                                    <center>
+                                        <div class="cartButtonEffects" style="margin-top:10px">
+                                            <input type="button" id="checkoutButton" value="Go to checkout" style="width:150px;height:30px;cursor:pointer" onclick="checkoutFunction()" disabled>
+                                        </div></br></br>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="example" id="toggleCheckout" style="margin-left:700px;margin-top:100px;padding:5px;z-index:2;position:absolute;width:500px;white-space:normal;height:auto;background-color:#999999;border:1px solid black;border-radius:5px;display:none;font-size:15px;overflow-y:auto;max-height:600px;">
+                            <b><input type="button" style="float:left;font-size:30px;display:inline-block;cursor:pointer;background-color:#999999;border:none" value="<" onclick="returnToCartFunction()"></b>
+                            <b><text style="margin-left:20px;font-size:30px;display:inline-block">Checkout Tab</text></b>
+                            <input type="button" value="x" style="cursor:pointer;float:right;position:absolute;margin-left:94%;display:block;top:10px" onclick="closeCheckoutClicked()"></br></br></br>
+                            <div style="background-color:#a6a6a6">
+                                <div style="margin-top:10px;border-top:2px solid black;">
+                                    <b><text style="display:block;bottom:0px;padding-top:20px;font-size:15px;margin-left:8px">Deliver on</text></b>
+                                    <text id="confirmDateTimeText" style="margin-left:8px;"></text>           
+                                </div></br>
+                                <div style="margin-top:10px;">
+                                    <b><text style="display:block;bottom:0px;font-size:15px;margin-left:8px;">Delivery address</text></b>
+                                    <text id="confirmDeliveryText" style="margin-left:8px;"></text>
+                                </div></br>
+                                <center>
+                                    <div class="cartButtonEffects" style="margin-top:10px">
+                                        <input type="button" id="orderButton" value="Place Order" style="width:150px;height:30px;cursor:pointer" onclick="orderFunction()">
+                                    </div></br></br>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                    <img src="../MoshiQ2 Assets/Profile Icon.png" style="cursor:pointer;display:block;float:left;width:70px;height:auto;margin-left:auto" onclick="profileClicked()"></br>
+                    <div id="displayProfile" name="displayProfile" style="float:right;margin-top:10px;padding:5px;z-index:1;position:relative;width:auto;height:auto;background-color:white;border:1px solid black;border-radius:5px;display:none">
+                        <text style="margin-left:10%;margin-right:auto;display:inline-block" id="accountNameDetails"></text></br>
+                        <input type="button" id="accountDrop" name="accountDrop" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25B2;" style="color:gray;margin-top:5px;height:30px;width:200px;" onclick="clickedDrop()">
+                        <input type="button" id="accountCollapse" name="accountCollapse" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25BC;" style="color:gray;margin-top:5px;width:200px;height:30px;" onclick="clickedCollapse()" hidden>
+                        <input type="button" id="accountSignOut" name="accountSignOut" value="Sign out &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-top:5px;width:200px;height:30px;" onclick="signOut()" hidden>
+                    </div></br>
+                </div>
+
+                <div style="margin-left:30px;display:inline-block;border-left:1px;">
+                    <text style="color:black;font-size:30px">OUR MENU</text></br>
+                    <div>
+                        <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
+                            <div class="mouseOverEffects" style="width:120px">
+                                <a href="#signatureDisplay"><input type="button" id="signatureButton" name="signatureButton" value="Signature" style="padding:10px;border:0px;background-color:white"></a></br>
+                            </div>
+                        </div></br>
+                        <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
+                            <div class="mouseOverEffects" style="width:120px">
+                                <a href="#diyDisplay"><input type="button" id="diyButton" name="diyButton" value="DIY moshiQ&#178; bowls" style="padding:10px;border:0px;background-color:white"></a></br>
+                            </div>
+                        </div></br>
+
+                        <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
+                            <div class="mouseOverEffects" style="width:120px">
+                                <a href="#acaiDisplay"><input type="button" id="acaiButton" name="acaiButton" value="Acai Bowls" style="padding:10px;border:0px;background-color:white"></a></br>
+                            </div>
+                        </div></br>
+
+                        <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
+                            <div class="mouseOverEffects" style="width:120px">
+                                <a href="#beveragesDisplay"><input type="button" id="beveragesButton" name="beveragesButton" value="Beverages" style="padding:10px;border:0px;background-color:white"></a></br>
+                            </div>
+                        </div></br>
+                    </div>
+                </div>
+
+                <div class="example" style="float:right;width:800px;height:900px;overflow:auto;">
+                    <div id="signatureDisplay" style="width:800px;">
+                        <table style="border-spacing:20px 0px">
+                            <tr>
+                                <text style="color:black;font-size:30px;">
+                                    <a id="signatureDisplay">SIGNATURE</a>                              
+                                </text></br></br>
+                                <text>Build your own exclusively now!</text></br>
+                            </tr>
+                            <table id="signatureItems" style="border-spacing:30px;">
+                            </table>
+                        </table>
+                    </div></br>
+
+                    <div id="diyDisplay" style="width:800px;margin-top:100px">
+                        <table style="border-spacing:20px 0px">
+                            <tr>
+                                <text style="color:black;font-size:30px;">
+                                    <a id="diyDisplay">DIY MOSHI&#178; BOWLS</a>                              
+                                </text></br></br>
+                                <text>Dig into our antioxidant-rich, guilt-free sweet treats!</text>
+                            </tr>
+                            <table id="diyItems" style="border-spacing:30px;">
+                            </table>
+                        </table>
+                    </div></br>
+
+                    <div id="acaiDisplay" style="width:800px;margin-top:100px">
+                        <table style="border-spacing:20px 0px">
+                            <tr>
+                                <text style="color:black;font-size:30px;">
+                                    <a id="acaiDisplay">ACAI</a>                              
+                                </text></br></br>
+                                <text>Hydrate yourself with any of our beverages!</text>
+                            </tr>
+                            <table id="acaiItems" style="border-spacing:30px;">
+                            </table>
+                        </table>
+                    </div></br>
+
+                    <div id="beveragesDisplay" style="width:800px;margin-top:100px">
+                        <table style="border-spacing:20px 0px">
+                            <tr>
+                                <text style="color:black;font-size:30px;">
+                                    <a id="beveragesDisplay">BEVERAGES</a>                              
+                                </text></br></br>
+                                <text>Build your own exclusively now!</text>
+                            </tr>
+                            <table id="beverageItems" style="border-spacing:30px;">
+                            </table>
+                        </table>
+                    </div></br>
+                </div>  
+                <div class="popup">
+                    <div class="popuptext" id="descriptionBox">
+                    </div></br>
+                </div>  
+
+                <div class="popupAddress">
+                    <span class="popuptextAddress" id="myPopupAddress" style="font-size:20px;" hidden>   
+                    <div style="margin-top:30px;margin:auto;display:block">
+                        <input type="button" value="x" style="display:block;position:absolute;margin-left:70%;float:left;top:10px" onclick="closePopupAddress()">
+                        <b><u><text>Enter your address details</text></u></b></br></br>
+                        <text>Address: </text></br>
+                        <input id="inputAddress" type="text" style="width:200px;height:20px" placeholder="Address" onchange="checkAddressFunction()" onkeyup="checkAddressFunction()" onkeydown="checkAddressFunction()"></br></br>
+                        <text>Address details: </text></br>
+                        <input id="inputAddressDetails" type="text" style="width:200px;height:20px" placeholder="E.g Floor, unit number" onchange="checkAddressFunction()" onkeyup="checkAddressFunction()" onkeydown="checkAddressFunction()"></br></br>
+                        <text>Postal code: </text></br>
+                        <input id="inputPostalCode" type="text" style="width:200px;height:20px" placeholder="Postal code" onchange="checkAddressFunction()" onkeyup="checkAddressFunction()" onkeydown="checkAddressFunction()"></br></br>
+                        <input id="confirmAddressButton" type="button" style="width:100px;height:30px;margin:auto;display:block" value="Confirm" onclick="confirmAddress()" disabled>
+                    </div>
+                    </span>
+                </div>
+                <div class="popupDateTime">
+                    <span class="popuptextDateTime" id="myPopupDateTime" style="font-size:20px;" hidden>
+                    <div style="margin-top:30px;margin:auto;display:block">
+                        <input type="button" value="x" style="display:block;position:absolute;margin-left:64%;float:left;top:10px" onclick="closePopupDateTime()">
+                        <b><u><text>Select date and time</text></u></b></br></br>
+                        <text>Date : </text><input id="dateSelect" type="date" onchange="checkDateTimeFunction()" min="<?= date('Y-m-d'); ?>"><br><br>
+                        <text>Time slot: </text><select id="timeSelect" style="width:60px;text-align:center" onchange="checkDateTimeFunction()">
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="20:00">20:00</option>
+                        </select></br></br>
+                        <input id="confirmDateTimeButton" type="button" style="width:100px;height:30px;margin:auto;display:block" value="Confirm" onclick="confirmDateTime()" disabled>
+                    </div>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>
