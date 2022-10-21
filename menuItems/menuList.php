@@ -125,9 +125,6 @@ require_once("promoCodesDB.php");
 
         function getDateTime(){
             document.getElementById("myPopupDateTime").style.visibility = 'visible';
-            document.getElementById("timeSelect").value = "";
-            document.getElementById("dateSelect").value = "";
-
             var today = new Date();
             var dd = today.getDate();
             var mm = today.getMonth()+1; //January is 0 so need to add 1 to make it 1!
@@ -138,10 +135,41 @@ require_once("promoCodesDB.php");
             if(mm<10){
             mm='0'+mm
             } 
-
+            var curTime;
+            if(String(today.getMinutes()).length == 1){
+                curTime = String(today.getHours()) + "0" + String(today.getMinutes());
+            }
+            else{
+                curTime = String(today.getHours()) + String(today.getMinutes());
+            }
             today = yyyy+'-'+mm+'-'+dd;
             document.getElementById("dateSelect").setAttribute("min", today);
-
+            if(document.getElementById("dateSelect").value == ""){
+                document.getElementById("dateSelect").value = today;
+            }
+            var getDate = document.getElementById("dateSelect").value;
+            if(getDate = ""){
+                getDate = today;
+            }
+            else{
+                getDate = document.getElementById("dateSelect").value;
+            }
+            var optionList = document.getElementById('timeSelect');
+            var checkTF = false;
+            for (var x=0; x < optionList.length; x++){
+                //
+                console.log(parseInt(curTime));
+                if(getDate <= today && parseInt(curTime) > parseInt(optionList[x].value.replaceAll(":", ""))){
+                    document.getElementById(optionList[x].value).disabled = true;
+                }
+                else{
+                    document.getElementById(optionList[x].value).disabled = false;
+                    if(checkTF == false){
+                        document.getElementById("timeSelect").value = document.getElementById(optionList[x].value).value;
+                        checkTF = true;
+                    }
+                }
+            }            
             checkDateTimeFunction();
         }
 
@@ -659,6 +687,10 @@ require_once("promoCodesDB.php");
                 }
             }
         }
+
+        function deliverNow(){
+            console.log("Deliver now");
+        }
     </script>
     <style>
         .mouseOverEffects{
@@ -1069,19 +1101,21 @@ require_once("promoCodesDB.php");
                     <div style="margin-top:30px;margin:auto;display:block">
                         <input type="button" value="x" style="display:block;position:absolute;margin-left:64%;float:left;top:10px" onclick="closePopupDateTime()">
                         <b><u><text>Select date and time</text></u></b></br></br>
-                        <text>Date : </text><input id="dateSelect" type="date" onchange="checkDateTimeFunction()" min="<?= date('Y-m-d'); ?>"><br><br>
+                        <text>Date : </text><input id="dateSelect" type="date" onchange="getDateTime();checkDateTimeFunction()" min="<?= date('Y-m-d'); ?>"><br><br>
                         <text>Time slot: </text><select id="timeSelect" style="width:60px;text-align:center" onchange="checkDateTimeFunction()">
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                            <option value="19:00">19:00</option>
-                            <option value="20:00">20:00</option>
+                            <option value="11:00" id="11:00">11:00</option>
+                            <option value="12:00" id="12:00">12:00</option>
+                            <option value="13:00" id="13:00">13:00</option>
+                            <option value="14:00" id="14:00">14:00</option>
+                            <option value="15:00" id="15:00">15:00</option>
+                            <option value="16:00" id="16:00">16:00</option>
+                            <option value="17:00" id="17:00">17:00</option>
+                            <option value="18:00" id="18:00">18:00</option>
+                            <option value="19:00" id="19:00">19:00</option>
+                            <option value="20:00" id="20:00">20:00</option>
                         </select></br></br>
+                        <center>or deliver</center>
+                        <center><input type="button" value="now" style="width:80px;display:block;margin-auto;" onclick="deliverNow()"></center></br>
                         <input id="confirmDateTimeButton" type="button" style="width:100px;height:30px;margin:auto;display:block" value="Confirm" onclick="confirmDateTime()" disabled>
                     </div>
                     </span>
