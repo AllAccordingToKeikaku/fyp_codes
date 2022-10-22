@@ -154,7 +154,7 @@
                         checkTF = true;
                     }
                 }
-            }            
+            }                   
             checkDateTimeFunction();
         }
 
@@ -195,7 +195,41 @@
         }
 
         function deliverNow(){
-            console.log("Deliver now");
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0 so need to add 1 to make it 1!
+            var yyyy = today.getFullYear();
+            if(dd<10){
+            dd='0'+dd
+            } 
+            if(mm<10){
+            mm='0'+mm
+            } 
+            var curTime;
+            if(String(today.getMinutes()).length == 1){
+                if (String(today.getHours()).length == 1){
+                    curTime = "0" + String(today.getHours()) + ":" + "0" + String(today.getMinutes());
+                }
+                else{
+                    curTime = String(today.getHours()) + ":" + "0" + String(today.getMinutes());
+                }
+            }
+            else{
+                if (String(today.getHours()).length == 1){
+                    curTime = "0" + String(today.getHours()) + ":" + String(today.getMinutes());
+                }
+                else{
+                    curTime = String(today.getHours()) + ":" + String(today.getMinutes());
+                }
+            }
+            today = yyyy+'-'+mm+'-'+dd;
+            console.log(today);
+            console.log(curTime);
+            document.getElementById('dateTimeButton').value = today + ", " + curTime;
+            console.log(document.cookie);
+            setCookie("date", today, 7);
+            setCookie("time", curTime, 7);
+            console.log(document.cookie);
         }
     </script>
     <style>
