@@ -641,7 +641,8 @@ require_once("promoCodesDB.php");
         }
 
         function orderFunction(){
-            console.log("Clicked on orderFunction");
+            document.getElementById("popuptextCreditCard").style.visibility = 'visible';
+            document.getElementById("toggleCheckout").style.display = "none";
         }
 
         var checkDiscount;
@@ -725,6 +726,22 @@ require_once("promoCodesDB.php");
             setCookie("time", curTime, 7);
             console.log(document.cookie);
             document.getElementById("myPopupDateTime").style.visibility = 'hidden';
+        }
+
+        function closePopupCreditCard(){
+            document.getElementById("popuptextCreditCard").style.visibility = 'hidden';
+        }
+
+        function displayCCdetails(){
+            document.getElementById("ccPaymentMethod").style.display = 'block';
+            document.getElementById("gpPaymentMethod").style.display = 'none';
+            document.getElementById("grabPay").checked = false;
+        }
+
+        function displayGrabPay(){
+            document.getElementById("ccPaymentMethod").style.display = 'none';
+            document.getElementById("gpPaymentMethod").style.display = 'block';
+            document.getElementById("creditCard").checked = false;
         }
     </script>
     <style>
@@ -851,6 +868,34 @@ require_once("promoCodesDB.php");
             border-radius: 9.84086px;
         }
 
+        .popupCreditCard {
+            display: inline-block;
+        }
+
+        .popupCreditCard .popuptextCreditCard {
+            visibility: hidden;
+            display: inline-block;
+            padding: 44.2839px 49.2043px;
+            gap: 29.52px;
+
+            position: absolute;
+            width: 700px;
+            height: 500px;
+            margin:auto;
+            left: 0;
+            right: 0;
+            top: 30%;
+
+            /* /Gray / White */
+
+            background: #FFFFFF;
+            /* Stroke/light */
+
+            border: 1.23011px solid #DEE2E6;
+            box-shadow: 0px 0px 2.46022px rgba(0, 0, 0, 0.12), 0px 24.6021px 24.6021px rgba(0, 0, 0, 0.08);
+            border-radius: 9.84086px;
+        }
+
         .wrapper{
             height: 30px;
             min-width: 150px;
@@ -937,6 +982,16 @@ require_once("promoCodesDB.php");
         .cartButtonEffects:hover {
             border: 1px solid black;
             cursor:pointer;
+        }
+
+        .payEffects{
+            border: none;
+            cursor: pointer;
+        }
+
+        .payEffects:hover{
+            border: 2px solid black;
+            cursor: pointer;
         }
     </style>
     <body onload="profileDetails();createItemTables();displayCartNo()" style="background-color:#FEF2E5;">
@@ -1152,6 +1207,62 @@ require_once("promoCodesDB.php");
                         <input id="confirmDateTimeButton" type="button" style="width:100px;height:30px;margin:auto;display:block" value="Confirm" onclick="confirmDateTime()" disabled></br>
                         <center>or deliver</center>
                         <center><input type="button" value="now" style="width:80px;display:block;margin-auto;" onclick="deliverNow()"></center></br>
+                    </div>
+                    </span>
+                </div>
+                <div class="popupCreditCard">
+                    <span class="popuptextCreditCard" id="popuptextCreditCard" style="font-size:20px;" hidden>
+                    <div style="margin-top:30px;margin:auto;display:block;">
+                        <input type="button" value="x" style="display:block;position:absolute;margin-left:90%;float:left;top:10px" onclick="closePopupCreditCard()">
+                        <b><u><text disabled>Enter your payment details</text></u></b></br></br>
+                        <div style="width:100%;height:auto;display:block;border:1px solid black;border-radius:10px;background-color:#BDBDBD26">
+                            <div style="width:auto;height:40px;display:block;">
+                                <input type="radio" id="creditCard" name="creditCard" value="Credit/Debit card" style="float:left;margin-top:12px" onclick="displayCCdetails()">
+                                <img src="../MoshiQ2 IMG Assets/Payment/ccIcon.png" style="height:30px;width:auto;float:left;display:block;margin-top:4px;margin-left:20px">
+                                <text style="height:30px;width:auto;float:left;display:block;margin-top:7px;margin-left:20px;color:grey">Credit/Debit card</text>
+                                <div style="float:right;margin-right:40px;height:40px;width:auto;">
+                                    <img src="../MoshiQ2 IMG Assets/Payment/visa.png" style="height:30px;width:auto;float:left;display:block;margin-top:5px;margin-left:5px">
+                                    <img src="../MoshiQ2 IMG Assets/Payment/master.png" style="height:30px;width:auto;float:left;display:block;margin-top:5px;margin-left:5px">
+                                    <img src="../MoshiQ2 IMG Assets/Payment/amex.png" style="height:30px;width:auto;float:left;display:block;margin-top:5px;margin-left:5px">
+                                    <img src="../MoshiQ2 IMG Assets/Payment/paypal.png" style="height:30px;width:auto;float:left;display:block;margin-top:5px;margin-left:5px">
+                                </div>
+                            </div>
+                            <div id="ccPaymentMethod" style="margin-left:20px;margin-top:20px;display:none">
+                                <text style="color:grey">Name on Card</text></br>
+                                <input type="text" id="ccName" name="ccName" style="font-size:30px;border-radius:5px;width:93%;border:1px solid grey;padding-left:10px" placeholder="Aaron Bobby Cecil Drake"></br></br>
+                                <text style="color:grey">Card number</text></br>
+                                <input type="text" id="ccNum" name="ccNum" style="font-size:30px;border-radius:5px;width:93%;border:1px solid grey;padding-left:10px" placeholder="1111 2222 3333 4444"></br></br>
+                                <div>
+                                    <text style="color:grey;float:left">Expiry date</text>
+                                    <text style="color:grey;float:right;margin-right:200px">CVC/CVV</text></br>
+                                    <input type="text" id="ccExpiry" name="ccExpiry" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:left;" placeholder="mm/yy">  
+                                    <input type="text" id="ccDigits" name="ccDigits" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:right;margin-right:190px" placeholder="xxx"></br></br>
+                                </div></br>
+                                <img src="../MoshiQ2 IMG Assets/Payment/Pay.png" style="float:left;position:absolute;width:60px;height:auto;margin-left:250px;cursor:pointer">
+                                <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Pay" onclick="ccPayment()"></br></br>
+                            </div>
+                        </div>
+                        <div style="width:100%;height:auto;display:block;border:1px solid black;border-radius:10px;background-color:#BDBDBD26;margin-top:20px">
+                            <div style="width:auto;height:40px;display:block;">
+                                <input type="radio" id="grabPay" name="grabPay" value="grabPay" style="float:left;margin-top:12px" onclick="displayGrabPay()">
+                                <img src="../MoshiQ2 IMG Assets/Payment/grabpay.png" style="height:30px;width:auto;float:left;display:block;margin-top:4px">
+                                <text style="height:30px;width:auto;float:left;display:block;margin-top:7px;margin-left:20px;color:grey">GrabPay</text>
+                            </div>
+                            <div id="gpPaymentMethod" style="margin-left:20px;margin-top:20px;display:none">
+                                <text style="color:grey">Name on Card</text></br>
+                                <input type="text" id="gpName" name="gpName" style="font-size:30px;border-radius:5px;width:93%;border:1px solid grey;padding-left:10px" placeholder="Aaron Bobby Cecil Drake"></br></br>
+                                <text style="color:grey">Card number</text></br>
+                                <input type="text" id="gpNum" name="gpNum" style="font-size:30px;border-radius:5px;width:93%;border:1px solid grey;padding-left:10px" placeholder="1111 2222 3333 4444"></br></br>
+                                <div>
+                                    <text style="color:grey;float:left">Expiry date</text>
+                                    <text style="color:grey;float:right;margin-right:200px">CVC/CVV</text></br>
+                                    <input type="text" id="gpExpiry" name="gpExpiry" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:left;" placeholder="mm/yy">  
+                                    <input type="text" id="gpDigits" name="gpDigits" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:right;margin-right:190px" placeholder="xxx"></br></br>
+                                </div></br>
+                                <img src="../MoshiQ2 IMG Assets/Payment/Pay.png" style="float:left;position:absolute;width:60px;height:auto;margin-left:250px;cursor:pointer">
+                                <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Pay" onclick="grabPayment()"></br></br>
+                            </div>
+                        </div>
                     </div>
                     </span>
                 </div>
