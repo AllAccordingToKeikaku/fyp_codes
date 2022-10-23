@@ -230,6 +230,7 @@
             setCookie("date", today, 7);
             setCookie("time", curTime, 7);
             console.log(document.cookie);
+            document.getElementById("myPopupDateTime").style.visibility = 'hidden';
         }
     </script>
     <style>
@@ -311,7 +312,7 @@
             border-radius: 9.84086px;
         }
     </style>
-    <body onload="profileDetails();">
+    <body onload="profileDetails();" style="background-color:#FEF2E5;">
         <form>
             <div style="width:1100px;margin-left:auto;margin-right:auto;background-color:#FEF2E5;">
                 <div style="float:right;border-bottom:5px solid grey;width:100%;height:120px">
@@ -325,14 +326,13 @@
                         <input id="dateTimeButton" type="button" style="background-color:transparent;display:inline-block;border:none;cursor:pointer;width:150px;white-space:normal;" value="Select date and time">
                     </div> 
             
-                    <img src="../MoshiQ2 IMG Assets/Cart.png" style="margin-top:20px;cursor:pointer;margin-left:10px;float:left;margin-right:10px;display:block;width:100px;height:auto">
-                    <img src="../MoshiQ2 IMG Assets/Profile Icon.png" style="cursor:pointer;display:block;float:left;width:70px;height:auto;margin-left:auto" onclick="profileClicked()"></br>
-                    <div id="displayProfile" name="displayProfile" style="float:right;margin-top:10px;padding:5px;z-index:1;position:relative" hidden>
+                    <img src="../MoshiQ2 IMG Assets/Profile Icon.png" style="cursor:pointer;display:block;float:left;width:70px;height:auto;margin-left:110px" onclick="profileClicked()"></br>
+                    <div id="displayProfile" name="displayProfile" style="float:right;margin-top:10px;padding:5px;z-index:1;position:relative;width:auto;height:auto;background-color:white;;border:1px solid black;border-radius:5px;display:none">
                         <text style="margin-left:10%;margin-right:auto;display:inline-block" id="accountNameDetails"></text></br>
                         <input type="button" id="accountDrop" name="accountDrop" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25B2;" style="color:gray;margin-top:5px;height:30px;width:200px;" onclick="clickedDrop()">
                         <input type="button" id="accountCollapse" name="accountCollapse" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25BC;" style="color:gray;margin-top:5px;width:200px;height:30px;" onclick="clickedCollapse()" hidden>
                         <input type="button" id="accountSignOut" name="accountSignOut" value="Sign out &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-top:5px;width:200px;height:30px;" onclick="signOut()" hidden>
-                    </div>
+                    </div></br>
                 </div>
             
                 <div>
@@ -380,9 +380,9 @@
                         <option value="19:00" id="19:00">19:00</option>
                         <option value="20:00" id="20:00">20:00</option>
                     </select></br></br>
+                    <input id="confirmDateTimeButton" type="button" style="width:100px;height:30px;margin:auto;display:block" value="Confirm" onclick="confirmDateTime()" disabled></br>
                     <center>or deliver</center>
                     <center><input type="button" value="now" style="width:80px;display:block;margin-auto;" onclick="deliverNow()"></center></br>
-                    <input id="confirmDateTimeButton" type="button" style="width:100px;height:30px;margin:auto;display:block" value="Confirm" onclick="confirmDateTime()" disabled>
                 </div>
                 </span>
             </div>
