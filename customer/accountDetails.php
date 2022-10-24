@@ -50,7 +50,7 @@
             }
 
             for (x=0; x<orderArray.length; x++){
-                document.getElementById("order"+String(x)).innerHTML = '<text style="border-radius:15px;background-color:#A0D5EB66;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +
+                document.getElementById("order"+String(x)).innerHTML = '<text style="border-radius:15px;background-color:#C7FAC9;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +
                                                             '<b>Order ID:</b> '+ orderArray[x] + '</br>' +
                                                             '<b>Date & Time:</b> '+ dateArray[x] + 
                                                             ' (' + dayArray[x] + '), ' + timeArray[x] +
@@ -153,7 +153,7 @@
             border-left : 3px solid #437E96;
         }
     </style>
-    <body onload="profileDetails();">
+    <body onload="profileDetails();" style="background-color:#FEF2E5">
         <form >
             <div style="width:1100px;margin-left:auto;margin-right:auto;">
                 <div style="float:right">
@@ -174,23 +174,23 @@
                     <text style="color:#437E96;font-size:30px">ACCOUNT</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                     <div class="mouseOverEffects" style="width:120px">
-                        <input type="button" id="ordersButton" name="ordersButton" value="Orders" style="padding:10px;border:0px;background-color:white" onclick="ordersFunction()"></br>
+                        <input type="button" id="ordersButton" name="ordersButton" value="Orders" style="padding:10px;border:0px;background-color:transparent" onclick="ordersFunction()"></br>
                     </div>
 
                     <div class="mouseOverEffects" style="width:120px">
-                        <input type="button" id="reservationsButton" name="reservationsButton" value="Reservations" style="padding:10px;border:0px;background-color:white" onclick="reservationsFunction()"></br>
+                        <input type="button" id="reservationsButton" name="reservationsButton" value="Reservations" style="padding:10px;border:0px;background-color:transparent" onclick="reservationsFunction()"></br>
                     </div>
 
                     <div class="mouseOverEffects" style="width:120px">
-                        <input type="button" id="accountButton" name="accountButton" value="Account" style="padding:10px;border:0px;background-color:white" onclick="accountFunction()"></br>
+                        <input type="button" id="accountButton" name="accountButton" value="Account" style="padding:10px;border:0px;background-color:transparent" onclick="accountFunction()"></br>
                     </div>
 
                     <div class="mouseOverEffects" style="width:120px">
-                        <input type="button" id="promoButton" name="promoButton" value="Promo Codes" style="padding:10px;border:0px;background-color:white" onclick="promoFunction()"></br>
+                        <input type="button" id="promoButton" name="promoButton" value="Promo Codes" style="padding:10px;border:0px;background-color:transparent" onclick="promoFunction()"></br>
                     </div>
 
                     <div class="mouseOverEffects" style="width:120px">
-                        <input type="button" id="notificationsButton" name="notificationsButton" value="Notifications" style="padding:10px;border:0px;background-color:white" onclick="notificationsFunction()"></br>
+                        <input type="button" id="notificationsButton" name="notificationsButton" value="Notifications" style="padding:10px;border:0px;background-color:transparent" onclick="notificationsFunction()"></br>
                     </div>
                 </div>
                 </div>
@@ -216,7 +216,7 @@
                         <text style="color:#437E96;font-size:30px;">
                             Past Orders                               
                         </text>
-                        <text style="border-radius:15px;background-color:#A0D5EB66;border:0px;margin-top:5px;width:600px;padding:5px;display:inline-block">
+                        <text style="border-radius:15px;background-color:#C7FAC9;border:0px;margin-top:5px;width:600px;padding:5px;display:inline-block">
                             <b>Order ID:</b> #124125165 </br>
                             <b>Date & Time:</b> 20 September 2022 (Tuesday), 1.30pm-2.30pm </br></br>
                             2x Choc Sweet
