@@ -18,5 +18,4 @@ if ($num_rows > 0) {
     $promoCodeArray[]=array($promoID, $codeName, $discountRate);
     }
 }
-mysqli_close($conn);
 ?>

@@ -268,10 +268,10 @@ require_once("accountDB.php");
         }
 
     </style>
-    <body onload="checkPassword();checkName();checkEmail();checkContact();checkRegister()">
+    <body onload="checkPassword();checkName();checkEmail();checkContact();checkRegister()" style="background-color:#FEF2E5;">
         <form>
             <div style="margin-left:auto;margin-right:auto;width:1200px;display:block">
-                <img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:auto;margin-right:auto;width:500px;height:200px;display:block">
+                <a href="../index.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:auto;margin-right:auto;width:500px;height:200px;display:block"></a>
                 <text id="registerText" name="registerText" style="margin-left:40%;margin-right:auto;width:300px;font-size:30px;display:block">REGISTER ACCOUNT</text></br></br>
                 <text id="nameText" name="nameText" style="margin-left:26%;float:left;margin-top:15px;margin-right:auto;width:150px;display:block">Full Name</text>
                 <input type="text" id="nameInput" name="nameInput" style="background-color:#D9D9D9;border-radius:15px;border:0px;;font-size:15px;padding:10px;height:40px;width:300px" onkeyup="checkName();checkRegister()" required></br>

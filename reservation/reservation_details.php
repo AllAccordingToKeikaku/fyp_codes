@@ -578,7 +578,7 @@ require_once('promoCodesDB.php');
 
   <body style="background-color:#FEF2E5;" onload="profileDetails();enableSubmitButton();countTotalReservations()">
     <div style="width:700px;margin-left:auto;margin-right:auto;">
-    <a href="../LogIn/homepage.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="width:300px;margin-left:auto;margin-right:auto;width:500px;display:block"></a></br>
+    <a href="../customer/customer_landingPage.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="width:300px;margin-left:auto;margin-right:auto;width:500px;display:block"></a></br>
       <div style="">
         <p style="margin-left:15%;font-size:12px">Total reservations made: <text id="reservationCount"></text></p>
         <p style="text-align:center;"><b>Reserve a place! Enjoy the ambience!</b></p>

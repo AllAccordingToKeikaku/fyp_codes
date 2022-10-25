@@ -1,7 +1,6 @@
 <?php
 require_once("menuDB.php");
 require_once("promoCodesDB.php");
-require_once("order_details_data.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -53,33 +52,6 @@ require_once("order_details_data.php");
                 document.getElementById("displayCart").style.display = "none";
                 document.getElementById("toggleCheckout").style.display = "none";
             }
-        }
- 
-        function profileDetails(){
-            var deliveryRate = document.getElementById("deliveryPrice");
-            deliveryRate.innerHTML = "$" + deliveryPrice.toFixed(2);
-            
-            console.log(document.cookie);
-            var tempLogInName = getCookie("fullName");
-            var tempAddress;
-            var tempDateTime;
-            if(getCookie("area") == "" || getCookie("area") == null){
-                tempAddress = "Enter delivery address";       
-            }
-            else{
-                tempAddress = getCookie("area") + ", " + getCookie("addressDetails") +', S(' + getCookie("postalCode") + ")";
-                document.getElementById("confirmDeliveryText").innerHTML = getCookie("area") + ", " + getCookie("addressDetails") +', S(' + getCookie("postalCode") + ")";
-            }
-            if(getCookie("date") == "" || getCookie("date") == null){
-                tempDateTime = "Select date and time";   
-            }
-            else{
-                tempDateTime = getCookie("date") + ", " + getCookie("time");
-                document.getElementById("confirmDateTimeText").innerHTML = getCookie("date") + ", " + getCookie("time");
-            }
-            document.getElementById('accountNameDetails').innerHTML = tempLogInName;
-            document.getElementById("deliveryAddressButton").value = tempAddress;
-            document.getElementById("dateTimeButton").value = tempDateTime;
         }
 
         function getCookie(name){
@@ -392,41 +364,23 @@ require_once("order_details_data.php");
         function popupFunction(descriptionID, descriptionName, descriptionText, imgSrc, descriptionPrice, checkItemAvailability){
             document.getElementById("descriptionBox").style.visibility = 'visible';
             var itemAvailability;
-            if (checkItemAvailability == true){
-                document.getElementById("descriptionBox").innerHTML = '<img src="' + imgSrc + '" style="width:300px;height:auto;float:left">' +
-                                                                    '<input type="button" value="x" style="cursor:pointer;float:right;position:absolute;margin-left:90%;display:block;top:10px" onclick="returnFunction()">' +
-                                                                    '<b><text style="font-size:30px;">' + descriptionName + '</text></b></br></br></br>'+
-                                                                    '<text style="font-size:20px;">' + descriptionText + '</text></br>' +
+            document.getElementById("descriptionBox").innerHTML = '<img src="' + imgSrc + '" style="width:300px;height:auto;float:left">' +
+                                                                '<input type="button" value="x" style="cursor:pointer;float:right;position:absolute;margin-left:90%;display:block;top:10px" onclick="returnFunction()">' +
+                                                                '<b><text style="font-size:30px;">' + descriptionName + '</text></b></br></br></br>'+
+                                                                '<text style="font-size:20px;">' + descriptionText + '</text></br>' +
 
-                                                                    '<div style="background-color:orange;display:block;width:100%;height:55px;position:absolute;bottom:0px;left:0;">' +
-                                                                    '<text class="price" style="padding:10px;background-color:transparent;;float:left;position:absolute;bottom:4px;display:block;margin-left:10%;font-size:25px"></text>' +
+                                                                '<div style="background-color:orange;display:block;width:100%;height:55px;position:absolute;bottom:0px;left:0;">' +
+                                                                '<text class="price" style="padding:10px;background-color:transparent;;float:left;position:absolute;bottom:4px;display:block;margin-left:10%;font-size:25px"></text>' +
 
-                                                                    '<div class="wrapper" style="position:absolute;bottom:14px;margin-left:40%;background-color:transparent;;">' +
-                                                                    '<span id="minus' + descriptionID + '">-</span>' + 
-                                                                    '<span id="num' + descriptionID + '" class="num">1</span>' +
-                                                                    '<span id="plus' + descriptionID + '">+</span></div>' +
+                                                                '<div class="wrapper" style="position:absolute;bottom:14px;margin-left:40%;background-color:transparent;;">' +
+                                                                '<span id="minus' + descriptionID + '">-</span>' + 
+                                                                '<span id="num' + descriptionID + '" class="num">1</span>' +
+                                                                '<span id="plus' + descriptionID + '">+</span></div>' +
 
-                                                                    '<input type="button" class="addToCartButton" name="' + descriptionName + '" id="addToCartButton' + descriptionID + '" value="Add to cart"' +
-                                                                    'style="cursor:pointer;position:absolute;bottom:7px;background-color:#437E96;border-radius:10px;border:0px;color:white;height:40px;font-size:25px;width:20%;margin-left:70%;margin-right:auto;display:block"' + 
-                                                                    'onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)" onclick="addIntoCart(this.name, ' + descriptionPrice + ', '+ descriptionID +')"></div>';
-            }
-            else{
-                document.getElementById("descriptionBox").innerHTML = '<img src="' + imgSrc + '" style="width:300px;height:auto;float:left">' +
-                                                                    '<input type="button" value="x" style="cursor:pointer;float:right;position:absolute;margin-left:90%;display:block;top:10px" onclick="returnFunction()">' +
-                                                                    '<b><text style="font-size:30px;">' + descriptionName + '</text></b></br></br></br>'+
-                                                                    '<text style="font-size:20px;">' + descriptionText + '</text></br>' +
-
-                                                                    '<div style="background-color:orange;display:block;width:100%;height:55px;position:absolute;bottom:0px;left:0;">' +
-                                                                    '<text class="price" style="padding:10px;background-color:transparent;;float:left;position:absolute;bottom:4px;display:block;margin-left:10%;font-size:25px"></text>' +
-
-                                                                    '<div class="wrapper" style="position:absolute;bottom:14px;margin-left:40%;background-color:transparent;;">' +
-                                                                    '<span id="minus' + descriptionID + '">-</span>' + 
-                                                                    '<span id="num' + descriptionID + '" class="num">01</span>' +
-                                                                    '<span id="plus' + descriptionID + '">+</span></div>' +
-
-                                                                    '<input type="button" class="addToCartButton" name="' + descriptionName + '" id="addToCartButton' + descriptionID + '" value="Add to cart"' +
-                                                                    'style="cursor:normal;position:absolute;bottom:7px;background-color:grey;border-radius:10px;border:0px;color:white;height:40px;font-size:25px;width:20%;margin-left:70%;margin-right:auto;display:block" disabled></div>';
-            }
+                                                                '<a href="../LogIn/logInScreen.php"><input type="button" class="addToCartButton" name="' + descriptionName + '" id="addToCartButton' + descriptionID + '" value="Sign in to order"' +
+                                                                'style="cursor:pointer;position:absolute;bottom:7px;background-color:#437E96;border-radius:10px;border:0px;color:white;height:40px;font-size:25px;width:25%;margin-left:70%;margin-right:auto;display:block"' + 
+                                                                'onmouseover="mouseOver(this.id)" onmouseout="mouseOut(this.id)"></a></div>';
+        
             var plus = document.getElementById("plus"+descriptionID);
             var minus = document.getElementById("minus"+descriptionID);
             var num = document.getElementById("num"+descriptionID);
@@ -454,152 +408,6 @@ require_once("order_details_data.php");
                 tempGetAmount = startingValue;
                 num.innerText = startingValue;
             });
-        }
-
-        var itemListArray = [];
-        var itemPriceArray = [];
-        var subTotalPrice = 0;
-        var entireListArray = [];
-        function addIntoCart(foodName, foodPrice, foodID){
-            document.getElementById("displayEmpty").style.display = "none";
-            document.getElementById("checkoutButton").disabled = false;
-            for(var x=0; x<parseInt(tempGetAmount);x++){
-                itemListArray.push(foodName);
-                itemPriceArray.push(foodPrice);
-            }
-            displayCartNo(itemListArray.length);
-            document.getElementById("descriptionBox").style.visibility = 'hidden';
-            var countCart = {};
-            var tempCartArray = [];
-            var countPrice = {};
-            var tempPriceArray = [];
-            for (var x=0; x<itemListArray.length; x++) {
-                if (countCart[itemListArray[x]]){
-                    countCart[itemListArray[x]] += 1;
-                    countPrice[itemListArray[x]] += 1;
-                } 
-                else{
-                    countCart[itemListArray[x]] = 1;
-                    countPrice[itemListArray[x]] = 1;
-                    tempCartArray.push(itemListArray[x]);
-                    tempPriceArray.push(itemPriceArray[x]);
-                }
-            }
-
-            var table;
-            var currentRow;
-            var row;
-
-            table = document.getElementById("displayCartItems");
-            table.innerHTML = "";
-            var x;
-            for (x=0; x<Object.keys(countCart).length; x++){                               
-                row = table.insertRow(x);
-                var cell = row.insertCell(0);
-                cell.innerHTML = '<text id="displayListedItem' + String(x) + '"></text>';
-            }
-
-            subTotalPrice = 0;
-            entireListArray = [];
-            for (var x=0; x<tempCartArray.length; x++){
-                var getDisplayElement = document.getElementById('displayListedItem' + String(x));
-                getDisplayElement.innerHTML = displayCartItems(tempCartArray[x] , tempPriceArray[x], countCart[tempCartArray[x]], x);
-                var plus = document.getElementById("plusA" + x);
-                var minus = document.getElementById("minusA" + x);
-                var num = document.getElementById("numA" + x);
-                var startingValue = countCart[tempCartArray[x]];  
-                
-                subTotalPrice += tempPriceArray[x] * countCart[tempCartArray[x]];
-                entireListArray.push(tempCartArray[x], tempPriceArray[x], countCart[tempCartArray[x]]);  
-                addCartButtonListenerFunction(plus, minus, num, startingValue, tempCartArray[x], tempPriceArray[x], getDisplayElement);       
-            }
-            document.getElementById("cartPrice").innerHTML = "$" + subTotalPrice.toFixed(2);
-            if(discountedRates != 0){
-                document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice * discountedRates + deliveryPrice).toFixed(2);
-            }
-            else{
-                document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice + deliveryPrice).toFixed(2);
-            }
-        }
-
-        var tempCartGetAmount = 0;
-        function addCartButtonListenerFunction(plus, minus, num, startingValue, foodName, foodPrice, hideElement){
-            tempCartGetAmount = tempGetAmount + startingValue;
-            plus.addEventListener("click" , ()=>{
-                var tempStartValue = startingValue;
-                startingValue++;
-                startingValue = (startingValue<10) ? startingValue : startingValue;
-                tempCartGetAmount = startingValue;
-                itemListArray.push(foodName);
-                itemPriceArray.push(foodPrice);
-                num.innerText = startingValue;
-                subTotalPrice += foodPrice*(startingValue-tempStartValue);
-                document.getElementById("cartPrice").innerHTML = "$" + subTotalPrice.toFixed(2) ;
-                console.log(discountedRates);
-                if(discountedRates != 0){
-                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice * discountedRates + deliveryPrice).toFixed(2);
-                }
-                else{
-                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice + deliveryPrice).toFixed(2);
-                }
-                displayCartNo(itemListArray.length);
-            });
-
-            minus.addEventListener("click" , ()=>{
-                var tempStartValue = startingValue;
-                if(startingValue > 1){
-                    startingValue--;
-                    startingValue = (startingValue<10) ? startingValue : startingValue;
-                    var index = itemListArray.indexOf(foodName);
-                    if (index > -1) {
-                        itemListArray.splice(index, 1);
-                        itemPriceArray.splice(index, 1); 
-                    }              
-                }
-                else if(startingValue==1){
-                    startingValue--;
-                    var index = itemListArray.indexOf(foodName);
-                    if (index > -1) {
-                        itemListArray.splice(index, 1);
-                        itemPriceArray.splice(index, 1); 
-                    }
-                }
-                displayCartNo(itemListArray.length);
-                subTotalPrice += foodPrice*(startingValue-tempStartValue);
-                if(startingValue == 0 || startingValue == null){
-                    hideElement.style.display = "none";                    
-                }
-                else{
-                    hideElement.style.display = "block";
-                }
-                if(subTotalPrice == 0){
-                    document.getElementById("displayEmpty").style.display = "block";
-                    document.getElementById("checkoutButton").disabled = true;
-                    document.getElementById("toggleCheckout").style.display = "none";
-                }
-                document.getElementById("cartPrice").innerHTML = "$" + subTotalPrice.toFixed(2);
-                if(discountedRates != 0){
-                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice * discountedRates + deliveryPrice).toFixed(2);
-                }
-                else{
-                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice + deliveryPrice).toFixed(2);
-                }
-                tempCartGetAmount = startingValue;
-                num.innerText = startingValue;
-            });
-            
-        }
-
-        function displayCartItems(itemName, itemPrice, itemAmount, itemID){    
-            var cartItem = '<div  style="display:inline-block;width:100%">' +
-                            '<text style="font-size:15px;float:left;width:330px;padding:5px">' + itemName + '</text>' +
-                            '<div class="wrapperCart" style="float:left;margin-left:10px;background-color:transparent;;">'+
-                                '<span id="minusA' + itemID + '">-</span>'+
-                                '<span id="numA' + itemID + '" class="num1">' + itemAmount + '</span>' +
-                                '<span id="plusA' + itemID + '">+</span>' +
-                            '</div>' +
-                            '<b><text style="margin-left:20px;float:right;display:block;font-size:15px;">$' + itemPrice.toFixed(2) + '</text></div></b>';     
-            return cartItem;
         }
 
         function returnFunction(){
@@ -877,86 +685,6 @@ require_once("order_details_data.php");
             border-radius: 9.84086px;
         }
 
-        .popupAddress {
-            display: inline-block;
-        }
-
-        .popupAddress .popuptextAddress {
-            visibility: hidden;
-            display: flex;
-
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            margin:auto;
-            left: 0;
-            right: 0;
-            top: 30%;
-
-            /* /Gray / White */
-
-            background: #FFFFFF;
-            /* Stroke/light */
-
-            border: 1.23011px solid #DEE2E6;
-            box-shadow: 0px 0px 2.46022px rgba(0, 0, 0, 0.12), 0px 24.6021px 24.6021px rgba(0, 0, 0, 0.08);
-            border-radius: 9.84086px;
-        }
-
-        .popupDateTime {
-            display: inline-block;
-        }
-
-        .popupDateTime .popuptextDateTime {
-            visibility: hidden;
-            display: flex;
-
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            margin:auto;
-            left: 0;
-            right: 0;
-            top: 30%;
-
-            /* /Gray / White */
-
-            background: #FFFFFF;
-            /* Stroke/light */
-
-            border: 1.23011px solid #DEE2E6;
-            box-shadow: 0px 0px 2.46022px rgba(0, 0, 0, 0.12), 0px 24.6021px 24.6021px rgba(0, 0, 0, 0.08);
-            border-radius: 9.84086px;
-        }
-
-        .popupCreditCard {
-            display: inline-block;
-        }
-
-        .popupCreditCard .popuptextCreditCard {
-            visibility: hidden;
-            display: inline-block;
-            padding: 44.2839px 49.2043px;
-            gap: 29.52px;
-
-            position: absolute;
-            width: 700px;
-            height: 500px;
-            margin:auto;
-            left: 0;
-            right: 0;
-            top: 30%;
-
-            /* /Gray / White */
-
-            background: #FFFFFF;
-            /* Stroke/light */
-
-            border: 1.23011px solid #DEE2E6;
-            box-shadow: 0px 0px 2.46022px rgba(0, 0, 0, 0.12), 0px 24.6021px 24.6021px rgba(0, 0, 0, 0.08);
-            border-radius: 9.84086px;
-        }
-
         .wrapper{
             height: 30px;
             min-width: 150px;
@@ -1055,97 +783,17 @@ require_once("order_details_data.php");
             cursor: pointer;
         }
     </style>
-    <body onload="profileDetails();createItemTables();displayCartNo()" style="background-color:#FEF2E5;">
+    <body onload="createItemTables();" style="background-color:#FEF2E5;">
         <form action="order_details_data.php/" method ="POST">
             <div style="width:1100px;margin-left:auto;margin-right:auto;">
                 <div style="float:right;border-bottom:5px solid grey;width:100%;height:120px">
                     <div style="float:left;">
-                        <a href="../LogIn/homepage.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:0px;width:300px;height:auto;display:block;"></a>
+                        <a href="../index.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:0px;width:300px;height:auto;display:block;"></a>
                     </div>
-                    <div class="buttonEffects" style="margin-left:170px;float:left;display:inline-block;background-color:#A8A1A166;height:42px;margin-top:25px;padding:5px" onclick="getCurrentLocation()">
-                        <img src="../MoshiQ2 IMG Assets/Address.png" style="float:left">
-                        <input id="deliveryAddressButton" type="button" style="background-color:transparent;display:inline-block;border:none;cursor:pointer;width:150px;white-space:normal;" value="Enter a delivery address">
-                    </div>  
-                    <div class="buttonEffects" style="float:left;display:inline-block;background-color:#A8A1A166;margin-left:10px;height:42px;margin-top:25px;padding:5px" onclick="getDateTime()">
-                        <img src="../MoshiQ2 IMG Assets/Time.png" style="float:left">
-                        <input id="dateTimeButton" type="button" style="background-color:transparent;display:inline-block;border:none;cursor:pointer;width:150px;white-space:normal;" value="Select date and time">
-                    </div> 
-            
-                    <div style="position:relative">
-                        <span id="displayDot" class="dot"></span>
-                        <text id="displayCartNumber" style="position:absolute;display:block;margin-left:970px;margin-top:20px;"></text>
-                        <img src="../MoshiQ2 IMG Assets/Cart.png" style="margin-top:20px;cursor:pointer;margin-left:10px;float:left;margin-right:10px;display:block;width:100px;height:auto" onclick="cartClicked()">
-                        <div class="example" id="displayCart" style="margin-left:700px;margin-top:100px;padding:5px;z-index:2;position:absolute;width:500px;white-space:normal;height:auto;background-color:#999999;border:1px solid black;border-radius:5px;display:none;font-size:15px;overflow-y:auto;max-height:600px;">
-                            <b><text style="float:left;font-size:30px;display:inline-block">Cart Tab</text></b>
-                            <input type="button" value="x" style="cursor:pointer;float:right;position:absolute;margin-left:94%;display:block;top:10px" onclick="cartClicked()"></br></br></br>
-                            <div style="margin-top:10px;border-top:2px solid black;">
-                                <div style="padding-top:10px">
-                                    <table id="displayCartItems">  
-                                        <center>
-                                            <div>
-                                                <text id="displayEmpty" style="font-size:30px;">Your cart is empty!</text>
-                                            </div>
-                                        </center>                      
-                                    </table>
-                                </div>
-                                <div style="background-color:#a6a6a6">
-                                    <div>
-                                        <b><text id="cartPrice" style="float:right;margin-right:5px;display:block;padding-top:22px;font-size:15px">$0.00</text>
-                                        <text style="border-top:2px solid black;display:block;bottom:0px;padding-top:20px;font-size:15px;margin-left:8px">Subtotal:</text></b></br>
-                                        <b><text id="deliveryPrice" style="float:right;margin-right:5px;display:block;padding-top:2px;font-size:15px">$0.00</text>
-                                        <text style="border-bottom:2px solid black;display:block;bottom:0px;font-size:15px;margin-left:8px;padding-bottom:5px">Delivery fee:</text>                      
-                                    </div>
-                                    <div style="margin-top:10px;">
-                                        <div style="margin-top:10px;">
-                                            <b><text style="display:block;bottom:0px;font-size:15px;margin-left:8px;">Promo Code:</text></b>
-                                            <input type="text" id="applyPromo" style="margin-left:8px;width:150px;" placeholder="Got a coupon code?">
-                                            <input type="button" value="Apply" style="display:inline-block" onclick="applyPromoCode()">
-                                            <text id="validityText" style="margin-left:5px;"></text>
-                                            <text id="discountRate" style="float:right;display-inline-block;margin-right:5px"></text>
-                                        </div></br>
-                                        <div>
-                                            <b><text id="totalPrice" style="float:right;margin-right:5px;display:block;padding-top:2px;font-size:15px">$6.00</text>
-                                            <text style="border-bottom:2px solid black;display:block;bottom:0px;font-size:15px;margin-left:8px;padding-bottom:5px">Total:</text>   
-                                        </div></br>
-                                    </div>
-                                    <center>
-                                        <div class="cartButtonEffects" style="margin-top:10px">
-                                            <input type="button" id="checkoutButton" value="Go to checkout" style="width:150px;height:30px;cursor:pointer" onclick="checkoutFunction()" disabled>
-                                        </div></br></br>
-                                    </center>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="example" id="toggleCheckout" style="margin-left:700px;margin-top:100px;padding:5px;z-index:2;position:absolute;width:500px;white-space:normal;height:auto;background-color:#999999;border:1px solid black;border-radius:5px;display:none;font-size:15px;overflow-y:auto;max-height:600px;">
-                            <b><input type="button" style="float:left;font-size:30px;display:inline-block;cursor:pointer;background-color:#999999;border:none" value="<" onclick="returnToCartFunction()"></b>
-                            <b><text style="margin-left:20px;font-size:30px;display:inline-block">Checkout Tab</text></b>
-                            <input type="button" value="x" style="cursor:pointer;float:right;position:absolute;margin-left:94%;display:block;top:10px" onclick="closeCheckoutClicked()"></br></br></br>
-                            <div style="background-color:#a6a6a6">
-                                <div style="margin-top:10px;border-top:2px solid black;">
-                                    <b><text style="display:block;bottom:0px;padding-top:20px;font-size:15px;margin-left:8px">Deliver on</text></b>
-                                    <text id="confirmDateTimeText" style="margin-left:8px;"></text>           
-                                </div></br>
-                                <div style="margin-top:10px;">
-                                    <b><text style="display:block;bottom:0px;font-size:15px;margin-left:8px;">Delivery address</text></b>
-                                    <text id="confirmDeliveryText" style="margin-left:8px;"></text>
-                                </div></br>
-                                <center>
-                                    <div class="cartButtonEffects" style="margin-top:10px">
-                                        <input type="button" id="orderButton" value="Place Order" style="width:150px;height:30px;cursor:pointer" onclick="orderFunction()">
-                                    </div></br></br>
-                                </center>
-                            </div>
-                        </div>
+                    <div style="float:right;">
+                        <input type="button" class="buttonEffects" style="margin-left:0px;margin-top:50px;display:block;font-size:30px;border-radius:10px" value="Sign in here to start ordering!" onclick="location.href='../LogIn/logInScreen.php';">
                     </div>
-                    <img src="../MoshiQ2 IMG Assets/Profile Icon.png" style="cursor:pointer;display:block;float:left;width:70px;height:auto;margin-left:auto" onclick="profileClicked()"></br>
-                    <div id="displayProfile" name="displayProfile" style="float:right;margin-top:10px;padding:5px;z-index:1;position:relative;width:auto;height:auto;background-color:white;;border:1px solid black;border-radius:5px;display:none">
-                        <text style="margin-left:10%;margin-right:auto;display:inline-block" id="accountNameDetails"></text></br>
-                        <input type="button" id="accountDrop" name="accountDrop" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25B2;" style="color:gray;margin-top:5px;height:30px;width:200px;" onclick="clickedDrop()">
-                        <input type="button" id="accountCollapse" name="accountCollapse" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25BC;" style="color:gray;margin-top:5px;width:200px;height:30px;" onclick="clickedCollapse()" hidden>
-                        <input type="button" id="accountSignOut" name="accountSignOut" value="Sign out &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-top:5px;width:200px;height:30px;" onclick="signOut()" hidden>
-                    </div></br>
                 </div>
-
                 <div style="margin-left:30px;display:inline-block;border-left:1px;">
                     <text style="color:black;font-size:30px">OUR MENU</text></br>
                     <div>
@@ -1226,107 +874,11 @@ require_once("order_details_data.php");
                             </table>
                         </table>
                     </div></br>
-                </div>  
+                </div> 
                 <div class="popup">
                     <div class="popuptext" id="descriptionBox">
                     </div></br>
-                </div>  
-
-                <div class="popupAddress">
-                    <span class="popuptextAddress" id="myPopupAddress" style="font-size:20px;" hidden>   
-                    <div style="margin-top:30px;margin:auto;display:block">
-                        <input type="button" value="x" style="display:block;position:absolute;margin-left:70%;float:left;top:10px" onclick="closePopupAddress()">
-                        <b><u><text>Enter your address details</text></u></b></br></br>
-                        <text>Address: </text></br>
-                        <input id="inputAddress" type="text" style="width:200px;height:20px" placeholder="Address" onchange="checkAddressFunction()" onkeyup="checkAddressFunction()" onkeydown="checkAddressFunction()"></br></br>
-                        <text>Address details: </text></br>
-                        <input id="inputAddressDetails" type="text" style="width:200px;height:20px" placeholder="E.g Floor, unit number" onchange="checkAddressFunction()" onkeyup="checkAddressFunction()" onkeydown="checkAddressFunction()"></br></br>
-                        <text>Postal code: </text></br>
-                        <input id="inputPostalCode" type="text" style="width:200px;height:20px" placeholder="Postal code" onchange="checkAddressFunction()" onkeyup="checkAddressFunction()" onkeydown="checkAddressFunction()"></br></br>
-                        <input id="confirmAddressButton" type="button" style="width:100px;height:30px;margin:auto;display:block" value="Confirm" onclick="confirmAddress()" disabled>
-                    </div>
-                    </span>
-                </div>
-                <div class="popupDateTime">
-                    <span class="popuptextDateTime" id="myPopupDateTime" style="font-size:20px;" hidden>
-                    <div style="margin-top:30px;margin:auto;display:block">
-                        <input type="button" value="x" style="display:block;position:absolute;margin-left:64%;float:left;top:10px" onclick="closePopupDateTime()">
-                        <b><u><text>Select date and time</text></u></b></br></br>
-                        <text>Date : </text><input id="dateSelect" type="date" onchange="getDateTime();checkDateTimeFunction()" min="<?= date('Y-m-d'); ?>"><br><br>
-                        <text>Time slot: </text><select id="timeSelect" style="width:60px;text-align:center" onchange="checkDateTimeFunction()">
-                            <option value="11:00" id="11:00">11:00</option>
-                            <option value="12:00" id="12:00">12:00</option>
-                            <option value="13:00" id="13:00">13:00</option>
-                            <option value="14:00" id="14:00">14:00</option>
-                            <option value="15:00" id="15:00">15:00</option>
-                            <option value="16:00" id="16:00">16:00</option>
-                            <option value="17:00" id="17:00">17:00</option>
-                            <option value="18:00" id="18:00">18:00</option>
-                            <option value="19:00" id="19:00">19:00</option>
-                            <option value="20:00" id="20:00">20:00</option>
-                        </select></br></br>
-                        <input id="confirmDateTimeButton" type="button" style="width:100px;height:30px;margin:auto;display:block" value="Confirm" onclick="confirmDateTime()" disabled></br>
-                        <center>or deliver</center>
-                        <center><input type="button" value="now" style="width:80px;display:block;margin-auto;" onclick="deliverNow()"></center></br>
-                    </div>
-                    </span>
-                </div>
-                <div class="popupCreditCard">
-                    <span class="popuptextCreditCard" id="popuptextCreditCard" style="font-size:20px;" hidden>
-                    <div style="margin-top:30px;margin:auto;display:block;">
-                        <input type="button" value="x" style="display:block;position:absolute;margin-left:90%;float:left;top:10px" onclick="closePopupCreditCard()">
-                        <b><u><text disabled>Enter your payment details</text></u></b></br></br>
-                        <div style="width:100%;height:auto;display:block;border:1px solid black;border-radius:10px;background-color:#BDBDBD26">
-                            <div style="width:auto;height:40px;display:block;">
-                                <input type="radio" id="creditCard" name="creditCard" value="Credit/Debit card" style="float:left;margin-top:12px" onclick="displayCCdetails()">
-                                <img src="../MoshiQ2 IMG Assets/Payment/ccIcon.png" style="height:30px;width:auto;float:left;display:block;margin-top:4px;margin-left:20px">
-                                <text style="height:30px;width:auto;float:left;display:block;margin-top:7px;margin-left:20px;color:grey">Credit/Debit card</text>
-                                <div style="float:right;margin-right:40px;height:40px;width:auto;">
-                                    <img src="../MoshiQ2 IMG Assets/Payment/visa.png" style="height:30px;width:auto;float:left;display:block;margin-top:5px;margin-left:5px">
-                                    <img src="../MoshiQ2 IMG Assets/Payment/master.png" style="height:30px;width:auto;float:left;display:block;margin-top:5px;margin-left:5px">
-                                    <img src="../MoshiQ2 IMG Assets/Payment/amex.png" style="height:30px;width:auto;float:left;display:block;margin-top:5px;margin-left:5px">
-                                    <img src="../MoshiQ2 IMG Assets/Payment/paypal.png" style="height:30px;width:auto;float:left;display:block;margin-top:5px;margin-left:5px">
-                                </div>
-                            </div>
-                            <div id="ccPaymentMethod" style="margin-left:20px;margin-top:20px;display:none">
-                                <text style="color:grey">Name on Card</text></br>
-                                <input type="text" id="ccName" name="ccName" style="font-size:30px;border-radius:5px;width:93%;border:1px solid grey;padding-left:10px" placeholder="Aaron Bobby Cecil Drake"></br></br>
-                                <text style="color:grey">Card number</text></br>
-                                <input type="text" id="ccNum" name="ccNum" style="font-size:30px;border-radius:5px;width:93%;border:1px solid grey;padding-left:10px" placeholder="1111 2222 3333 4444"></br></br>
-                                <div>
-                                    <text style="color:grey;float:left">Expiry date</text>
-                                    <text style="color:grey;float:right;margin-right:200px">CVC/CVV</text></br>
-                                    <input type="text" id="ccExpiry" name="ccExpiry" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:left;" placeholder="mm/yy">  
-                                    <input type="text" id="ccDigits" name="ccDigits" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:right;margin-right:190px" placeholder="xxx"></br></br>
-                                </div></br>
-                                <img src="../MoshiQ2 IMG Assets/Payment/Pay.png" style="float:left;position:absolute;width:60px;height:auto;margin-left:250px;cursor:pointer">
-                                <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Pay" onclick="paymentMethod()"></br></br>
-                            </div>
-                        </div>
-                        <div style="width:100%;height:auto;display:block;border:1px solid black;border-radius:10px;background-color:#BDBDBD26;margin-top:20px">
-                            <div style="width:auto;height:40px;display:block;">
-                                <input type="radio" id="grabPay" name="grabPay" value="grabPay" style="float:left;margin-top:12px" onclick="displayGrabPay()">
-                                <img src="../MoshiQ2 IMG Assets/Payment/grabpay.png" style="height:30px;width:auto;float:left;display:block;margin-top:4px">
-                                <text style="height:30px;width:auto;float:left;display:block;margin-top:7px;margin-left:20px;color:grey">GrabPay</text>
-                            </div>
-                            <div id="gpPaymentMethod" style="margin-left:20px;margin-top:20px;display:none">
-                                <text style="color:grey">Name on Card</text></br>
-                                <input type="text" id="gpName" name="gpName" style="font-size:30px;border-radius:5px;width:93%;border:1px solid grey;padding-left:10px" placeholder="Aaron Bobby Cecil Drake"></br></br>
-                                <text style="color:grey">Card number</text></br>
-                                <input type="text" id="gpNum" name="gpNum" style="font-size:30px;border-radius:5px;width:93%;border:1px solid grey;padding-left:10px" placeholder="1111 2222 3333 4444"></br></br>
-                                <div>
-                                    <text style="color:grey;float:left">Expiry date</text>
-                                    <text style="color:grey;float:right;margin-right:200px">CVC/CVV</text></br>
-                                    <input type="text" id="gpExpiry" name="gpExpiry" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:left;" placeholder="mm/yy">  
-                                    <input type="text" id="gpDigits" name="gpDigits" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:right;margin-right:190px" placeholder="xxx"></br></br>
-                                </div></br>
-                                <img src="../MoshiQ2 IMG Assets/Payment/Pay.png" style="float:left;position:absolute;width:60px;height:auto;margin-left:250px;cursor:pointer">
-                                <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Pay" onclick="paymentMethod()"></br></br>
-                            </div>
-                        </div>
-                    </div>
-                    </span>
-                </div>
+                </div>   
             </div>
         </form>
     </body>
