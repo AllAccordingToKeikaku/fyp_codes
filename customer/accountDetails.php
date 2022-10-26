@@ -167,7 +167,7 @@
                 </div>
 
                 <div>
-                    <img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:0px;width:500px;height:200px;display:block"></br>
+                    <a href="customer_landingPage.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:0px;width:500px;height:200px;display:block"></a></br>
                 </div>
 
                 <div style="float:left;margin-left:30px;display:inline-block">

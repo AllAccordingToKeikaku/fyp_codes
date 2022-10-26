@@ -1,7 +1,6 @@
 <?php
 require_once("menuDB.php");
 require_once("promoCodesDB.php");
-require_once("order_details_data.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,22 +12,37 @@ require_once("order_details_data.php");
         isCartClicked = false;
         var getMenuArray;
         var deliveryPrice = 6;
+        var item_1 = 0;
+        var item_2 = 0;
+        var item_3 = 0;
+        var item_4 = 0;
+        var item_5 = 0;
+        var item_6 = 0;
+        var item_7 = 0;
+        var item_8 = 0;
+        var item_9 = 0;
+        var item_10 = 0;
+        var item_11 = 0;
+        var item_12 = 0;
+        var orderPromocode;
 
         function clickedDrop(){
             document.getElementById("accountDrop").style.display= "none";
             document.getElementById("accountCollapse").style.display = "block";
             document.getElementById("accountSignOut").style.display = "block";
+            document.getElementById("accountProfile").style.display = "block";
         }
 
         function clickedCollapse(){
             document.getElementById("accountDrop").style.display = "block";
             document.getElementById("accountCollapse").style.display = "none";
             document.getElementById("accountSignOut").style.display = "none";
+            document.getElementById("accountProfile").style.display = "none";
         }
 
         function signOut(){
             document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-            window.location.replace("../LogIn/homepage.php");
+            window.location.replace("../index.php");
         }
 
         function profileClicked(){
@@ -460,6 +474,7 @@ require_once("order_details_data.php");
         var itemPriceArray = [];
         var subTotalPrice = 0;
         var entireListArray = [];
+        var totalPrice = 0;
         function addIntoCart(foodName, foodPrice, foodID){
             document.getElementById("displayEmpty").style.display = "none";
             document.getElementById("checkoutButton").disabled = false;
@@ -502,6 +517,48 @@ require_once("order_details_data.php");
             subTotalPrice = 0;
             entireListArray = [];
             for (var x=0; x<tempCartArray.length; x++){
+                /*if(tempCartArray[x] == "HAWAIIAN SALMON"){
+                    item1 = countCart[tempCartArray[x]];
+                }*/
+
+                switch(tempCartArray[x]){
+                    case "HAWAIIAN SALMON":
+                        item_1 = countCart[tempCartArray[x]];
+                        break;
+                    case "COLOURFUL GODDESS":
+                        item_2 = countCart[tempCartArray[x]];
+                        break;
+                    case "SPICY MIXED SALMON":
+                        item_3 = countCart[tempCartArray[x]];
+                        break;
+                    case "SHOYU TUNA SPECIAL":
+                        item_4 = countCart[tempCartArray[x]];
+                        break;
+                    case "FULL VEGGIELICIOUS":
+                        item_5 = countCart[tempCartArray[x]];
+                        break;
+                    case "AVOCADO SUPREME":
+                        item_6 = countCart[tempCartArray[x]];
+                        break;
+                    case "SUMMER FLING":
+                        item_7 = countCart[tempCartArray[x]];
+                        break;
+                    case "CHOC SWEET":
+                        item_8 = countCart[tempCartArray[x]];
+                        break;
+                    case "CARAMEL NUTTIN":
+                        item_9 = countCart[tempCartArray[x]];
+                        break;
+                    case "INCREDIBLE HULK":
+                        item_10 = countCart[tempCartArray[x]];
+                        break;
+                    case "ORANGE MADNESS":
+                        item_11 = countCart[tempCartArray[x]];
+                        break;
+                    case "SPIDEY SENSES":
+                        item_12 = countCart[tempCartArray[x]];
+                        break;
+                }
                 var getDisplayElement = document.getElementById('displayListedItem' + String(x));
                 getDisplayElement.innerHTML = displayCartItems(tempCartArray[x] , tempPriceArray[x], countCart[tempCartArray[x]], x);
                 var plus = document.getElementById("plusA" + x);
@@ -515,10 +572,12 @@ require_once("order_details_data.php");
             }
             document.getElementById("cartPrice").innerHTML = "$" + subTotalPrice.toFixed(2);
             if(discountedRates != 0){
-                document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice * discountedRates + deliveryPrice).toFixed(2);
+                totalPrice = subTotalPrice * discountedRates + deliveryPrice;
+                document.getElementById("totalPrice").innerHTML = "$" + (totalPrice).toFixed(2); 
             }
             else{
-                document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice + deliveryPrice).toFixed(2);
+                totalPrice = subTotalPrice + deliveryPrice;
+                document.getElementById("totalPrice").innerHTML = "$" + (totalPrice).toFixed(2);
             }
         }
 
@@ -537,10 +596,12 @@ require_once("order_details_data.php");
                 document.getElementById("cartPrice").innerHTML = "$" + subTotalPrice.toFixed(2) ;
                 console.log(discountedRates);
                 if(discountedRates != 0){
-                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice * discountedRates + deliveryPrice).toFixed(2);
+                    totalPrice = subTotalPrice * discountedRates + deliveryPrice;
+                    document.getElementById("totalPrice").innerHTML = "$" + (totalPrice).toFixed(2); 
                 }
                 else{
-                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice + deliveryPrice).toFixed(2);
+                    totalPrice = subTotalPrice + deliveryPrice;
+                    document.getElementById("totalPrice").innerHTML = "$" + (totalPrice).toFixed(2);
                 }
                 displayCartNo(itemListArray.length);
             });
@@ -579,10 +640,12 @@ require_once("order_details_data.php");
                 }
                 document.getElementById("cartPrice").innerHTML = "$" + subTotalPrice.toFixed(2);
                 if(discountedRates != 0){
-                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice * discountedRates + deliveryPrice).toFixed(2);
+                    totalPrice = subTotalPrice * discountedRates + deliveryPrice;
+                    document.getElementById("totalPrice").innerHTML = "$" + (totalPrice).toFixed(2); 
                 }
                 else{
-                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice + deliveryPrice).toFixed(2);
+                    totalPrice = subTotalPrice + deliveryPrice;
+                    document.getElementById("totalPrice").innerHTML = "$" + (totalPrice).toFixed(2);
                 }
                 tempCartGetAmount = startingValue;
                 num.innerText = startingValue;
@@ -679,7 +742,9 @@ require_once("order_details_data.php");
                     document.getElementById("validityText").style.color = "green";
                     document.getElementById("discountRate").innerHTML = actualPromoCodeArray[x][2] + "%";
                     discountedRates = parseInt(actualPromoCodeArray[x][2])/100;
-                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice * parseInt(actualPromoCodeArray[x][2])/100 + parseInt(deliveryPrice)).toFixed(2);
+                    totalPrice = (subTotalPrice * parseInt(actualPromoCodeArray[x][2])/100 + parseInt(deliveryPrice)).toFixed(2);
+                    document.getElementById("totalPrice").innerHTML = "$" + totalPrice;
+                    orderPromocode = tempPromoCode;
                     break;
                 }
                 else{
@@ -688,7 +753,9 @@ require_once("order_details_data.php");
                     document.getElementById("validityText").style.color = "red";
                     document.getElementById("discountRate").innerHTML = "0%";
                     discountedRates = 0;
-                    document.getElementById("totalPrice").innerHTML = "$" + (subTotalPrice + deliveryPrice).toFixed(2);
+                    totalPrice = (subTotalPrice + deliveryPrice).toFixed(2)
+                    document.getElementById("totalPrice").innerHTML = "$" + totalPrice;
+                    orderPromocode = "None";
                 }
             }
         }
@@ -730,6 +797,7 @@ require_once("order_details_data.php");
             setCookie("time", curTime, 7);
             console.log(document.cookie);
             document.getElementById("myPopupDateTime").style.visibility = 'hidden';
+            document.getElementById("confirmDateTimeText").value = today + ", " + curTime;
         }
 
         function closePopupCreditCard(){
@@ -748,61 +816,62 @@ require_once("order_details_data.php");
             document.getElementById("creditCard").checked = false;
         }
 
-        function paymentMethod(){
-            var orderDate = "";
-            var orderTime = "";
-            var orderPrice = "";
-            var orderStatus = "In-progress";
-            var orderPromocode = "";
-            var item_1 = 1;
-            var item_2 = 1;
-            var item_3 = 1;
-            var item_4 = 1;
-            var item_5 = 1;
-            var item_6 = 1;
-            var item_7 = 1;
-            var item_8 = 1;
-            var item_9 = 1;
-            var item_10 = 1;
-            var item_11 = 1;
-            var item_12 = 1;
+        function cc_PaymentMethod(){
+            if(document.getElementById("ccName").value == "" || 
+                document.getElementById("ccNum").value == "" || document.getElementById("ccNum").value.length < 16 || 
+                document.getElementById("ccExpiry").value == "" || document.getElementById("ccExpiry").value.length < 4 || 
+                document.getElementById("ccDigits").value == "" || document.getElementById("ccDigits").value.length < 3){
+                alert("Please enter all fields correctly");
+            }
+            else{
+                var accountID = getCookie("accountID");
+                var orderDate = getCookie("date");
+                var orderTime = getCookie("time");
+                var orderPrice = "$" + String(totalPrice.toFixed(2));
+                var orderStatus = "In-progress";
+                var cc_number = document.getElementById("ccNum").value;
 
-            $.ajax({
-                type: "POST",
-                url: "order_details_data.php",
-                data:{
-                    order_date:orderDate,
-                    order_time:orderTime,
-                    order_price:orderPrice,
-                    order_status:orderStatus,
-                    order_promocode:orderPromocode,
-                    HAWAIIAN_SALMON:item_1,
-                    COLOURFUL_GODDESS:item_2,
-                    SPICY_MIXED_SALMON:item_3,
-                    SHOYU_TUNA_SPECIAL:item_4,
-                    FULL_VEGGIELICIOUS:item_5,
-                    AVOCADO_SUPREME:item_6,
-                    SUMMER_FLING:item_7,
-                    CHOC_SWEET:item_8,
-                    CARAMEL_NUTTIN:item_9,
-                    INCREDIBLE_HULK:item_10,
-                    ORANGE_MADNESS:item_11,
-                    SPIDEY_SENSES:item_12
-                },
-                success: function(data){
-                Swal.fire({
-                    'title': 'Successfully submitted order details!',
-                    'text': data,
-                    'type': 'success'
-                }).then(setTimeout(function(){window.location.replace("../LogIn/homepage.php");}, 2000))
-                },
-                error: function(data){
-                Swal.fire({
-                    'title': 'Errors',
-                    'text': 'There were errors in your order, please refresh the page and try again.'
-                })
-                }
-            });
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "order_details_data.php",
+                    data:{
+                        accountID:accountID,
+                        order_date:orderDate,
+                        order_time:orderTime,
+                        order_price:orderPrice,
+                        order_status:orderStatus,
+                        order_promocode:orderPromocode,
+                        HAWAIIAN_SALMON:item_1,
+                        COLOURFUL_GODDESS:item_2,
+                        SPICY_MIXED_SALMON:item_3,
+                        SHOYU_TUNA_SPECIAL:item_4,
+                        FULL_VEGGIELICIOUS:item_5,
+                        AVOCADO_SUPREME:item_6,
+                        SUMMER_FLING:item_7,
+                        CHOC_SWEET:item_8,
+                        CARAMEL_NUTTIN:item_9,
+                        INCREDIBLE_HULK:item_10,
+                        ORANGE_MADNESS:item_11,
+                        SPIDEY_SENSES:item_12,
+                        cc_number:cc_number
+                    },
+                    success: function(data){
+                    Swal.fire({
+                        'title': 'Successfully submitted order details!',
+                        'text': data,
+                        'type': 'success'
+                    }).then(setTimeout(function(){window.location.replace("../customer/accountDetails.php");}, 2000))
+                    },
+                    error: function(data){
+                    Swal.fire({
+                        'title': 'Errors',
+                        'text': 'There were errors in your order, please refresh the page and try again.'
+                    })
+                    }
+                });
+            }           
         }
     </script>
     <style>
@@ -1060,7 +1129,7 @@ require_once("order_details_data.php");
             <div style="width:1100px;margin-left:auto;margin-right:auto;">
                 <div style="float:right;border-bottom:5px solid grey;width:100%;height:120px">
                     <div style="float:left;">
-                        <a href="../LogIn/homepage.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:0px;width:300px;height:auto;display:block;"></a>
+                        <a href="../customer/customer_landingPage.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:0px;width:300px;height:auto;display:block;"></a>
                     </div>
                     <div class="buttonEffects" style="margin-left:170px;float:left;display:inline-block;background-color:#A8A1A166;height:42px;margin-top:25px;padding:5px" onclick="getCurrentLocation()">
                         <img src="../MoshiQ2 IMG Assets/Address.png" style="float:left">
@@ -1142,6 +1211,7 @@ require_once("order_details_data.php");
                         <text style="margin-left:10%;margin-right:auto;display:inline-block" id="accountNameDetails"></text></br>
                         <input type="button" id="accountDrop" name="accountDrop" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25B2;" style="color:gray;margin-top:5px;height:30px;width:200px;" onclick="clickedDrop()">
                         <input type="button" id="accountCollapse" name="accountCollapse" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25BC;" style="color:gray;margin-top:5px;width:200px;height:30px;" onclick="clickedCollapse()" hidden>
+                        <input type="button" id="accountProfile" name="accountProfile" value="Profile &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-top:5px;width:200px;height:30px;" onclick="location.href='../customer/accountDetails.php'" hidden>
                         <input type="button" id="accountSignOut" name="accountSignOut" value="Sign out &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-top:5px;width:200px;height:30px;" onclick="signOut()" hidden>
                     </div></br>
                 </div>
@@ -1292,15 +1362,15 @@ require_once("order_details_data.php");
                                 <text style="color:grey">Name on Card</text></br>
                                 <input type="text" id="ccName" name="ccName" style="font-size:30px;border-radius:5px;width:93%;border:1px solid grey;padding-left:10px" placeholder="Aaron Bobby Cecil Drake"></br></br>
                                 <text style="color:grey">Card number</text></br>
-                                <input type="text" id="ccNum" name="ccNum" style="font-size:30px;border-radius:5px;width:93%;border:1px solid grey;padding-left:10px" placeholder="1111 2222 3333 4444"></br></br>
+                                <input type="text" id="ccNum" name="ccNum" style="font-size:30px;border-radius:5px;width:93%;border:1px solid grey;padding-left:10px" placeholder="1111 2222 3333 4444" maxlength="16" onkeypress="return /[0-9]/i.test(event.key)"></br></br>
                                 <div>
                                     <text style="color:grey;float:left">Expiry date</text>
                                     <text style="color:grey;float:right;margin-right:200px">CVC/CVV</text></br>
-                                    <input type="text" id="ccExpiry" name="ccExpiry" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:left;" placeholder="mm/yy">  
-                                    <input type="text" id="ccDigits" name="ccDigits" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:right;margin-right:190px" placeholder="xxx"></br></br>
+                                    <input type="text" id="ccExpiry" name="ccExpiry" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:left;" placeholder="mm/yy" maxlength="4" onkeypress="return /[0-9]/i.test(event.key)">  
+                                    <input type="text" id="ccDigits" name="ccDigits" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:right;margin-right:190px" placeholder="xxx" maxlength="3" onkeypress="return /[0-9]/i.test(event.key)"></br></br>
                                 </div></br>
                                 <img src="../MoshiQ2 IMG Assets/Payment/Pay.png" style="float:left;position:absolute;width:60px;height:auto;margin-left:250px;cursor:pointer">
-                                <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Pay" onclick="paymentMethod()"></br></br>
+                                <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Pay" onclick="cc_PaymentMethod()"></br></br>
                             </div>
                         </div>
                         <div style="width:100%;height:auto;display:block;border:1px solid black;border-radius:10px;background-color:#BDBDBD26;margin-top:20px">
@@ -1321,7 +1391,7 @@ require_once("order_details_data.php");
                                     <input type="text" id="gpDigits" name="gpDigits" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:right;margin-right:190px" placeholder="xxx"></br></br>
                                 </div></br>
                                 <img src="../MoshiQ2 IMG Assets/Payment/Pay.png" style="float:left;position:absolute;width:60px;height:auto;margin-left:250px;cursor:pointer">
-                                <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Pay" onclick="paymentMethod()"></br></br>
+                                <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Pay" onclick="grab_PaymentMethod()"></br></br>
                             </div>
                         </div>
                     </div>

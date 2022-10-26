@@ -316,7 +316,7 @@
         <form>
             <div style="width:1100px;margin-left:auto;margin-right:auto;background-color:#FEF2E5;">
                 <div style="float:right;border-bottom:5px solid grey;width:100%;height:120px">
-                    <a href="../index.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="float:left;margin-left:0px;width:300px;height:auto;display:block;"></a>
+                    <a href="customer_landingPage.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="float:left;margin-left:0px;width:300px;height:auto;display:block;"></a>
                     <div class="buttonEffects" style="margin-left:170px;float:left;display:inline-block;background-color:#A8A1A166;height:42px;margin-top:25px;padding:5px" onclick="getCurrentLocation()">
                         <img src="../MoshiQ2 IMG Assets/Address.png" style="float:left">
                         <input id="deliveryAddressButton" type="button" style="background-color:transparent;display:inline-block;border:none;cursor:pointer;width:150px;white-space:normal;" value="Enter a delivery address">
