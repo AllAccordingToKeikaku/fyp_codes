@@ -24,7 +24,7 @@ require_once("promoCodesDB.php");
         var item_10 = 0;
         var item_11 = 0;
         var item_12 = 0;
-        var orderPromocode;
+        var orderPromocode = "None";
 
         function clickedDrop(){
             document.getElementById("accountDrop").style.display= "none";

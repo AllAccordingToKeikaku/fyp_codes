@@ -1,5 +1,5 @@
 <?php
-
+require_once("ordersDB.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -16,23 +16,109 @@
             document.getElementById("promoDisplay").style.display = 'none';
             document.getElementById("notificationsDisplay").style.display = 'none';
 
-            var orderArray = ["#125415", "#225215", "#3125125"];
-            var dateArray = ["20 September 2022", "21 September 2022", "22 September 2022"];
-            var dayArray = ["Tuesday", "Wednesday", "Thursday"];
-            var timeArray = ["1:00pm~2:00pm", "2:00pm~3:00pm", "3:00pm~4:00pm"];
-            var tempItemArray = [["1x Choc Sweet", "1x Mango Smooth"], ["2x Choc Sweet"], ["3x Choc Sweet", "1x Strawberry bear"]];
+            var dataArrays = '<?php echo json_encode($ordersArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+            var dataArray = dataArrays.split('].');
+            var orderArray = [];
+            var orderArrays = [];
+            var dateArray = [];
+            var dayArray = [];
+            var timeArray = [];
             var itemArray = [];
-            var priceArray = ["$1.00", "$2.00", "$3.00"];
+            var tempItemArray = [];
+            var tempItemsArray = [];
+            var priceArray = [];
+            var orderStatusArray = [];
+            var actualOrderArray = [];
+            const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+            var x;
+            var tempString = "";
+            for (x=0;x<dataArray.length;x++)
+            {
+                orderArray.push(dataArray[x]);
+            }
+            for (x=0;x<orderArray.length;x++){
+                tempString = String(orderArray[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                actualOrderArray.push(tempString);
+            }
+            for (x=0;x<actualOrderArray.length;x++)
+            {
+                tempItemsArray = [];
+                if(actualOrderArray[x][1] == getCookie("accountID")){
+                    orderArrays.push("#" + actualOrderArray[x][0]);
+                    dateArray.push(actualOrderArray[x][2]);
+                    timeArray.push(actualOrderArray[x][3]);
+                    priceArray.push(actualOrderArray[x][4]);
+                    orderStatusArray.push(actualOrderArray[x][5]);
+
+                    var getD = new Date(actualOrderArray[x][2]);
+                    dayArray.push(weekday[getD.getDay()]);
+
+                    for(var y=7; y<18; y++){
+                        var itemName;
+                        switch(y){
+                            case 7:
+                                itemName = "HAWAIIAN SALMON";
+                                break;
+                            case 8:
+                                itemName = "COLOURFUL GODDESS";
+                                break;
+                            case 9:
+                                itemName = "SPICY MIXED SALMON";
+                                break;
+                            case 10:
+                                itemName = "SHOYU TUNA SPECIAL";
+                                break;
+                            case 11:
+                                itemName = "FULL VEGGIELICIOUS";
+                                break;
+                            case 12:
+                                itemName = "AVOCADO SUPREME";
+                                break;
+                            case 13:
+                                itemName = "SUMMER FLING";
+                                break;
+                            case 14:
+                                itemName = "CHOC SWEET";
+                                break;
+                            case 15:
+                                itemName = "CARAMEL NUTTIN";
+                                break;
+                            case 16:
+                                itemName = "INCREDIBLE HULK";
+                                break;
+                            case 17:
+                                itemName = "ORANGE MADNESS";
+                                break;
+                            case 18:
+                                itemName = "SPIDEY SENSES";
+                                break;
+                        }
+                        if(actualOrderArray[x][y] != 0){
+                            tempItemsArray.push(actualOrderArray[x][y] + "x " + itemName);
+                        }
+                    }
+                    tempItemArray.push(tempItemsArray);
+                }
+            }
             
             var x;
             var y;
             var tempString = "";
             var table = document.getElementById('ordersList');
 
-            for (x=0; x<orderArray.length; x++){
+            for (x=0; x<orderArrays.length; x++){
                 var row = table.insertRow(x);
                 var cell = row.insertCell(0);
                 cell.innerHTML = '<text id="order' + String(x) + '"></text>';
+            }
+
+            var table = document.getElementById('deliveredList');
+
+            for (x=0; x<orderArrays.length; x++){
+                var row = table.insertRow(x);
+                var cell = row.insertCell(0);
+                cell.innerHTML = '<text id="delivered' + String(x) + '"></text>';
             }
 
             for (x=0; x<tempItemArray.length; x++){
@@ -49,15 +135,27 @@
                 }
             }
 
-            for (x=0; x<orderArray.length; x++){
-                document.getElementById("order"+String(x)).innerHTML = '<text style="border-radius:15px;background-color:#C7FAC9;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +
-                                                            '<b>Order ID:</b> '+ orderArray[x] + '</br>' +
+            for (x=0; x<orderArrays.length; x++){
+                if(orderStatusArray[x] == "In-progress"){
+                    document.getElementById("order"+String(x)).innerHTML = '<text style="border-radius:15px;background-color:#C7FAC9;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +
+                                                            '<b>Order ID:</b> '+ orderArrays[x] + '</br>' +
                                                             '<b>Date & Time:</b> '+ dateArray[x] + 
                                                             ' (' + dayArray[x] + '), ' + timeArray[x] +
                                                             '</br></br>' + itemArray[x] + '</br>' +  
                                                             '<text><b><u>Total cost: </u></b></text>' +
                                                             '<b style="float:right;">' + priceArray[x] + 
                                                             '</b></text></br>';
+                }
+                else{
+                    document.getElementById("delivered"+String(x)).innerHTML = '<text style="border-radius:15px;background-color:#C7FAC9;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +
+                                                            '<b>Order ID:</b> '+ orderArrays[x] + '</br>' +
+                                                            '<b>Date & Time:</b> '+ dateArray[x] + 
+                                                            ' (' + dayArray[x] + '), ' + timeArray[x] +
+                                                            '</br></br>' + itemArray[x] + '</br>' +  
+                                                            '<text><b><u>Total cost: </u></b></text>' +
+                                                            '<b style="float:right;">' + priceArray[x] + 
+                                                            '</b></text></br>';
+                }
             }
         }
 
@@ -105,17 +203,19 @@
             document.getElementById("accountDrop").style.display= "none";
             document.getElementById("accountCollapse").style.display = "block";
             document.getElementById("accountSignOut").style.display = "block";
+            document.getElementById("accountProfile").style.display = "block";
         }
 
         function clickedCollapse(){
             document.getElementById("accountDrop").style.display = "block";
             document.getElementById("accountCollapse").style.display = "none";
             document.getElementById("accountSignOut").style.display = "none";
+            document.getElementById("accountProfile").style.display = "none";
         }
 
         function signOut(){
             document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-            window.location.replace("../customer/landingPage.php");
+            window.location.replace("../index.php");
         }
 
         function profileClicked(){
@@ -152,45 +252,55 @@
         .mouseOverEffects:hover{
             border-left : 3px solid #437E96;
         }
+
+        .buttonEffects{
+            border: none;
+        }
+
+        .buttonEffects:hover{
+            border: 2px solid black;
+            display: inline-block;
+        }
     </style>
     <body onload="profileDetails();" style="background-color:#FEF2E5">
         <form >
             <div style="width:1100px;margin-left:auto;margin-right:auto;">
                 <div style="float:right">
-                    <img src="../MoshiQ2 IMG Assets/Profile Icon.png" style="display:block;margin-left:auto;width:70px;height:auto" onclick="profileClicked()"></br>
-                    <div id="displayProfile" name="displayProfile" hidden>
+                    <img src="../MoshiQ2 IMG Assets/Profile Icon.png" style="display:block;margin-left:auto;width:70px;height:auto;cursor:pointer;" onclick="profileClicked()"></br>
+                    <div id="displayProfile" name="displayProfile" style="float:right;margin-top:10px;padding:5px;z-index:1;position:relative;width:auto;height:auto;background-color:white;;border:1px solid black;border-radius:5px;display:none">
                         <text style="margin-left:10%;margin-right:auto;display:inline-block" id="accountNameDetails"></text></br>
-                        <input type="button" id="accountDrop" name="accountDrop" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25B2;" style="color:gray;margin-left:10px;margin-top:5px;height:30px;" onclick="clickedDrop()">
-                        <input type="button" id="accountCollapse" name="accountCollapse" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25BC;" style="color:gray;margin-left:10px;margin-top:5px;height:30px;" onclick="clickedCollapse()" hidden>
-                        <input type="button" id="accountSignOut" name="accountSignOut" value="Sign out &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-left:10px;margin-right:auto;margin-top:5px;width:188px;height:30px;" onclick="signOut()" hidden>
-                    </div>
+                        <input type="button" id="accountDrop" name="accountDrop" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25B2;" style="color:gray;margin-top:5px;height:30px;width:200px;" onclick="clickedDrop()">
+                        <input type="button" id="accountCollapse" name="accountCollapse" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25BC;" style="color:gray;margin-top:5px;width:200px;height:30px;" onclick="clickedCollapse()" hidden>
+                        <input type="button" id="accountProfile" name="accountProfile" value="Profile &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-top:5px;width:200px;height:30px;" onclick="location.href='../customer/accountDetails.php'" hidden>
+                        <input type="button" id="accountSignOut" name="accountSignOut" value="Sign out &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-top:5px;width:200px;height:30px;" onclick="signOut()" hidden>
+                    </div></br>
                 </div>
 
                 <div>
-                    <a href="customer_landingPage.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:0px;width:500px;height:200px;display:block"></a></br>
+                    <a href="customer_landingPage.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:0px;width:500px;height:200px;display:inline-block"></a></br></br>
                 </div>
 
                 <div style="float:left;margin-left:30px;display:inline-block">
                     <text style="color:#437E96;font-size:30px">ACCOUNT</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                     <div class="mouseOverEffects" style="width:120px">
-                        <input type="button" id="ordersButton" name="ordersButton" value="Orders" style="padding:10px;border:0px;background-color:transparent" onclick="ordersFunction()"></br>
+                        <input type="button" id="ordersButton" name="ordersButton" value="Orders" style="padding:10px;border:0px;background-color:transparent;cursor:pointer;width:120px;text-align:left;" onclick="ordersFunction()"></br>
                     </div>
 
                     <div class="mouseOverEffects" style="width:120px">
-                        <input type="button" id="reservationsButton" name="reservationsButton" value="Reservations" style="padding:10px;border:0px;background-color:transparent" onclick="reservationsFunction()"></br>
+                        <input type="button" id="reservationsButton" name="reservationsButton" value="Reservations" style="padding:10px;border:0px;background-color:transparent;cursor:pointer;width:120px;text-align:left" onclick="reservationsFunction()"></br>
                     </div>
 
                     <div class="mouseOverEffects" style="width:120px">
-                        <input type="button" id="accountButton" name="accountButton" value="Account" style="padding:10px;border:0px;background-color:transparent" onclick="accountFunction()"></br>
+                        <input type="button" id="accountButton" name="accountButton" value="Account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer;width:120px;text-align:left" onclick="accountFunction()"></br>
                     </div>
 
                     <div class="mouseOverEffects" style="width:120px">
-                        <input type="button" id="promoButton" name="promoButton" value="Promo Codes" style="padding:10px;border:0px;background-color:transparent" onclick="promoFunction()"></br>
+                        <input type="button" id="promoButton" name="promoButton" value="Promo Codes" style="padding:10px;border:0px;background-color:transparent;cursor:pointer;width:120px;text-align:left" onclick="promoFunction()"></br>
                     </div>
 
                     <div class="mouseOverEffects" style="width:120px">
-                        <input type="button" id="notificationsButton" name="notificationsButton" value="Notifications" style="padding:10px;border:0px;background-color:transparent" onclick="notificationsFunction()"></br>
+                        <input type="button" id="notificationsButton" name="notificationsButton" value="Notifications" style="padding:10px;border:0px;background-color:transparent;cursor:pointer;width:120px;text-align:left" onclick="notificationsFunction()"></br>
                     </div>
                 </div>
                 </div>
@@ -216,12 +326,9 @@
                         <text style="color:#437E96;font-size:30px;">
                             Past Orders                               
                         </text>
-                        <text style="border-radius:15px;background-color:#C7FAC9;border:0px;margin-top:5px;width:600px;padding:5px;display:inline-block">
-                            <b>Order ID:</b> #124125165 </br>
-                            <b>Date & Time:</b> 20 September 2022 (Tuesday), 1.30pm-2.30pm </br></br>
-                            2x Choc Sweet
-                            <b style="float:right;">$24.20</b>
-                        </text>
+                        <div id="divTable">
+                            <table id="deliveredList"></table>
+                        </div> 
                     </div>
 
                     <div id="reservationsDisplay" style="display:none">
@@ -235,13 +342,28 @@
                     </div>
 
                     <div id="accountDisplay" style="display:none">
-                        <text style="color:#437E96;font-size:30px;">
-                            Account - Customer                            
-                        </text>
-                        </br>
-                        <text style="font-size:20px;color:black">
-                            Keep track of your upcoming and past orders all in one place.
-                        </text>
+                        <div id="accountCustomer">
+                            <text style="color:#437E96;font-size:30px;">
+                                Account - Customer                         
+                            </text>
+                            </br></br>
+                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Email: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
+                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Name: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter name"></br></br>
+                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Number: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter number"></br></br></br></br>
+                            <input type="button" class="buttonEffects" style="font-size:15px;width:150px;padding:10px;background-color:#5BBDE4CC;border-radius:10px;cursor:pointer" value="Update account">
+                            <input type="button" class="buttonEffects" style="margin-left:50px;font-size:15px;width:150px;padding:10px;background-color:#F80000CC;border-radius:10px;cursor:pointer" value="Delete account">
+                        </div>
+
+                        <div id="updateAccount" hidden>
+                            <text style="color:#437E96;font-size:30px;">
+                                Update account                          
+                            </text>
+                            </br></br>                       
+                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Email: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
+                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Name: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter name"></br></br>
+                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Number: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter number"></br></br>
+                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Password: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                        </div>
                     </div>
 
                     <div id="promoDisplay" style="display:none">

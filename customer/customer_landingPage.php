@@ -9,17 +9,19 @@
             document.getElementById("accountDrop").style.display= "none";
             document.getElementById("accountCollapse").style.display = "block";
             document.getElementById("accountSignOut").style.display = "block";
+            document.getElementById("accountProfile").style.display = "block";
         }
 
         function clickedCollapse(){
             document.getElementById("accountDrop").style.display = "block";
             document.getElementById("accountCollapse").style.display = "none";
             document.getElementById("accountSignOut").style.display = "none";
+            document.getElementById("accountProfile").style.display = "none";
         }
 
         function signOut(){
             document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-            window.location.replace("../LogIn/homePage.php");
+            window.location.replace("../index.php");
         }
 
         function profileClicked(){
@@ -331,6 +333,7 @@
                         <text style="margin-left:10%;margin-right:auto;display:inline-block" id="accountNameDetails"></text></br>
                         <input type="button" id="accountDrop" name="accountDrop" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25B2;" style="color:gray;margin-top:5px;height:30px;width:200px;" onclick="clickedDrop()">
                         <input type="button" id="accountCollapse" name="accountCollapse" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25BC;" style="color:gray;margin-top:5px;width:200px;height:30px;" onclick="clickedCollapse()" hidden>
+                        <input type="button" id="accountProfile" name="accountProfile" value="Profile &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-top:5px;width:200px;height:30px;" onclick="location.href='../customer/accountDetails.php'" hidden>
                         <input type="button" id="accountSignOut" name="accountSignOut" value="Sign out &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-top:5px;width:200px;height:30px;" onclick="signOut()" hidden>
                     </div></br>
                 </div>
