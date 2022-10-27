@@ -1,5 +1,6 @@
 <?php
 require_once("ordersDB.php");
+require_once("reservationDB.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -134,10 +135,11 @@ require_once("ordersDB.php");
                     itemArray.push(tempString);
                 }
             }
-
-            for (x=0; x<orderArrays.length; x++){
+            var j=0;
+            //for (x=0; x<orderArrays.length; x++){
+            for (x=orderArrays.length-1; x>=0; x--){
                 if(orderStatusArray[x] == "In-progress"){
-                    document.getElementById("order"+String(x)).innerHTML = '<text style="border-radius:15px;background-color:#C7FAC9;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +
+                    document.getElementById("order"+String(j)).innerHTML = '<text style="border-radius:15px;background-color:#C7FAC9;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +
                                                             '<b>Order ID:</b> '+ orderArrays[x] + '</br>' +
                                                             '<b>Date & Time:</b> '+ dateArray[x] + 
                                                             ' (' + dayArray[x] + '), ' + timeArray[x] +
@@ -147,7 +149,7 @@ require_once("ordersDB.php");
                                                             '</b></text></br>';
                 }
                 else{
-                    document.getElementById("delivered"+String(x)).innerHTML = '<text style="border-radius:15px;background-color:#C7FAC9;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +
+                    document.getElementById("delivered"+String(j)).innerHTML = '<text style="border-radius:15px;background-color:#C7FAC9;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +
                                                             '<b>Order ID:</b> '+ orderArrays[x] + '</br>' +
                                                             '<b>Date & Time:</b> '+ dateArray[x] + 
                                                             ' (' + dayArray[x] + '), ' + timeArray[x] +
@@ -156,15 +158,110 @@ require_once("ordersDB.php");
                                                             '<b style="float:right;">' + priceArray[x] + 
                                                             '</b></text></br>';
                 }
+                j++;
             }
         }
 
         function reservationsFunction(){
+            $("#divTable tr").remove(); 
             document.getElementById("ordersDisplay").style.display = 'none';
             document.getElementById("reservationsDisplay").style.display = 'block';
             document.getElementById("accountDisplay").style.display = 'none';
             document.getElementById("promoDisplay").style.display = 'none';
             document.getElementById("notificationsDisplay").style.display = 'none';
+
+            var dataArrays = '<?php echo json_encode($reservationsArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+            var dataArray = dataArrays.split('].');
+            var reservationArray = [];
+            var reservationArrays = [];
+            var dateArray = [];
+            var dayArray = [];
+            var timeArray = [];
+            var seatsArray = [];
+            var paxArray = [];
+            var idArray = [];
+            var actualReservationArray = [];
+            const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+            var x;
+            var tempString = "";
+            for (x=0;x<dataArray.length;x++)
+            {
+                reservationArray.push(dataArray[x]);
+            }
+            for (x=0;x<reservationArray.length;x++){
+                tempString = String(reservationArray[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                actualReservationArray.push(tempString);
+            }
+            for (x=0;x<actualReservationArray.length;x++)
+            {
+                if(actualReservationArray[x][1] == getCookie("accountID")){
+                    reservationArrays.push(actualReservationArray[x][0]);
+                    dateArray.push(actualReservationArray[x][6]);
+                    paxArray.push(actualReservationArray[x][8]);
+                    idArray.push(actualReservationArray[x][0]);
+                    seatsArray.push(actualReservationArray[x][9]);
+                    var getD = new Date(actualReservationArray[x][6]);
+                    dayArray.push(weekday[getD.getDay()]);
+
+                    var timeValue;
+                    switch(actualReservationArray[x][7]){
+                        case 'timeSlot1':
+                            timeValue = "11:00";
+                            break;
+                        case 'timeSlot2':
+                            timeValue = "12:00";
+                            break;
+                        case 'timeSlot3':
+                            timeValue = "13:00";
+                            break;
+                        case 'timeSlot4':
+                            timeValue = "14:00";
+                            break;
+                        case 'timeSlot5':
+                            timeValue = "15:00";
+                            break;
+                        case 'timeSlot6':
+                            timeValue = "16:00";
+                            break;
+                        case 'timeSlot7':
+                            timeValue = "17:00";
+                            break;
+                        case 'timeSlot8':
+                            timeValue = "18:00";
+                            break;
+                        case 'timeSlot9':
+                            timeValue = "19:00";
+                            break;
+                        case 'timeSlot10':
+                            timeValue = "20:00";
+                            break;
+                    }
+                    timeArray.push(timeValue);
+                }
+            }
+
+            var x;
+            var y;
+            var tempString = "";
+            var table = document.getElementById('reservationsList');
+
+            for (x=0; x<reservationArrays.length; x++){
+                var row = table.insertRow(x);
+                var cell = row.insertCell(0);
+                cell.innerHTML = '<text id="reservation' + String(x) + '"></text>';
+            }
+
+            var j=0;
+            for (x=reservationArrays.length-1; x>=0; x--){
+                document.getElementById("reservation"+String(j)).innerHTML = '<text style="border-radius:15px;background-color:#A0D5EB;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +
+                                                        '<b>Reservation ID:</b> ' + idArray[x] + '</br></br>' +
+                                                        '<b>Date & Time:</b> '+ dayArray[x] + ', ' + dateArray[x] + ', ' + timeArray[x] + '</br></br>' +
+                                                        '<b>Pax amount:</b> ' + paxArray[x] + '</br></br>' +
+                                                        '<b>Seating area(s):</b> ' + seatsArray[x] + '</text></br>'
+                                                        ;     
+                j++;           
+            }
         }
 
         function accountFunction(){
@@ -279,6 +376,15 @@ require_once("ordersDB.php");
             border: 2px solid black;
             display: inline-block;
         }
+
+        .example::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .example {
+            -ms-overflow-style: none;  /* IE and Edge */
+        }
     </style>
     <body onload="profileDetails();" style="background-color:#FEF2E5">
         <form >
@@ -337,26 +443,30 @@ require_once("ordersDB.php");
                             Upcoming Orders                               
                         </text>
                         </br></br>
-                        <div id="divTable">
+                        <div id="divTable" class="example" style="overflow-y:scroll;width:650px">
                             <table id="ordersList"></table>
                         </div>                
                         </br></br></br>
                         <text style="color:#437E96;font-size:30px;">
                             Past Orders                               
                         </text>
-                        <div id="divTable">
+                        <div id="divTable" class="example" style="overflow-y:scroll;width:650px">
                             <table id="deliveredList"></table>
                         </div> 
                     </div>
 
-                    <div id="reservationsDisplay" style="display:none">
+                    <div id="reservationsDisplay" style="display:none;width:600px;">
                         <text style="color:#437E96;font-size:30px;">
                             Reservations                              
+                            </text>
+                        </br></br>
+                        <text style="font-size:20px;color:black;display:inline-block">
+                            Keep track of your reservations all in one place.
                         </text>
                         </br></br>
-                        <text style="font-size:20px;color:black">
-                            Keep track of your upcoming and past orders all in one place.
-                        </text>
+                        <div id="divTable" class="example" style="overflow-y:scroll;width:650px">
+                            <table id="reservationsList"></table>
+                        </div>                
                     </div>
 
                     <div id="accountDisplay" style="display:none">

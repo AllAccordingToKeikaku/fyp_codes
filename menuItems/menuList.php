@@ -517,10 +517,6 @@ require_once("promoCodesDB.php");
             subTotalPrice = 0;
             entireListArray = [];
             for (var x=0; x<tempCartArray.length; x++){
-                /*if(tempCartArray[x] == "HAWAIIAN SALMON"){
-                    item1 = countCart[tempCartArray[x]];
-                }*/
-
                 switch(tempCartArray[x]){
                     case "HAWAIIAN SALMON":
                         item_1 = countCart[tempCartArray[x]];
@@ -742,8 +738,8 @@ require_once("promoCodesDB.php");
                     document.getElementById("validityText").style.color = "green";
                     document.getElementById("discountRate").innerHTML = actualPromoCodeArray[x][2] + "%";
                     discountedRates = parseInt(actualPromoCodeArray[x][2])/100;
-                    totalPrice = (subTotalPrice * parseInt(actualPromoCodeArray[x][2])/100 + parseInt(deliveryPrice)).toFixed(2);
-                    document.getElementById("totalPrice").innerHTML = "$" + totalPrice;
+                    totalPrice = subTotalPrice * parseInt(actualPromoCodeArray[x][2])/100 + parseInt(deliveryPrice);
+                    document.getElementById("totalPrice").innerHTML = "$" + totalPrice.toFixed(2);
                     orderPromocode = tempPromoCode;
                     break;
                 }
@@ -753,8 +749,8 @@ require_once("promoCodesDB.php");
                     document.getElementById("validityText").style.color = "red";
                     document.getElementById("discountRate").innerHTML = "0%";
                     discountedRates = 0;
-                    totalPrice = (subTotalPrice + deliveryPrice).toFixed(2)
-                    document.getElementById("totalPrice").innerHTML = "$" + totalPrice;
+                    totalPrice = subTotalPrice + deliveryPrice
+                    document.getElementById("totalPrice").innerHTML = "$" + totalPrice.toFixed(2);
                     orderPromocode = "None";
                 }
             }
@@ -797,7 +793,7 @@ require_once("promoCodesDB.php");
             setCookie("time", curTime, 7);
             console.log(document.cookie);
             document.getElementById("myPopupDateTime").style.visibility = 'hidden';
-            document.getElementById("confirmDateTimeText").value = today + ", " + curTime;
+            document.getElementById("confirmDateTimeText").innerHTML = today + ", " + curTime;
         }
 
         function closePopupCreditCard(){
