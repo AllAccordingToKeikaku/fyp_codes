@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2022 at 10:44 AM
+-- Generation Time: Oct 27, 2022 at 07:21 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -42,7 +42,48 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`accountID`, `profileID`, `fullName`, `email`, `accountPassword`, `phoneNumber`) VALUES
 (1, 'customer', 'Alan Bobby Cedric Daniel', 'fyp2022test@gmail.com', 'fyp_22_s3_22', '91238123'),
-(2, 'customer', 'lucas', 'lucasleeht@gmail.com', 'lucas', '91239123');
+(2, 'customer', 'lucas', 'lucasleeht@gmail.com', 'lucas', '91239123'),
+(3, 'customer', 'lucas', 'lucas@gmail.com', 'lucas', '91239122'),
+(4, 'customer', 'lu', 'lu@gmail.com', 'lu', '09120912');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `delivery_orders`
+--
+
+CREATE TABLE `delivery_orders` (
+  `orderID` int(11) NOT NULL,
+  `accountID` varchar(999) NOT NULL,
+  `order_date` varchar(999) NOT NULL,
+  `order_time` varchar(999) NOT NULL,
+  `order_price` varchar(999) NOT NULL,
+  `order_status` varchar(999) NOT NULL,
+  `order_promocode` varchar(999) NOT NULL,
+  `HAWAIIAN_SALMON` int(255) NOT NULL,
+  `COLOURFUL_GODDESS` int(255) NOT NULL,
+  `SPICY_MIXED_SALMON` int(255) NOT NULL,
+  `SHOYU_TUNA_SPECIAL` int(255) NOT NULL,
+  `FULL_VEGGIELICIOUS` int(255) NOT NULL,
+  `AVOCADO_SUPREME` int(255) NOT NULL,
+  `SUMMER_FLING` int(255) NOT NULL,
+  `CHOC_SWEET` int(255) NOT NULL,
+  `CARAMEL_NUTTIN` int(255) NOT NULL,
+  `INCREDIBLE_HULK` int(255) NOT NULL,
+  `ORANGE_MADNESS` int(255) NOT NULL,
+  `SPIDEY_SENSES` int(255) NOT NULL,
+  `cc_number` varchar(999) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `delivery_orders`
+--
+
+INSERT INTO `delivery_orders` (`orderID`, `accountID`, `order_date`, `order_time`, `order_price`, `order_status`, `order_promocode`, `HAWAIIAN_SALMON`, `COLOURFUL_GODDESS`, `SPICY_MIXED_SALMON`, `SHOYU_TUNA_SPECIAL`, `FULL_VEGGIELICIOUS`, `AVOCADO_SUPREME`, `SUMMER_FLING`, `CHOC_SWEET`, `CARAMEL_NUTTIN`, `INCREDIBLE_HULK`, `ORANGE_MADNESS`, `SPIDEY_SENSES`, `cc_number`) VALUES
+(7, '2', '2022-10-27', '00:17', '$98.90', 'In-progress', 'moshiqq50', 4, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, '1234123412341235'),
+(8, '2', '2022-10-27', '00:17', '$59.85', 'Delivered', 'moshiqq50', 1, 0, 2, 0, 1, 0, 0, 1, 0, 1, 0, 3, '1234123112321233'),
+(9, '1', '2022-22-2', '11:11', '$50.00', 'Delivered', 'None', 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, '1231231231231231'),
+(10, '2', '2022-10-27', '00:17', '$43.20', 'In-progress', 'None', 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, '1234123412341234');
 
 -- --------------------------------------------------------
 
@@ -88,18 +129,18 @@ CREATE TABLE `menu_item` (
 --
 
 INSERT INTO `menu_item` (`menu_item_ID`, `item_category`, `item_name`, `item_description`, `item_picture`, `item_price`, `item_stock`) VALUES
-(1, 'signature', 'HAWAIIAN SALMON', 'The go-to option for those who love a hawaiian kick with the flavourish salmon!', '/fyp_codes/MoshiQ2 Assets/Menu/Hawaiian Salmon.png', '15.50', 'Available'),
-(2, 'signature', 'COLOURFUL GODDESS', 'Our classic goddess bowl that will most definitely make your mouth water! Comes with 7 toppings and 2 garnishes.', '/fyp_codes/MoshiQ2 Assets/Menu/Colourful Goddess.png', '15.50', 'Unavailable'),
-(5, 'signature', 'SPICY MIXED SALMON', 'A touch of spice on your fresh bowl of salmon will bring forth a wave of flavour!', '/fyp_codes/MoshiQ2 Assets/Menu/Spicy Mixed Salmon.png', '15.50', 'Available'),
-(7, 'diy', 'SHOYU TUNA SPECIAL', 'Sweet and salty makes the umami go crazy on your tastebuds.', '/fyp_codes/MoshiQ2 Assets/Menu/Shoyu Tuna Specials.png', '12.80', 'Unavailable'),
-(8, 'diy', 'FULL VEGGIELICIOUS', 'For the vege lovers out there this dish is made just for you!', '/fyp_codes/MoshiQ2 Assets/Menu/Full Vegelicious.png', '12.80', 'Available'),
-(9, 'diy', 'AVOCADO SUPREME', 'Avocado Loveacado is there anything you can hate about it?', '/fyp_codes/MoshiQ2 Assets/Menu/Avocado Supreme.png', '12.80', 'Available'),
-(10, 'acai', 'SUMMER FLING', 'This dish embodies the hot passionate summer time we had back in the day!', '/fyp_codes/MoshiQ2 Assets/Menu/Summer Fling.png', '8.90', 'Available'),
-(11, 'acai', 'CHOC SWEET', 'Chocolate is always the number one dessert!', '/fyp_codes/MoshiQ2 Assets/Menu/Choc Sweet.png', '8.90', 'Available'),
-(12, 'acai', 'CARAMEL NUTTIN', 'Nuts make the world go nuts. ', '/fyp_codes/MoshiQ2 Assets/Menu/Caramel Nuttin.png', '9.80', 'Available'),
-(13, 'beverages', 'INCREDIBLE HULK', 'This drink has a secret that is only known when you try it!', '/fyp_codes/MoshiQ2 Assets/Menu/Incredible Hulk.png', '6.90', 'Available'),
-(14, 'beverages', 'ORANGE MADNESS', 'Orange you glad that you got this?', '/fyp_codes/MoshiQ2 Assets/Menu/Orange Madness.png', '5.60', 'Available'),
-(15, 'beverages', 'SPIDEY SENSES', 'All it takes is a leap of faith to bring your senses to a new world!', '/fyp_codes/MoshiQ2 Assets/Menu/Spidey Senses.png', '5.60', 'Available');
+(1, 'signature', 'HAWAIIAN SALMON', 'The go-to option for those who love a hawaiian kick with the flavourish salmon!', '../MoshiQ2 IMG Assets/Menu/Hawaiian Salmon.png', '15.50', 'Available'),
+(2, 'signature', 'COLOURFUL GODDESS', 'Our classic goddess bowl that will most definitely make your mouth water! Comes with 7 toppings and 2 garnishes.', '../MoshiQ2 IMG Assets/Menu/Colourful Goddess.png', '15.50', 'Unavailable'),
+(5, 'signature', 'SPICY MIXED SALMON', 'A touch of spice on your fresh bowl of salmon will bring forth a wave of flavour!', '../MoshiQ2 IMG Assets/Menu/Spicy Mixed Salmon.png', '15.50', 'Available'),
+(7, 'diy', 'SHOYU TUNA SPECIAL', 'Sweet and salty makes the umami go crazy on your tastebuds.', '../MoshiQ2 IMG Assets/Menu/Shoyu Tuna Specials.png', '12.80', 'Unavailable'),
+(8, 'diy', 'FULL VEGGIELICIOUS', 'For the vege lovers out there this dish is made just for you!', '../MoshiQ2 IMG Assets/Menu/Full Vegelicious.png', '12.80', 'Available'),
+(9, 'diy', 'AVOCADO SUPREME', 'Avocado Loveacado is there anything you can hate about it?', '../MoshiQ2 IMG Assets/Menu/Avocado Supreme.png', '12.80', 'Available'),
+(10, 'acai', 'SUMMER FLING', 'This dish embodies the hot passionate summer time we had back in the day!', '../MoshiQ2 IMG Assets/Menu/Summer Fling.png', '8.90', 'Available'),
+(11, 'acai', 'CHOC SWEET', 'Chocolate is always the number one dessert!', '../MoshiQ2 IMG Assets/Menu/Choc Sweet.png', '8.90', 'Available'),
+(12, 'acai', 'CARAMEL NUTTIN', 'Nuts make the world go nuts. ', '../MoshiQ2 IMG Assets/Menu/Caramel Nuttin.png', '9.80', 'Available'),
+(13, 'beverages', 'INCREDIBLE HULK', 'This drink has a secret that is only known when you try it!', '../MoshiQ2 IMG Assets/Menu/Incredible Hulk.png', '6.90', 'Available'),
+(14, 'beverages', 'ORANGE MADNESS', 'Orange you glad that you got this?', '../MoshiQ2 IMG Assets/Menu/Orange Madness.png', '5.60', 'Available'),
+(15, 'beverages', 'SPIDEY SENSES', 'All it takes is a leap of faith to bring your senses to a new world!', '../MoshiQ2 IMG Assets/Menu/Spidey Senses.png', '5.60', 'Available');
 
 -- --------------------------------------------------------
 
@@ -166,6 +207,12 @@ ALTER TABLE `account`
   ADD PRIMARY KEY (`accountID`);
 
 --
+-- Indexes for table `delivery_orders`
+--
+ALTER TABLE `delivery_orders`
+  ADD PRIMARY KEY (`orderID`);
+
+--
 -- Indexes for table `inbox`
 --
 ALTER TABLE `inbox`
@@ -197,7 +244,13 @@ ALTER TABLE `reservation`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `accountID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `accountID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `delivery_orders`
+--
+ALTER TABLE `delivery_orders`
+  MODIFY `orderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `inbox`
