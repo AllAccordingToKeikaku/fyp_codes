@@ -247,6 +247,24 @@ require_once("ordersDB.php");
             })
             return result;
         }
+
+        function goToUpdateFunction(){
+            document.getElementById('accountCustomerTab').style.display = "none";
+            document.getElementById('updateAccountTab').style.display = "block";
+        }
+
+        function deleteAccountFunction(){
+
+        }
+
+        function returnToFunction(){
+            document.getElementById('accountCustomerTab').style.display = "block";
+            document.getElementById('updateAccountTab').style.display = "none";
+        }
+
+        function updateAccountFunction(){
+
+        }
     </script>
     <style>
         .mouseOverEffects:hover{
@@ -342,7 +360,7 @@ require_once("ordersDB.php");
                     </div>
 
                     <div id="accountDisplay" style="display:none">
-                        <div id="accountCustomer">
+                        <div id="accountCustomerTab" style="display:block">
                             <text style="color:#437E96;font-size:30px;">
                                 Account - Customer                         
                             </text>
@@ -350,11 +368,11 @@ require_once("ordersDB.php");
                             <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Email: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
                             <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Name: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter name"></br></br>
                             <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Number: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter number"></br></br></br></br>
-                            <input type="button" class="buttonEffects" style="font-size:15px;width:150px;padding:10px;background-color:#5BBDE4CC;border-radius:10px;cursor:pointer" value="Update account">
-                            <input type="button" class="buttonEffects" style="margin-left:50px;font-size:15px;width:150px;padding:10px;background-color:#F80000CC;border-radius:10px;cursor:pointer" value="Delete account">
+                            <input type="button" class="buttonEffects" style="font-size:15px;width:150px;padding:10px;background-color:#5BBDE4CC;border-radius:10px;cursor:pointer" value="Update account" onclick="goToUpdateFunction()">
+                            <input type="button" class="buttonEffects" style="margin-left:50px;font-size:15px;width:150px;padding:10px;background-color:#F80000CC;border-radius:10px;cursor:pointer" value="Delete account" onclick="deleteAccountFunction()">
                         </div>
 
-                        <div id="updateAccount" hidden>
+                        <div id="updateAccountTab" style="display:none">
                             <text style="color:#437E96;font-size:30px;">
                                 Update account                          
                             </text>
@@ -363,6 +381,8 @@ require_once("ordersDB.php");
                             <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Name: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter name"></br></br>
                             <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Number: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter number"></br></br>
                             <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Password: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                            <input type="button" class="buttonEffects" style="font-size:15px;width:150px;padding:10px;background-color:#5BBDE4CC;border-radius:10px;cursor:pointer" value="Back" onclick="returnToFunction()">
+                            <input type="button" class="buttonEffects" style="margin-left:50px;font-size:15px;width:150px;padding:10px;background-color:#F80000CC;border-radius:10px;cursor:pointer" value="Update account" onclick="updateAccountFunction()">
                         </div>
                     </div>
 
