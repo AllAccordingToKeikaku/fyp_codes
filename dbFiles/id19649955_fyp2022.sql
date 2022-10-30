@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2022 at 07:21 AM
+-- Generation Time: Oct 27, 2022 at 11:16 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -83,7 +83,9 @@ INSERT INTO `delivery_orders` (`orderID`, `accountID`, `order_date`, `order_time
 (7, '2', '2022-10-27', '00:17', '$98.90', 'In-progress', 'moshiqq50', 4, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, '1234123412341235'),
 (8, '2', '2022-10-27', '00:17', '$59.85', 'Delivered', 'moshiqq50', 1, 0, 2, 0, 1, 0, 0, 1, 0, 1, 0, 3, '1234123112321233'),
 (9, '1', '2022-22-2', '11:11', '$50.00', 'Delivered', 'None', 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, '1231231231231231'),
-(10, '2', '2022-10-27', '00:17', '$43.20', 'In-progress', 'None', 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, '1234123412341234');
+(10, '2', '2022-10-27', '00:17', '$43.20', 'In-progress', 'None', 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, '1234123412341234'),
+(11, '2', '2022-10-27', '21:41', '$51.50', 'In-progress', 'None', 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, '1234123412341231'),
+(12, '2', '2022-10-27', '22:16', '$13.75', 'In-progress', 'moshiqq50', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '1234123412341231');
 
 -- --------------------------------------------------------
 
@@ -193,8 +195,8 @@ CREATE TABLE `reservation` (
 INSERT INTO `reservation` (`reservation_ID`, `cust_ID`, `user_fullname`, `emailAddress`, `phoneNumber`, `outletLocation`, `dateSlot`, `timeSlot`, `paxAmount`, `seatingArea`, `promoCode`, `item_1`, `item_2`, `item_3`, `item_4`, `item_5`) VALUES
 (1, '2', 'lucas', 'lucasleeht@gmail.com', '91239123', 'CHANGI', '2022-10-20', 'timeSlot1', '4', 'H', 'moshiqq50', 'none', 'none', 'none', 'Summer Fling', 'Spidey Senses'),
 (2, '2', 'lucas', 'lucasleeht@gmail.com', '91239123', 'CHANGI', '2022-10-20', 'timeSlot7', '4', 'H', 'moshiqq50', 'none', 'none', 'none', 'Summer Fling', 'Spidey Senses'),
-(3, '2', 'fyp2022', 'fyp2022test@gmail.com', '91239123', 'YISHUN', '2022-10-20', 'timeSlot1', '1', 'B', 'moshiqq50', 'none', 'none', 'none', 'none', 'Spidey Senses'),
-(4, '2', 'lucas', 'fyp2022test@gmail.com', '90009000', 'CHANGI', '2022-10-20', 'timeSlot5', '1', 'G', 'none', 'none', 'none', 'Shoyu Tuna Specials', 'none', 'none');
+(3, '3', 'fyp2022', 'fyp2022test@gmail.com', '91239123', 'YISHUN', '2022-10-20', 'timeSlot1', '1', 'B', 'moshiqq50', 'none', 'none', 'none', 'none', 'Spidey Senses'),
+(4, '3', 'lucas', 'fyp2022test@gmail.com', '90009000', 'CHANGI', '2022-10-20', 'timeSlot5', '1', 'G', 'none', 'none', 'none', 'Shoyu Tuna Specials', 'none', 'none');
 
 --
 -- Indexes for dumped tables
@@ -250,7 +252,7 @@ ALTER TABLE `account`
 -- AUTO_INCREMENT for table `delivery_orders`
 --
 ALTER TABLE `delivery_orders`
-  MODIFY `orderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `orderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `inbox`
