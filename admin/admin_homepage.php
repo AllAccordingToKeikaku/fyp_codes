@@ -118,17 +118,19 @@
             document.getElementById("accountDrop").style.display= "none";
             document.getElementById("accountCollapse").style.display = "block";
             document.getElementById("accountSignOut").style.display = "block";
+            document.getElementById("accountProfile").style.display = "block";
         }
 
         function clickedCollapse(){
             document.getElementById("accountDrop").style.display = "block";
             document.getElementById("accountCollapse").style.display = "none";
             document.getElementById("accountSignOut").style.display = "none";
+            document.getElementById("accountProfile").style.display = "none";
         }
 
         function signOut(){
             document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-            window.location.replace("../customer/landingPage.php");
+            window.location.replace("../index.php");
         }
 
         function profileClicked(){
@@ -141,7 +143,6 @@
                 document.getElementById("displayProfile").style.display = "none";
             }
         }
-
         
         function profileDetails(){
             console.log(document.cookie);
@@ -164,7 +165,7 @@
     </script>
     <style>
         .mouseOverEffects{
-            border-left : 3px solid white;
+            border-left : 3px solid transparent;
         }
 
         .mouseOverEffects:hover{
@@ -173,10 +174,10 @@
 
         .buttonEffects {
             border-radius: 15px;
-            white-space: normal;
+            transparent-space: normal;
             background-color: #437E96;
             border: none;
-            color: white;
+            color: transparent;
             width: 140px;
             height: 70px;
             font-size: 20px;
@@ -196,17 +197,18 @@
             padding: 3px;
         }
     </style>
-    <body onload="profileDetails()">
+    <body onload="profileDetails()" style="background-color:#FEF2E5">
         <form>
             <div style="width:1100px;margin-left:auto;margin-right:auto">
                 <div style="float:right">
-                    <img src="../MoshiQ2 IMG Assets/Profile Icon.png" style="display:block;margin-left:auto;width:70px;height:auto" onclick="profileClicked()"></br>
-                    <div id="displayProfile" name="displayProfile" hidden>
+                    <img src="../MoshiQ2 IMG Assets/Profile Icon.png" style="display:block;margin-left:auto;width:70px;height:auto;cursor:pointer;" onclick="profileClicked()"></br>
+                    <div id="displayProfile" name="displayProfile" style="float:right;margin-top:10px;padding:5px;z-index:1;position:relative;width:auto;height:auto;background-color:white;;border:1px solid black;border-radius:5px;display:none">
                         <text style="margin-left:10%;margin-right:auto;display:inline-block" id="accountNameDetails"></text></br>
-                        <input type="button" id="accountDrop" name="accountDrop" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25B2;" style="color:gray;margin-left:10px;margin-top:5px;height:30px;" onclick="clickedDrop()">
-                        <input type="button" id="accountCollapse" name="accountCollapse" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25BC;" style="color:gray;margin-left:10px;margin-top:5px;height:30px;" onclick="clickedCollapse()" hidden>
-                        <input type="button" id="accountSignOut" name="accountSignOut" value="Sign out &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-left:10px;margin-right:auto;margin-top:5px;width:188px;height:30px;" onclick="signOut()" hidden>
-                    </div>
+                        <input type="button" id="accountDrop" name="accountDrop" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25B2;" style="color:gray;margin-top:5px;height:30px;width:200px;" onclick="clickedDrop()">
+                        <input type="button" id="accountCollapse" name="accountCollapse" value="Account &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&#x25BC;" style="color:gray;margin-top:5px;width:200px;height:30px;" onclick="clickedCollapse()" hidden>
+                        <input type="button" id="accountProfile" name="accountProfile" value="Profile &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-top:5px;width:200px;height:30px;" onclick="location.href='../customer/accountDetails.php'" hidden>
+                        <input type="button" id="accountSignOut" name="accountSignOut" value="Sign out &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" style="margin-top:5px;width:200px;height:30px;" onclick="signOut()" hidden>
+                    </div></br>
                 </div>
                 <div>
                     <img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:0px;width:500px;height:200px;display:block"></br>
@@ -216,39 +218,39 @@
                     <text style="color:#437E96;font-size:30px">EMAIL</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                         <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="emailButton" name="emailButton" value="Email" style="padding:10px;border:0px;background-color:white" onclick="emailFunction()"></br>
+                            <input type="button" id="emailButton" name="emailButton" value="Email" style="padding:10px;border:0px;background-color:transparent" onclick="emailFunction()"></br>
                         </div></br></br>
                     </div></br>
 
                     <text style="color:#437E96;font-size:30px;">ROLES</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                         <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="createUserProfileButton" name="createUserProfileButton" value="Create user profile" style="padding:10px;border:0px;background-color:white" onclick="createUserProfileFunction()"></br>
+                            <input type="button" id="createUserProfileButton" name="createUserProfileButton" value="Create user profile" style="padding:10px;border:0px;background-color:transparent" onclick="createUserProfileFunction()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="viewUserProfileButton" name="viewUserProfileButton" value="View user profile" style="padding:10px;border:0px;background-color:white" onclick="viewUserProfileFunction()"></br>
+                            <input type="button" id="viewUserProfileButton" name="viewUserProfileButton" value="View user profile" style="padding:10px;border:0px;background-color:transparent" onclick="viewUserProfileFunction()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="suspendUserProfileButton" name="suspendUserProfileButton" value="Suspend user profile" style="padding:10px;border:0px;background-color:white" onclick="suspendUserProfileFunction()"></br>
+                            <input type="button" id="suspendUserProfileButton" name="suspendUserProfileButton" value="Suspend user profile" style="padding:10px;border:0px;background-color:transparent" onclick="suspendUserProfileFunction()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="updateUserProfileButton" name="updateUserProfileButton" value="Update user profile" style="padding:10px;border:0px;background-color:white" onclick="updateUserProfileFunction()"></br>
+                            <input type="button" id="updateUserProfileButton" name="updateUserProfileButton" value="Update user profile" style="padding:10px;border:0px;background-color:transparent" onclick="updateUserProfileFunction()"></br>
                         </div></br></br>
                     </div></br>
 
                     <text style="color:#437E96;font-size:30px;">ACCOUNTS</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                         <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="createUserAccountButton" name="createUserAccountButton" value="Create user account" style="padding:10px;border:0px;background-color:white" onclick="createUserAccountFunction()"></br>
+                            <input type="button" id="createUserAccountButton" name="createUserAccountButton" value="Create user account" style="padding:10px;border:0px;background-color:transparent" onclick="createUserAccountFunction()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="viewUserAccountButton" name="viewUserAccountButton" value="View user account" style="padding:10px;border:0px;background-color:white" onclick="viewUserAccountFunction()"></br>
+                            <input type="button" id="viewUserAccountButton" name="viewUserAccountButton" value="View user account" style="padding:10px;border:0px;background-color:transparent" onclick="viewUserAccountFunction()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="suspendUserAccountButton" name="suspendUserAccountButton" value="Suspend user account" style="padding:10px;border:0px;background-color:white" onclick="suspendUserAccountFunction()"></br>
+                            <input type="button" id="suspendUserAccountButton" name="suspendUserAccountButton" value="Suspend user account" style="padding:10px;border:0px;background-color:transparent" onclick="suspendUserAccountFunction()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="updateUserAccountButton" name="updateUserAccountButton" value="Update user account" style="padding:10px;border:0px;background-color:white" onclick="updateUserAccountFunction()"></br>
+                            <input type="button" id="updateUserAccountButton" name="updateUserAccountButton" value="Update user account" style="padding:10px;border:0px;background-color:transparent" onclick="updateUserAccountFunction()"></br>
                         </div></br></br>
                     </div></br>
                 </div>
