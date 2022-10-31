@@ -69,6 +69,7 @@ require_once("accountDB.php");
                     else if(actualAccountArray[x][1] == "owner"){
                         window.location.href = "../owner/owner_homepage.php";
                     }
+                    break;
                 }
                 else{
                     checkTOF = false;

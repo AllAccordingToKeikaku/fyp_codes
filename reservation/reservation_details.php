@@ -42,6 +42,7 @@ require_once('promoCodesDB.php');
     var item_3;
     var item_4;
     var item_5;
+    var timerCounter;
 
     var preorderList = [];
 
@@ -132,6 +133,7 @@ require_once('promoCodesDB.php');
         document.getElementById("I").disabled = true;
         document.getElementById("J").disabled = true;
       }
+      countDown();
     }
 
     var actualBookedArray = [];
@@ -170,6 +172,7 @@ require_once('promoCodesDB.php');
           }
         }
       }
+      countDown();
     }
 
     function selectedArea(){
@@ -230,6 +233,7 @@ require_once('promoCodesDB.php');
       }
       seatingArea = seatings;
       checkSlots();
+      countDown();
     }
 
     function uncheckElements(){
@@ -237,6 +241,7 @@ require_once('promoCodesDB.php');
       for (var i=0; i<uncheck.length; i++){
         uncheck[i].checked=false;
       }
+      countDown();
     }
 
     function submittedDetails(){
@@ -452,6 +457,7 @@ require_once('promoCodesDB.php');
           inboxDate:inboxDate
         }
       });
+      countDown();
     }
 
     function clearSelection(){
@@ -459,12 +465,14 @@ require_once('promoCodesDB.php');
       for (var i=0; i<uncheck.length; i++){
         uncheck[i].checked=false;
       }
+      countDown();
     }
 
     function profileDetails(){
         console.log(document.cookie);
         var tempLogInID = getCookie("accountID");
         document.getElementById("accountIdText").value = tempLogInID;
+        countDown();
     }
 
     function getCookie(name){
@@ -493,10 +501,13 @@ require_once('promoCodesDB.php');
       if(requiredField1 == "" || requiredField2 == "" || requiredField3 == "" || requiredField4 == "" || requiredField5 == "" || 
         requiredField6 == "" || requiredField7 == "" || requiredField8 == null || requiredField8 == ""){
           document.getElementById('submitDetails').disabled = true;
+          document.getElementById('submitDetails').style.cursor = "default";
       }
       else{
         document.getElementById('submitDetails').disabled = false;
+        document.getElementById('submitDetails').style.cursor = "pointer";
       }
+      countDown();
     }
 
     var checkDiscount;
@@ -535,6 +546,7 @@ require_once('promoCodesDB.php');
           console.log("Promo Code is invalid");
         }
       }
+      countDown();
     }
 
     var actualBookedArray1 = [];
@@ -560,6 +572,35 @@ require_once('promoCodesDB.php');
       }
       document.getElementById("reservationCount").innerHTML = actualBookedArray1.length;
     }
+
+    var myVar;
+    function timerFunction(duration, display){
+      var timer = duration, minutes, seconds;
+      myVar = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+          window.location.href = "reservation_details.php";
+        }
+      }, 1000);
+    }
+
+    function countDown(){
+      var fiveMinutes = 60 * 5,
+      display = document.querySelector('#reservationTimer');
+      clearTimeout(myVar);
+      timerFunction(fiveMinutes, display);
+    }
+
+    function backButton(){
+      window.location.href = "../customer/customer_landingPage.php";
+    }
   </script>
 
   <style>
@@ -576,11 +617,12 @@ require_once('promoCodesDB.php');
   }
   </style>
 
-  <body style="background-color:#FEF2E5;" onload="profileDetails();enableSubmitButton();countTotalReservations()">
+  <body style="background-color:#FEF2E5;" onload="profileDetails();enableSubmitButton();countTotalReservations();countDown();">
     <div style="width:700px;margin-left:auto;margin-right:auto;">
     <a href="../customer/customer_landingPage.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="width:300px;margin-left:auto;margin-right:auto;width:500px;display:block"></a></br>
       <div style="">
         <p style="margin-left:15%;font-size:12px">Total reservations made: <text id="reservationCount"></text></p>
+        <p style="margin-left:15%;font-size:20px;background-color:#C3E3A2;width:69%;padding:5px;border-radius:5px">Your page will be refreshed when inactive in...  <text id="reservationTimer" name="reservationTimer" style="float:right;">05:00</text></p>
         <p style="text-align:center;"><b>Reserve a place! Enjoy the ambience!</b></p>
       </div>
     <form action="reservation_details_data.php/" method="POST">
@@ -619,7 +661,7 @@ require_once('promoCodesDB.php');
           <option value="timeSlot9">19:00</option>
           <option value="timeSlot10">20:00</option>
         </select><br><br>
-        <text style="color:black">Amount of people: </text><select name="pax" id="pax" style="width:60px;text-align:center" onchange="selectedPax();selectedArea();enableSubmitButton()">
+        <text style="color:black">Amount of people: </text><select name="pax" id="pax" style="width:60px;text-align:center" onclick="selectedPax();selectedArea();enableSubmitButton()" onchange="selectedPax();selectedArea();enableSubmitButton()">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -753,12 +795,12 @@ require_once('promoCodesDB.php');
         <input type="checkbox" id="item3" class="preorderItems" name="Shoyu Tuna Specials" value="Shoyu Tuna Specials"/><label for="Shoyu Tuna Specials" style="color:black">Shoyu Tuna Specials <s>(U.P. $12.80)</s> $11.90</label></br>
         <input type="checkbox" id="item4" class="preorderItems" name="Summer Fling" value="Summer Fling"/><label for="Summer Fling" style="color:black">Summer Fling <s>(U.P. $8.90)</s> $7.50</label></br>
         <input type="checkbox" id="item5" class="preorderItems" name="Spidey Senses" value="Spidey Senses"/><label for="Spidey Senses" style="color:black">Spidey Senses <s>(U.P. $5.60)</s> $4.90</label></br></br>
-        <input type="button" id="clearSelected" name="clearSelected" value="Clear Selection" style="margin-left:auto;margin-right:auto;display:block" onclick="clearSelection()"></br>
+        <input type="button" id="clearSelected" name="clearSelected" value="Clear Selection" style="margin-left:auto;margin-right:auto;display:block" onclick="clearSelection();countDown()"></br>
       </fieldset>
 
       <fieldset style="width:434px">
         <legend style="color:black">Apply promocode</legend>
-        <input type="text" id="applyPromo" style="width:200px;display:inline-block">
+        <input type="text" id="applyPromo" style="width:200px;display:inline-block" onchange="countDown()">
         <input type="button" style="margin-left:5px;display:inline-block;width:100px;cursor:pointer" value="Apply" onclick="applyPromoCode()">
         <text id="validityText" style="margin-left:5px;"></text>
       </fieldset>
@@ -783,7 +825,7 @@ require_once('promoCodesDB.php');
         <br><text id="item_4" name="item_4"></text>
         <br><text id="item_5" name="item_5"></text>
       </p>
-      <br><input type="button" name="submitDetails" id="submitDetails" value="Reserve a Table" style="margin-left:35%;width:30%" onclick="submittedDetails();return confirm('Are you sure?');">
+      <br><input type="button" style="float:left;margin-left:15%;width:30%;cursor:pointer" value="back" onclick="backButton()"><input type="button" name="submitDetails" id="submitDetails" value="Reserve a Table" style="float:right;margin-right:15%;width:30%;" onclick="submittedDetails();return confirm('Are you sure?');">
     </form>
     </fieldset>
     </div>
