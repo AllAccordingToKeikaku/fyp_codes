@@ -1,3 +1,7 @@
+<?php
+require_once("menuItems/deliveryOrderDB.php");
+?>
+
 <!DOCTYPE html>
 <html>
     <script>
@@ -12,11 +16,108 @@
         function menuFunction(){
             window.location.replace("menuItems/menu.php");
         }
+
+        var deliveryNumber;
+        function trafficFunction(){
+            deliveryNumber = 0;
+            var slotArrays = '<?php echo json_encode($deliveryOrderArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+            var slotArray = slotArrays.split('].');
+            var deliveryArray = [];
+            var actualDeliveryArray = [];
+            var x;
+            var tempString = "";
+            for (x=0;x<slotArray.length;x++)
+            {
+                deliveryArray.push(slotArray[x]);
+            }
+            for (x=0;x<deliveryArray.length;x++){
+                tempString = String(deliveryArray[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                actualDeliveryArray.push(tempString);
+            }
+            for(x=0; x<actualDeliveryArray.length; x++){
+                console.log(actualDeliveryArray[x][2]);
+                if(actualDeliveryArray[x][2] == "In-progress"){
+                    deliveryNumber++;
+                }
+            }
+
+            document.getElementById("descriptionBox").style.visibility = 'visible';
+            var waitingTime;
+            var preparationTime;
+            var waitingTimeColor;
+            var preparationTimeColor;
+            var reservationAvailability = "Unavailable";
+            var reservationColor;
+
+            waitingTime = deliveryNumber*5+20;
+            preparationTime = deliveryNumber*5;
+            if(waitingTime >= 0 && waitingTime < 30){
+                waitingTimeColor = "green";
+            }
+            else if(waitingTime >=30 && waitingTime < 50){
+                waitingTimeColor = "orange";
+            }
+            else{
+                waitingTimeColor = "red";
+            }
+            if(preparationTime >= 0 && preparationTime < 30){
+                waitingTimeColor = "green";
+            }
+            else if(preparationTime >=30 && preparationTime < 50){
+                preparationTimeColor = "orange";
+            }
+            else{
+                preparationTimeColor = "red";
+            }
+            if(reservationAvailability == "Available"){
+                reservationColor = "green";
+            }
+            else{
+                reservationColor = "red";
+            }
+            document.getElementById("descriptionBox").innerHTML = '<input type="button" value="x" style="cursor:pointer;float:right;position:absolute;margin-left:90%;display:block;top:10px" onclick="returnFunction()">' +
+                                                                    '<b><center><text style="font-size:30px;">Restaurant status: <text style="color:green">Open</text></text></center></b></br></br></br>'+
+                                                                    '<center><div style="display:inline-block;width:auto;"><text style="font-size:30px;">Delivery wait time: <text style="color:' + waitingTimeColor + '">~' + waitingTime + 'mins</text></text></br>' + 
+                                                                    '<text style="font-size:30px;">Reservation booking: <text style="color:' + reservationColor + '">' + reservationAvailability + '</text></text></br>' +
+                                                                    '<text style="font-size:30px;">Preparation time: <text style="color:' + preparationTimeColor + '">~' + preparationTime + 'mins</text></text></br></div></center>';
+        }
+        
+        function returnFunction(){
+            document.getElementById("descriptionBox").style.visibility = 'hidden';
+        }
     </script>
     <style>
         .mouseOverEffects:hover{
             border-bottom : 3px solid #437E96;
             display: inline-block;
+        }
+        .popup {
+            display: inline-block;
+        }
+
+        .popup .popuptext {
+            visibility: hidden;
+            display: inline-block;
+            padding: 44.2839px 49.2043px;
+            gap: 29.52px;
+
+            position: absolute;
+            width: 700px;
+            height: 400px;
+            margin:auto;
+            left: 0;
+            right: 0;
+            top: 30%;
+
+            /* /Gray / White */
+
+            background: #FFFFFF;
+            /* Stroke/light */
+
+            border: 1.23011px solid #DEE2E6;
+            box-shadow: 0px 0px 2.46022px rgba(0, 0, 0, 0.12), 0px 24.6021px 24.6021px rgba(0, 0, 0, 0.08);
+            border-radius: 9.84086px;
         }
     </style>
     <body style="background-color:#FEF2E5;">
@@ -28,7 +129,7 @@
                         <input type="button" value="HOME" style="border:0px;font-size:14;background-color:transparent;cursor:pointer;" onclick="homeFunction()">
                     </span>
                     <span class="mouseOverEffects" style="width:auto;cursor:pointer;">
-                        <input type="button" value="TRAFFIC" style="border:0px;font-size:14;background-color:transparent;cursor:pointer;">
+                        <input type="button" value="TRAFFIC" style="border:0px;font-size:14;background-color:transparent;cursor:pointer;" onclick="trafficFunction()">
                     </span>
                     <span class="mouseOverEffects" style="width:auto;cursor:pointer;">
                         <input type="button" value="MENU" style="border:0px;font-size:14;background-color:transparent;cursor:pointer;" onclick="menuFunction()">
@@ -59,6 +160,10 @@
                     <img src="MoshiQ2 IMG Assets/Promo 1.png" style="float:left;width:50%;height:800px;display:inline-block">
                     <img src="MoshiQ2 IMG Assets/Promo 2.png" style="width:50%;height:800px;display:inline-block">
                 </div>
+                <div class="popup">
+                    <div class="popuptext" id="descriptionBox">
+                    </div></br>
+                </div>  
             </div>
         </form>
     </body>

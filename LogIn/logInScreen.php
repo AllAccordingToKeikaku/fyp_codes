@@ -47,7 +47,7 @@ require_once("accountDB.php");
             }
             for (x=0;x<actualAccountArray.length;x++)
             {
-                if(document.getElementById("inputEmail").value == actualAccountArray[x][3] &&
+                if((document.getElementById("inputEmail").value).toLowerCase() == (actualAccountArray[x][3]).toLowerCase() &&
                     document.getElementById("inputPassword").value == actualAccountArray[x][4]){
                     var emailCookieText = document.getElementById("inputEmail").value;
                     setCookie("email", emailCookieText, 1);
