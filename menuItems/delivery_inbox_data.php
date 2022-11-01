@@ -8,7 +8,7 @@ if(isset($_POST['inboxDate'])){
     $inboxDescription = $_POST['inboxDescription'];
     $inboxDate = $_POST['inboxDate'];
   
-    $INSERT = "INSERT into reservation_inbox (inboxStatus, inboxDescription, inboxDate) 
+    $INSERT = "INSERT into delivery_inbox (inboxStatus, inboxDescription, inboxDate) 
                                           VALUES(?, ?, ?)";
     
     //Prepare statement

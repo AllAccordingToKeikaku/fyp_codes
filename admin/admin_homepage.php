@@ -1,5 +1,6 @@
 <?php
-require_once("inboxDB.php");
+require_once("reservationInboxDB.php");
+require_once("deliveryInboxDB.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -162,37 +163,83 @@ require_once("inboxDB.php");
             return result;
         }
 
-        function displayInbox(){
-            $("#displayInfo tr").remove(); 
-            var slotArrays = '<?php echo json_encode($dataArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");;
-            var slotArray = slotArrays.split('].');
-            var inboxArray = [];
-            var actualInboxArray = [];
-            var x;
-            var y;
-            var tempString = "";
-            var tempString1 = "";
+        function displayEmailR(){
+            document.getElementById('displayR').style.display = "block";
+            document.getElementById('displayD').style.display  = "none";
+            displayInbox("reservation");
+        }
 
-            var checkTOF = true;
-            for (x=0;x<slotArray.length;x++)
-            {
-                inboxArray.push(slotArray[x]);
+        function displayEmailD(){
+            document.getElementById('displayR').style.display = "none";
+            document.getElementById('displayD').style.display = "block";
+            displayInbox("delivery");
+        }
+
+        function displayInbox(emailType){
+            $("#displayReservationInfo tr").remove(); 
+            $("#displayDeliveryInfo tr").remove(); 
+            if(emailType == "reservation"){
+                var slotArrays = '<?php echo json_encode($reservationInboxArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");;
+                var slotArray = slotArrays.split('].');
+                var inboxArray = [];
+                var actualInboxArray = [];
+                var x;
+                var y;
+                var tempString = "";
+                var tempString1 = "";
+
+                var checkTOF = true;
+                for (x=0;x<slotArray.length;x++)
+                {
+                    inboxArray.push(slotArray[x]);
+                }
+                for (x=0;x<inboxArray.length;x++){
+                    tempString = String(inboxArray[x]).replaceAll('[','').replaceAll(']','');
+                    tempString = tempString.split(',');
+                    actualInboxArray.push(tempString);
+                }
+                var table = document.getElementById("displayReservationInfo");
+                y = 0;
+                for (x=actualInboxArray.length-1;x>=0;x--)
+                {
+                    var row = table.insertRow(y);
+                    y++;
+                    var cell = row.insertCell(0);
+                    cell.innerHTML = '<text id="inboxListing' + String(x) + '"></text>';
+                    document.getElementById("inboxListing"+String(x)).innerHTML = createInboxListing(actualInboxArray[x][0], actualInboxArray[x][1].replaceAll('~~', ','), actualInboxArray[x][2]);          
+                }   
             }
-            for (x=0;x<inboxArray.length;x++){
-                tempString = String(inboxArray[x]).replaceAll('[','').replaceAll(']','');
-                tempString = tempString.split(',');
-                actualInboxArray.push(tempString);
+            else if(emailType == "delivery"){
+                var slotArrays = '<?php echo json_encode($deliveryInboxArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");;
+                var slotArray = slotArrays.split('].');
+                var inboxArray = [];
+                var actualInboxArray = [];
+                var x;
+                var y;
+                var tempString = "";
+                var tempString1 = "";
+
+                var checkTOF = true;
+                for (x=0;x<slotArray.length;x++)
+                {
+                    inboxArray.push(slotArray[x]);
+                }
+                for (x=0;x<inboxArray.length;x++){
+                    tempString = String(inboxArray[x]).replaceAll('[','').replaceAll(']','');
+                    tempString = tempString.split(',');
+                    actualInboxArray.push(tempString);
+                }
+                var table = document.getElementById("displayDeliveryInfo");
+                y = 0;
+                for (x=actualInboxArray.length-1;x>=0;x--)
+                {
+                    var row = table.insertRow(y);
+                    y++;
+                    var cell = row.insertCell(0);
+                    cell.innerHTML = '<text id="inboxListing' + String(x) + '"></text>';
+                    document.getElementById("inboxListing"+String(x)).innerHTML = createInboxListing(actualInboxArray[x][0], actualInboxArray[x][1].replaceAll('~~', ','), actualInboxArray[x][2]);          
+                } 
             }
-            var table = document.getElementById("displayInfo");
-            y = 0;
-            for (x=actualInboxArray.length-1;x>=0;x--)
-            {
-                var row = table.insertRow(y);
-                y++;
-                var cell = row.insertCell(0);
-                cell.innerHTML = '<text id="inboxListing' + String(x) + '"></text>';
-                document.getElementById("inboxListing"+String(x)).innerHTML = createInboxListing(actualInboxArray[x][0], actualInboxArray[x][1].replaceAll('~~', ','), actualInboxArray[x][2]);          
-            }   
         }
         
         function createInboxListing(status, description, date){
@@ -216,16 +263,16 @@ require_once("inboxDB.php");
         }
 
         .buttonEffects {
-            border-radius: 15px;
+            border-radius: 10px;
             background-color: #437E96;
             border: none;
-            color: transparent;
-            width: 140px;
-            height: 70px;
+            color: white;
+            width: 200px;
+            height: auto;
             font-size: 20px;
             text-align: center;
+            padding: 5px;
             display: inline-block;
-            float: left;
         }
         .buttonEffects:hover {
             border: 2px solid black;
@@ -237,6 +284,15 @@ require_once("inboxDB.php");
             border-width: 0 1px 1px 0;
             display: inline-block;
             padding: 3px;
+        }
+
+        .example::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .example {
+            -ms-overflow-style: none;  /* IE and Edge */
         }
     </style>
     <body onload="profileDetails()" style="background-color:#FEF2E5">
@@ -260,7 +316,7 @@ require_once("inboxDB.php");
                     <text style="color:#437E96;font-size:30px">EMAIL</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                         <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="emailButton" name="emailButton" value="Email" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="emailFunction();displayInbox()"></br>
+                            <input type="button" id="emailButton" name="emailButton" value="Email" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="emailFunction();displayInbox(this.id)"></br>
                         </div></br></br>
                     </div></br>
 
@@ -303,16 +359,20 @@ require_once("inboxDB.php");
                             Email                               
                         </text></br></br></br>
                         <div>
-                            <text style="margin-left:200px;margin-right:auto;display:inline-block;font-size:40px">INBOX</text>
-                        </div></br>
-
+                            <input class="buttonEffects" type="button" style="float:left;margin-left:15%;width:200px;font-size:20px;padding-5px;" value="Reservation email" onclick="displayEmailR()">
+                            <input class="buttonEffects" type="button" style="float:right;margin-right:15%;width:200px;font-size:20px;padding-5px;" value="Delivery email" onclick="displayEmailD()"></br>
+                        </div></br></br>
                         <div style="background-color:#3280F466;">
                             <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px">Status</text>
                             <text style="margin-left:100px;margin-right:auto;display:inline-block;font-size:20px;width:400px;">Description</text>
                             <text style="margin-left:10px;margin-right:auto;display:inline-block;font-size:20px;width:200px;">Date</text>
                         </div>
-                        <div class="example" style="font-size:20px;height:300px;overflow:auto;">
-                            <table id="displayInfo">
+                        <div id="displayR" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:none">
+                            <table id="displayReservationInfo">
+                            </table>
+                        </div>
+                        <div id="displayD" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:none">
+                            <table id="displayDeliveryInfo">
                             </table>
                         </div>
                     </div>

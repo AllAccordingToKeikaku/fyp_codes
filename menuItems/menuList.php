@@ -1,6 +1,7 @@
 <?php
 require_once("menuDB.php");
 require_once("promoCodesDB.php");
+require_once("deliveryOrderDB.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,6 +26,7 @@ require_once("promoCodesDB.php");
         var item_11 = 0;
         var item_12 = 0;
         var orderPromocode = "None";
+        var deliveryNumber = 0;
 
         function clickedDrop(){
             document.getElementById("accountDrop").style.display= "none";
@@ -867,7 +869,50 @@ require_once("promoCodesDB.php");
                     })
                     }
                 });
+                
+                var inboxStatus = "Delivery";
+                var inboxDescription = "D" + String(deliveryNumber) +
+                                        ": Delivery for " + getCookie("fullName") +
+                                        "~~ at " + orderDate.replaceAll('-','/')+ 
+                                        "~~ " + orderTime;
+                var inboxDate = String(orderDate);
+                
+                console.log(inboxDescription);
+
+                $.ajax({
+                    type: "POST",
+                    url: "delivery_inbox_data.php",
+                    data:{
+                    inboxStatus:inboxStatus,
+                    inboxDescription:inboxDescription,
+                    inboxDate:inboxDate
+                    }
+                });
             }           
+        }
+
+        function getTotalDelivery(){
+            var slotArrays = '<?php echo json_encode($deliveryOrderArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+            var slotArray = slotArrays.split('].');
+            var deliveryArray = [];
+            var actualDeliveryArray = [];
+            var x;
+            var tempString = "";
+            for (x=0;x<slotArray.length;x++)
+            {
+                deliveryArray.push(slotArray[x]);
+            }
+            for (x=0;x<deliveryArray.length;x++){
+                tempString = String(deliveryArray[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                actualDeliveryArray.push(tempString);
+            }
+            if(actualDeliveryArray.length !=0){
+                deliveryNumber = parseInt(actualDeliveryArray[actualDeliveryArray.length-1][0])+1;
+            }
+            else{
+                deliveryNumber = 0;
+            }
         }
     </script>
     <style>
@@ -1120,7 +1165,7 @@ require_once("promoCodesDB.php");
             cursor: pointer;
         }
     </style>
-    <body onload="profileDetails();createItemTables();displayCartNo()" style="background-color:#FEF2E5;">
+    <body onload="profileDetails();createItemTables();displayCartNo();getTotalDelivery()" style="background-color:#FEF2E5;">
         <form action="order_details_data.php/" method ="POST">
             <div style="width:1100px;margin-left:auto;margin-right:auto;">
                 <div style="float:right;border-bottom:5px solid grey;width:100%;height:120px">

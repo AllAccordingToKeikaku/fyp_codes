@@ -3,10 +3,10 @@ require_once("dbConnection.php");
 ?>
 
 <?php
-$query = "SELECT * FROM `inbox`";
+$query = "SELECT * FROM `reservation_inbox`";
 $select = mysqli_query($conn, $query);
 $num_rows = mysqli_num_rows($select);
-$dataArray = array();
+$reservationInboxArray = array();
 $status= "";
 $description = "";
 $date = "";
@@ -16,8 +16,7 @@ if ($num_rows > 0) {
     $description = $rows["inboxDescription"];
     $date = $rows["inboxDate"];
 
-    $dataArray[]=array($status, $description, $date);
+    $reservationInboxArray[]=array($status, $description, $date);
     }
 }
-mysqli_close($conn);
 ?>
