@@ -4,7 +4,6 @@
 <html>
     <script>
         isProfileClicked = false;
-
         function clickedDrop(){
             document.getElementById("accountDrop").style.display= "none";
             document.getElementById("accountCollapse").style.display = "block";

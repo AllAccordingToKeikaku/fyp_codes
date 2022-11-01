@@ -434,9 +434,32 @@ require_once('promoCodesDB.php');
       //Send email
       emailjs.send(serviceID, templateID, params).then(res=>{
           console.log(res);
-        })
-        .catch(err=>console.log(err));
+      })
+      .catch(err=>console.log(err));
 
+      params = {
+        displaySubjectType: displaySubjectType,
+        customerName: customerName,
+        emailAddress: "fyp22s3@gmail.com",
+        phoneNumber: phoneNumber,
+        outletLocation: outletLocation,
+        dateSlot: dateSlot,
+        timeSlot: tempTiming,
+        paxAmount: tempPax,
+        seatingArea: tempSeatArea,
+        discountCode: discountCode,
+        item_1: item_1,
+        item_2: item_2,
+        item_3: item_3,
+        item_4: item_4,
+        item_5: item_5
+      };
+
+      emailjs.send(serviceID, templateID, params).then(res=>{
+          console.log(res);
+      })
+      .catch(err=>console.log(err));
+      
       // Update inbox description
       var inboxStatus = "Reservation";
       var inboxDescription = "R" + String(parseInt(actualBookedArray[actualBookedArray.length-1][0])+1) +

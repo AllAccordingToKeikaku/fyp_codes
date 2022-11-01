@@ -8,6 +8,14 @@ require_once("deliveryOrderDB.php");
     <script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("h8P7-YJmxGhlU0lNA");
+        })();
+    </script>
     <script>
         isProfileClicked = false;
         isCartClicked = false;
@@ -74,8 +82,7 @@ require_once("deliveryOrderDB.php");
         function profileDetails(){
             var deliveryRate = document.getElementById("deliveryPrice");
             deliveryRate.innerHTML = "$" + deliveryPrice.toFixed(2);
-            
-            console.log(document.cookie);
+
             var tempLogInName = getCookie("fullName");
             var tempAddress;
             var tempDateTime;
@@ -828,7 +835,7 @@ require_once("deliveryOrderDB.php");
                 var orderPrice = "$" + String(totalPrice.toFixed(2));
                 var orderStatus = "In-progress";
                 var cc_number = document.getElementById("ccNum").value;
-
+                var addressDetails = getCookie("area") + " " + getCookie("addressDetails") + " s(" + getCookie("postalCode") + ")";
 
 
                 $.ajax({
@@ -841,6 +848,7 @@ require_once("deliveryOrderDB.php");
                         order_price:orderPrice,
                         order_status:orderStatus,
                         order_promocode:orderPromocode,
+                        order_address:addressDetails,
                         HAWAIIAN_SALMON:item_1,
                         COLOURFUL_GODDESS:item_2,
                         SPICY_MIXED_SALMON:item_3,
@@ -852,8 +860,7 @@ require_once("deliveryOrderDB.php");
                         CARAMEL_NUTTIN:item_9,
                         INCREDIBLE_HULK:item_10,
                         ORANGE_MADNESS:item_11,
-                        SPIDEY_SENSES:item_12,
-                        cc_number:cc_number
+                        SPIDEY_SENSES:item_12
                     },
                     success: function(data){
                     Swal.fire({
@@ -888,6 +895,29 @@ require_once("deliveryOrderDB.php");
                     inboxDate:inboxDate
                     }
                 });
+
+                const serviceID = "service_f6ewb26";
+                const templateID = "template_8xfm0mh";
+                var displaySubjectType = "Delivery";
+                var itemList="welp";
+
+                var params = {
+                    displaySubjectType: displaySubjectType,
+                    customerName: getCookie("fullName"),
+                    emailAddress: getCookie("email"),
+                    dateSlot: getCookie("date"),
+                    timeSlot: orderTime,
+                    addressDetails: addressDetails,
+                    promoCode: orderPromocode,
+                    totalPrice: orderPrice,
+                    itemList: itemList
+                };
+
+                //Send email
+                emailjs.send(serviceID, templateID, params).then(res=>{
+                    console.log(res);
+                })
+                .catch(err=>console.log(err));
             }           
         }
 
