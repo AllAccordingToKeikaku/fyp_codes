@@ -36,7 +36,6 @@
 
 
         function profileDetails(){
-            console.log(document.cookie);
             var tempLogInName = getCookie("fullName");
             var tempAddress;
             var tempDateTime;
@@ -143,8 +142,6 @@
             var optionList = document.getElementById('timeSelect');
             var checkTF = false;
             for (var x=0; x < optionList.length; x++){
-                //
-                console.log(parseInt(curTime));
                 if(getDate <= today && parseInt(curTime) > parseInt(optionList[x].value.replaceAll(":", ""))){
                     document.getElementById(optionList[x].value).disabled = true;
                 }
@@ -156,6 +153,7 @@
                     }
                 }
             }                   
+            setCookie("clickedCurrentTime", "false", 1);
             checkDateTimeFunction();
         }
 
@@ -224,14 +222,11 @@
                 }
             }
             today = yyyy+'-'+mm+'-'+dd;
-            console.log(today);
-            console.log(curTime);
             document.getElementById('dateTimeButton').value = today + ", " + curTime;
-            console.log(document.cookie);
             setCookie("date", today, 7);
             setCookie("time", curTime, 7);
-            console.log(document.cookie);
             document.getElementById("myPopupDateTime").style.visibility = 'hidden';
+            setCookie("clickedCurrentTime", "true", 1);
         }
     </script>
     <style>

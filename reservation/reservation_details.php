@@ -43,7 +43,7 @@ require_once('promoCodesDB.php');
     var item_4;
     var item_5;
     var timerCounter;
-
+    var reservationNumID;
     var preorderList = [];
 
     $(function(){
@@ -320,7 +320,7 @@ require_once('promoCodesDB.php');
             'title': 'Successfully submitted reservation details!',
             'text': data,
             'type': 'success'
-          })
+          }).then(setTimeout(function(){window.location.replace("../customer/accountDetails.php");}, 2000))
         },
         error: function(data){
           Swal.fire({
@@ -410,8 +410,36 @@ require_once('promoCodesDB.php');
         tempPax = paxAmount;
       }
 
+      // Update inbox description
+      var inboxStatus = "Reservation";
+      if(actualBookedArray.length != 0 && actualBookedArray[actualBookedArray.length-1] != ""){
+        reservationNumID = parseInt(actualBookedArray[actualBookedArray.length-1][0])+1;
+      }
+      else{
+        reservationNumID = 1;
+      }
+      var inboxDescription = "R" + String(parseInt(reservationNumID)) +
+                              ": Reservation for " + customerName +
+                              "~~ at " + dateSlot.replaceAll('-','/')+ 
+                              "~~ " + tempTiming + "~~ for " + tempPax +
+                              "(" + tempSeatArea.replaceAll(",", "~~") + ")";
+      var inboxDate = String(new Date().toJSON().slice(0,10).replace(/-/g,'/'));
+      
+      console.log(inboxDescription);
+
+      $.ajax({
+        type: "POST",
+        url: "inbox_details_data.php",
+        data:{
+          inboxStatus:inboxStatus,
+          inboxDescription:inboxDescription,
+          inboxDate:inboxDate
+        }
+      });
+
       var params = {
         displaySubjectType: displaySubjectType,
+        reservationID: reservationNumID,
         customerName: customerName,
         emailAddress: emailAddress,
         phoneNumber: phoneNumber,
@@ -439,6 +467,7 @@ require_once('promoCodesDB.php');
 
       params = {
         displaySubjectType: displaySubjectType,
+        reservationID: reservationNumID,
         customerName: customerName,
         emailAddress: "fyp22s3@gmail.com",
         phoneNumber: phoneNumber,
@@ -459,27 +488,6 @@ require_once('promoCodesDB.php');
           console.log(res);
       })
       .catch(err=>console.log(err));
-      
-      // Update inbox description
-      var inboxStatus = "Reservation";
-      var inboxDescription = "R" + String(parseInt(actualBookedArray[actualBookedArray.length-1][0])+1) +
-                              ": Reservation for " + customerName +
-                              "~~ at " + dateSlot.replaceAll('-','/')+ 
-                              "~~ " + tempTiming + "~~ for " + tempPax +
-                              "(" + tempSeatArea.replaceAll(",", "~~") + ")";
-      var inboxDate = String(new Date().toJSON().slice(0,10).replace(/-/g,'/'));
-      
-      console.log(inboxDescription);
-
-      $.ajax({
-        type: "POST",
-        url: "inbox_details_data.php",
-        data:{
-          inboxStatus:inboxStatus,
-          inboxDescription:inboxDescription,
-          inboxDate:inboxDate
-        }
-      });
       countDown();
     }
 
@@ -593,7 +601,14 @@ require_once('promoCodesDB.php');
         tempString = tempString.split(',');
         actualBookedArray1.push(tempString);
       }
-      document.getElementById("reservationCount").innerHTML = actualBookedArray1.length;
+      var reservationCount;
+      if(actualBookedArray1.length != 0 && actualBookedArray1[actualBookedArray1.length-1] != ""){
+        reservationCount = actualBookedArray1.length;
+      }
+      else{
+        reservationCount = 0;
+      }
+      document.getElementById("reservationCount").innerHTML = reservationCount;
     }
 
     var myVar;

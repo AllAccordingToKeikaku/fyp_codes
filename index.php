@@ -36,7 +36,6 @@ require_once("menuItems/deliveryOrderDB.php");
                 actualDeliveryArray.push(tempString);
             }
             for(x=0; x<actualDeliveryArray.length; x++){
-                console.log(actualDeliveryArray[x][2]);
                 if(actualDeliveryArray[x][2] == "In-progress"){
                     deliveryNumber++;
                 }
@@ -51,7 +50,7 @@ require_once("menuItems/deliveryOrderDB.php");
             var reservationColor;
 
             waitingTime = deliveryNumber*5+20;
-            preparationTime = deliveryNumber*5;
+            preparationTime = deliveryNumber*5+10;
             if(waitingTime >= 0 && waitingTime < 30){
                 waitingTimeColor = "green";
             }
@@ -62,7 +61,7 @@ require_once("menuItems/deliveryOrderDB.php");
                 waitingTimeColor = "red";
             }
             if(preparationTime >= 0 && preparationTime < 30){
-                waitingTimeColor = "green";
+                preparationTimeColor = "green";
             }
             else if(preparationTime >=30 && preparationTime < 50){
                 preparationTimeColor = "orange";
@@ -76,15 +75,25 @@ require_once("menuItems/deliveryOrderDB.php");
             else{
                 reservationColor = "red";
             }
+
             document.getElementById("descriptionBox").innerHTML = '<input type="button" value="x" style="cursor:pointer;float:right;position:absolute;margin-left:90%;display:block;top:10px" onclick="returnFunction()">' +
                                                                     '<b><center><text style="font-size:30px;">Restaurant status: <text style="color:green">Open</text></text></center></b></br></br></br>'+
                                                                     '<center><div style="display:inline-block;width:auto;"><text style="font-size:30px;">Delivery wait time: <text style="color:' + waitingTimeColor + '">~' + waitingTime + 'mins</text></text></br>' + 
                                                                     '<text style="font-size:30px;">Reservation booking: <text style="color:' + reservationColor + '">' + reservationAvailability + '</text></text></br>' +
                                                                     '<text style="font-size:30px;">Preparation time: <text style="color:' + preparationTimeColor + '">~' + preparationTime + 'mins</text></text></br></div></center>';
+            setCookie("waitingTiming", waitingTime, 1);
+            setCookie("preparationTiming", waitingTime, 1);
         }
-        
+
         function returnFunction(){
             document.getElementById("descriptionBox").style.visibility = 'hidden';
+        }
+
+        function setCookie(nameCookie, valueCookie, timeCookie){
+            const date = new Date();
+            date.setTime(date.getTime() +  (timeCookie * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + date.toUTCString();
+            document.cookie = `${nameCookie}=${valueCookie}; ${expires}; path=/`
         }
     </script>
     <style>
@@ -120,7 +129,7 @@ require_once("menuItems/deliveryOrderDB.php");
             border-radius: 9.84086px;
         }
     </style>
-    <body style="background-color:#FEF2E5;">
+    <body style="background-color:#FEF2E5;" onload="trafficFunction()">
         <form>
             <div style="width:1200px;margin-left:auto;margin-right:auto;background-color:#FEF2E5;">
                 <a href="index.php"><img src="MoshiQ2 IMG Assets/Logo.png" style="float:left;margin-left:0px;width:500px;height:200px;display:block"></a>

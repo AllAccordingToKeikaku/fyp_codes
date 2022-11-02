@@ -35,6 +35,8 @@ require_once("deliveryOrderDB.php");
         var item_12 = 0;
         var orderPromocode = "None";
         var deliveryNumber = 0;
+        var itemList = "";
+        var currentDate;
 
         function clickedDrop(){
             document.getElementById("accountDrop").style.display= "none";
@@ -170,6 +172,7 @@ require_once("deliveryOrderDB.php");
                 curTime = String(today.getHours()) + String(today.getMinutes());
             }
             today = yyyy+'-'+mm+'-'+dd;
+            currentDate = today;
             document.getElementById("dateSelect").setAttribute("min", today);
             if(document.getElementById("dateSelect").value == ""){
                 document.getElementById("dateSelect").value = today;
@@ -184,8 +187,6 @@ require_once("deliveryOrderDB.php");
             var optionList = document.getElementById('timeSelect');
             var checkTF = false;
             for (var x=0; x < optionList.length; x++){
-                //
-                console.log(parseInt(curTime));
                 if(getDate <= today && parseInt(curTime) > parseInt(optionList[x].value.replaceAll(":", ""))){
                     document.getElementById(optionList[x].value).disabled = true;
                 }
@@ -196,7 +197,8 @@ require_once("deliveryOrderDB.php");
                         checkTF = true;
                     }
                 }
-            }            
+            }    
+            setCookie("clickedCurrentTime", "false", 1);        
             checkDateTimeFunction();
         }
 
@@ -525,6 +527,7 @@ require_once("deliveryOrderDB.php");
 
             subTotalPrice = 0;
             entireListArray = [];
+            itemList = "";
             for (var x=0; x<tempCartArray.length; x++){
                 switch(tempCartArray[x]){
                     case "HAWAIIAN SALMON":
@@ -599,7 +602,6 @@ require_once("deliveryOrderDB.php");
                 num.innerText = startingValue;
                 subTotalPrice += foodPrice*(startingValue-tempStartValue);
                 document.getElementById("cartPrice").innerHTML = "$" + subTotalPrice.toFixed(2) ;
-                console.log(discountedRates);
                 if(discountedRates != 0){
                     totalPrice = subTotalPrice * discountedRates + deliveryPrice;
                     document.getElementById("totalPrice").innerHTML = "$" + (totalPrice).toFixed(2); 
@@ -667,6 +669,7 @@ require_once("deliveryOrderDB.php");
                                 '<span id="plusA' + itemID + '">+</span>' +
                             '</div>' +
                             '<b><text style="margin-left:20px;float:right;display:block;font-size:15px;">$' + itemPrice.toFixed(2) + '</text></div></b>';     
+            itemList += itemAmount + "x " +  itemName + " = $" + (itemPrice*itemAmount).toFixed(2) + " <br>";
             return cartItem;
         }
 
@@ -739,8 +742,6 @@ require_once("deliveryOrderDB.php");
             }
             for (x=0;x<actualPromoCodeArray.length;x++)
             {
-                console.log(actualPromoCodeArray[x]);
-                console.log(tempPromoCode);
                 if (actualPromoCodeArray[x][1] == tempPromoCode){        
                     checkDiscount = actualPromoCodeArray[x][1];
                     document.getElementById("validityText").innerHTML = "Valid";
@@ -794,15 +795,12 @@ require_once("deliveryOrderDB.php");
                 }
             }
             today = yyyy+'-'+mm+'-'+dd;
-            console.log(today);
-            console.log(curTime);
             document.getElementById('dateTimeButton').value = today + ", " + curTime;
-            console.log(document.cookie);
             setCookie("date", today, 7);
             setCookie("time", curTime, 7);
-            console.log(document.cookie);
             document.getElementById("myPopupDateTime").style.visibility = 'hidden';
             document.getElementById("confirmDateTimeText").innerHTML = today + ", " + curTime;
+            setCookie("clickedCurrentTime", "true", 1);
         }
 
         function closePopupCreditCard(){
@@ -813,6 +811,7 @@ require_once("deliveryOrderDB.php");
             document.getElementById("ccPaymentMethod").style.display = 'block';
             document.getElementById("gpPaymentMethod").style.display = 'none';
             document.getElementById("grabPay").checked = false;
+            getTotalDelivery();
         }
 
         function displayGrabPay(){
@@ -835,8 +834,8 @@ require_once("deliveryOrderDB.php");
                 var orderPrice = "$" + String(totalPrice.toFixed(2));
                 var orderStatus = "In-progress";
                 var cc_number = document.getElementById("ccNum").value;
-                var addressDetails = getCookie("area") + " " + getCookie("addressDetails") + " s(" + getCookie("postalCode") + ")";
-
+                var addressDetails = getCookie("area") + " " + getCookie("addressDetails") + ", s(" + getCookie("postalCode") + ")";
+                getTotalDelivery();
 
                 $.ajax({
                     type: "POST",
@@ -883,8 +882,6 @@ require_once("deliveryOrderDB.php");
                                         "~~ at " + orderDate.replaceAll('-','/')+ 
                                         "~~ " + orderTime;
                 var inboxDate = String(orderDate);
-                
-                console.log(inboxDescription);
 
                 $.ajax({
                     type: "POST",
@@ -899,10 +896,31 @@ require_once("deliveryOrderDB.php");
                 const serviceID = "service_f6ewb26";
                 const templateID = "template_8xfm0mh";
                 var displaySubjectType = "Delivery";
-                var itemList="welp";
+                var orderHours;
+                var orderMins;
+                var tempTimeArray = String(orderTime).split(":");
+                orderHours = parseInt(tempTimeArray[0])*60;
+                orderMins = parseInt(tempTimeArray[1]);
+                var timingType;
+                trafficFunction();
 
+                if(currentDate == orderDate){
+                    if(getCookie("clickedCurrentTime") == "true"){
+                        timingType = parseInt(getCookie("waitingTiming"));
+                    }
+                    else{
+                        timingType = parseInt(getCookie("preparationTiming"));
+                    }
+                }
+                else{
+                    timingType = 0;
+                }
+                var deliveryETA = timeConvert1(orderHours + orderMins + timingType );
+                
                 var params = {
                     displaySubjectType: displaySubjectType,
+                    deliveryID: deliveryNumber,
+                    deliveryETA: deliveryETA,
                     customerName: getCookie("fullName"),
                     emailAddress: getCookie("email"),
                     dateSlot: getCookie("date"),
@@ -918,8 +936,41 @@ require_once("deliveryOrderDB.php");
                     console.log(res);
                 })
                 .catch(err=>console.log(err));
-            }           
+
+                var params = {
+                    displaySubjectType: displaySubjectType,
+                    deliveryID: deliveryNumber,
+                    deliveryETA: deliveryETA,
+                    customerName: getCookie("fullName"),
+                    emailAddress: "fyp22s3@gmail.com",
+                    dateSlot: getCookie("date"),
+                    timeSlot: orderTime,
+                    addressDetails: addressDetails,
+                    promoCode: orderPromocode,
+                    totalPrice: orderPrice,
+                    itemList: itemList
+                };
+
+                //Send email
+                emailjs.send(serviceID, templateID, params).then(res=>{
+                    console.log(res);
+                })
+                .catch(err=>console.log(err));
+            }    
         }
+
+        function timeConvert1(data) {
+            var tempMinutes = data % 60;
+            var minutes;
+            if(tempMinutes < 10){
+                minutes = "0" + String(tempMinutes);
+            }
+            else{
+                minutes = tempMinutes;
+            }
+            var hours = (data - minutes) / 60;  
+            return (hours + ":" + minutes);
+        }   
 
         function getTotalDelivery(){
             var slotArrays = '<?php echo json_encode($deliveryOrderArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
@@ -937,12 +988,44 @@ require_once("deliveryOrderDB.php");
                 tempString = tempString.split(',');
                 actualDeliveryArray.push(tempString);
             }
-            if(actualDeliveryArray.length !=0){
+            if(actualDeliveryArray.length !=0 && actualDeliveryArray[actualDeliveryArray.length-1] != ""){
                 deliveryNumber = parseInt(actualDeliveryArray[actualDeliveryArray.length-1][0])+1;
             }
             else{
-                deliveryNumber = 0;
+                deliveryNumber = 1;
             }
+        }
+
+        function trafficFunction(){
+            var deliveryNum = 0;
+            var slotArrays = '<?php echo json_encode($deliveryOrderArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+            var slotArray = slotArrays.split('].');
+            var deliveryArray = [];
+            var actualDeliveryArray = [];
+            var x;
+            var tempString = "";
+            for (x=0;x<slotArray.length;x++)
+            {
+                deliveryArray.push(slotArray[x]);
+            }
+            for (x=0;x<deliveryArray.length;x++){
+                tempString = String(deliveryArray[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                actualDeliveryArray.push(tempString);
+            }
+            for(x=0; x<actualDeliveryArray.length; x++){
+                if(actualDeliveryArray[x][2] == "In-progress"){
+                    deliveryNum++;
+                }
+            }
+
+            var waitingTime;
+            var preparationTime;
+
+            waitingTime = deliveryNum*5+20;
+            preparationTime = deliveryNum*5+10;
+            setCookie("waitingTiming", waitingTime, 1);
+            setCookie("preparationTiming", waitingTime, 1);
         }
     </script>
     <style>
