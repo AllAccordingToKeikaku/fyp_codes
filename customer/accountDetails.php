@@ -1,5 +1,6 @@
 <?php
 require_once("ordersDB.php");
+require_once("promoDB.php");
 require_once("reservationDB.php");
 ?>
 <!DOCTYPE html>
@@ -15,12 +16,11 @@ require_once("reservationDB.php");
             document.getElementById("reservationsDisplay").style.display = 'none';
             document.getElementById("accountDisplay").style.display = 'none';
             document.getElementById("promoDisplay").style.display = 'none';
-            document.getElementById("notificationsDisplay").style.display = 'none';
 
             var dataArrays = '<?php echo json_encode($ordersArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
             var dataArray = dataArrays.split('].');
             var orderArray = [];
-            var orderArrays = [];
+            var promoArrays = [];
             var dateArray = [];
             var dayArray = [];
             var timeArray = [];
@@ -46,7 +46,7 @@ require_once("reservationDB.php");
             {
                 tempItemsArray = [];
                 if(actualOrderArray[x][1] == getCookie("accountID")){
-                    orderArrays.push("#" + actualOrderArray[x][0]);
+                    promoArrays.push("#" + actualOrderArray[x][0]);
                     dateArray.push(actualOrderArray[x][2]);
                     timeArray.push(actualOrderArray[x][3]);
                     priceArray.push(actualOrderArray[x][4]);
@@ -108,7 +108,7 @@ require_once("reservationDB.php");
             var tempString = "";
             var table = document.getElementById('ordersList');
 
-            for (x=0; x<orderArrays.length; x++){
+            for (x=0; x<promoArrays.length; x++){
                 var row = table.insertRow(x);
                 var cell = row.insertCell(0);
                 cell.innerHTML = '<text id="order' + String(x) + '"></text>';
@@ -116,7 +116,7 @@ require_once("reservationDB.php");
 
             var table = document.getElementById('deliveredList');
 
-            for (x=0; x<orderArrays.length; x++){
+            for (x=0; x<promoArrays.length; x++){
                 var row = table.insertRow(x);
                 var cell = row.insertCell(0);
                 cell.innerHTML = '<text id="delivered' + String(x) + '"></text>';
@@ -136,11 +136,11 @@ require_once("reservationDB.php");
                 }
             }
             var j=0;
-            //for (x=0; x<orderArrays.length; x++){
-            for (x=orderArrays.length-1; x>=0; x--){
+            //for (x=0; x<promoArrays.length; x++){
+            for (x=promoArrays.length-1; x>=0; x--){
                 if(orderStatusArray[x] == "In-progress"){
                     document.getElementById("order"+String(j)).innerHTML = '<text style="border-radius:15px;background-color:#C7FAC9;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +
-                                                            '<b>Order ID:</b> '+ orderArrays[x] + '</br>' +
+                                                            '<b>Order ID:</b> '+ promoArrays[x] + '</br>' +
                                                             '<b>Date & Time:</b> '+ dateArray[x] + 
                                                             ' (' + dayArray[x] + '), ' + timeArray[x] +
                                                             '</br></br>' + itemArray[x] + '</br>' +  
@@ -150,7 +150,7 @@ require_once("reservationDB.php");
                 }
                 else{
                     document.getElementById("delivered"+String(j)).innerHTML = '<text style="border-radius:15px;background-color:#C7FAC9;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +
-                                                            '<b>Order ID:</b> '+ orderArrays[x] + '</br>' +
+                                                            '<b>Order ID:</b> '+ promoArrays[x] + '</br>' +
                                                             '<b>Date & Time:</b> '+ dateArray[x] + 
                                                             ' (' + dayArray[x] + '), ' + timeArray[x] +
                                                             '</br></br>' + itemArray[x] + '</br>' +  
@@ -168,7 +168,6 @@ require_once("reservationDB.php");
             document.getElementById("reservationsDisplay").style.display = 'block';
             document.getElementById("accountDisplay").style.display = 'none';
             document.getElementById("promoDisplay").style.display = 'none';
-            document.getElementById("notificationsDisplay").style.display = 'none';
 
             var dataArrays = '<?php echo json_encode($reservationsArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
             var dataArray = dataArrays.split('].');
@@ -269,23 +268,50 @@ require_once("reservationDB.php");
             document.getElementById("reservationsDisplay").style.display = 'none';
             document.getElementById("accountDisplay").style.display = 'block';
             document.getElementById("promoDisplay").style.display = 'none';
-            document.getElementById("notificationsDisplay").style.display = 'none';
         }
 
         function promoFunction(){
+            $("#divTable tr").remove(); 
             document.getElementById("ordersDisplay").style.display = 'none';
             document.getElementById("reservationsDisplay").style.display = 'none';
             document.getElementById("accountDisplay").style.display = 'none';
             document.getElementById("promoDisplay").style.display = 'block';
-            document.getElementById("notificationsDisplay").style.display = 'none';
-        }
 
-        function notificationsFunction(){
-            document.getElementById("ordersDisplay").style.display = 'none';
-            document.getElementById("reservationsDisplay").style.display = 'none';
-            document.getElementById("accountDisplay").style.display = 'none';
-            document.getElementById("promoDisplay").style.display = 'none';
-            document.getElementById("notificationsDisplay").style.display = 'block';
+            var dataArrays = '<?php echo json_encode($promoArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+            var dataArray = dataArrays.split('].');
+            var promoArray = [];
+            var actualPromoArray = [];
+
+            var x;
+            var tempString = "";
+            for (x=0;x<dataArray.length;x++)
+            {
+                promoArray.push(dataArray[x]);
+            }
+            for (x=0;x<promoArray.length;x++){
+                tempString = String(promoArray[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                actualPromoArray.push(tempString);
+            }
+            var x;
+            var y;
+            var tempString = "";
+            var table = document.getElementById('promoList');
+
+            for (x=0; x<actualPromoArray.length; x++){
+                var row = table.insertRow(x);
+                var cell = row.insertCell(0);
+                cell.innerHTML = '<text id="promo' + String(x) + '"></text>';
+            }
+
+            var j=0;
+            for (x=actualPromoArray.length-1; x>=0; x--){
+                document.getElementById("promo"+String(j)).innerHTML = '<text style="background-color:#A0D5EB;border:0px;margin-top:10px;width:600px;padding:5px;display:inline-block">' +
+                                                        '<center><img src="' + actualPromoArray[x][2] + '" style="width:100%;height:auto;"></center></br>' +
+                                                        '<text>Promo code: ' + actualPromoArray[x][0] + '</text></br></br>' + 
+                                                        '<text>Discounted rate: ' + actualPromoArray[x][1] + '%</text></br>';     
+                j++;          
+            }
         }
 
         function reminderFunction(){
@@ -293,7 +319,6 @@ require_once("reservationDB.php");
             document.getElementById("reservationsDisplay").style.display = 'none';
             document.getElementById("accountDisplay").style.display = 'none';
             document.getElementById("promoDisplay").style.display = 'none';
-            document.getElementById("notificationsDisplay").style.display = 'none';
         }
 
         function clickedDrop(){
@@ -422,10 +447,6 @@ require_once("reservationDB.php");
                     <div class="mouseOverEffects" style="width:120px">
                         <input type="button" id="promoButton" name="promoButton" value="Promo Codes" style="padding:10px;border:0px;background-color:transparent;cursor:pointer;width:120px;text-align:left" onclick="promoFunction()"></br>
                     </div>
-
-                    <div class="mouseOverEffects" style="width:120px">
-                        <input type="button" id="notificationsButton" name="notificationsButton" value="Notifications" style="padding:10px;border:0px;background-color:transparent;cursor:pointer;width:120px;text-align:left" onclick="notificationsFunction()"></br>
-                    </div>
                 </div>
                 </div>
 
@@ -443,14 +464,14 @@ require_once("reservationDB.php");
                             Upcoming Orders                               
                         </text>
                         </br></br>
-                        <div id="divTable" class="example" style="overflow-y:scroll;width:650px">
+                        <div id="divTable" class="example" style="overflow-y:scroll;width:650px;max-height:500px">
                             <table id="ordersList"></table>
                         </div>                
                         </br></br></br>
                         <text style="color:#437E96;font-size:30px;">
                             Past Orders                               
                         </text>
-                        <div id="divTable" class="example" style="overflow-y:scroll;width:650px">
+                        <div id="divTable" class="example" style="overflow-y:scroll;width:650px;max-height:500px">
                             <table id="deliveredList"></table>
                         </div> 
                     </div>
@@ -464,12 +485,12 @@ require_once("reservationDB.php");
                             Keep track of your reservations all in one place.
                         </text>
                         </br></br>
-                        <div id="divTable" class="example" style="overflow-y:scroll;width:650px">
+                        <div id="divTable" class="example" style="overflow-y:scroll;width:650px;max-height:700px">
                             <table id="reservationsList"></table>
                         </div>                
                     </div>
 
-                    <div id="accountDisplay" style="display:none">
+                    <div id="accountDisplay" style="display:none;width:600px;">
                         <div id="accountCustomerTab" style="display:block">
                             <text style="color:#437E96;font-size:30px;">
                                 Account - Customer                         
@@ -496,24 +517,18 @@ require_once("reservationDB.php");
                         </div>
                     </div>
 
-                    <div id="promoDisplay" style="display:none">
+                    <div id="promoDisplay" style="display:none;width:600px;">
                         <text style="color:#437E96;font-size:30px;">
                             Promo Codes                             
                         </text>
                         </br>
                         <text style="font-size:20px;color:black">
-                            Keep track of your upcoming and past orders all in one place.
+                            Save more while enjoying!
                         </text>
-                    </div>
-
-                    <div id="notificationsDisplay" style="display:none">
-                        <text style="color:#437E96;font-size:30px;">
-                            Notifications                              
-                        </text>
-                        </br>
-                        <text style="font-size:20px;color:black">
-                            Keep track of your upcoming and past orders all in one place.
-                        </text>
+                        </br></br>
+                        <div id="divTable" class="example" style="overflow-y:scroll;width:650px;max-height:700px">
+                            <table id="promoList"></table>
+                        </div> 
                     </div>
                 </div>         
             </div>
