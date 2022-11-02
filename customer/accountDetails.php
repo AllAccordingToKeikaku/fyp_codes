@@ -387,6 +387,15 @@ require_once("reservationDB.php");
         function updateAccountFunction(){
 
         }
+
+        function displayAccountDetails(){
+            var getEmail = document.getElementById('delAccountEmail');
+            var getName = document.getElementById('delAccountName');
+            var getNumber = document.getElementById('delAccountNumber');
+            getEmail.value = getCookie('email');
+            getName.value = getCookie('fullName');
+            getNumber.value = getCookie('number');
+        }
     </script>
     <style>
         .mouseOverEffects:hover{
@@ -441,7 +450,7 @@ require_once("reservationDB.php");
                     </div>
 
                     <div class="mouseOverEffects" style="width:120px">
-                        <input type="button" id="accountButton" name="accountButton" value="Account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer;width:120px;text-align:left" onclick="accountFunction()"></br>
+                        <input type="button" id="accountButton" name="accountButton" value="Account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer;width:120px;text-align:left" onclick="accountFunction();displayAccountDetails();"></br>
                     </div>
 
                     <div class="mouseOverEffects" style="width:120px">
@@ -496,9 +505,9 @@ require_once("reservationDB.php");
                                 Account - Customer                         
                             </text>
                             </br></br>
-                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Email: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address" disabled></br></br>
-                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Name: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter name" disabled></br></br>
-                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Number: </label><input type="text" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter number" disabled></br></br></br></br>
+                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Email: </label><input type="text" id="delAccountEmail" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address" disabled></br></br>
+                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Name: </label><input type="text" id="delAccountName" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter name" disabled></br></br>
+                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Number: </label><input type="text" id="delAccountNumber" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter number" disabled></br></br></br></br>
                             <input type="button" class="buttonEffects" style="font-size:15px;width:150px;padding:10px;background-color:#5BBDE4CC;border-radius:10px;cursor:pointer" value="Update account" onclick="goToUpdateFunction()">
                             <input type="button" class="buttonEffects" style="margin-left:50px;font-size:15px;width:150px;padding:10px;background-color:#F80000CC;border-radius:10px;cursor:pointer" value="Delete account" onclick="deleteAccountFunction()">
                         </div>

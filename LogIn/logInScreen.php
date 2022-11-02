@@ -56,6 +56,7 @@ require_once("accountDB.php");
                     setCookie("password", passwordCookieText, 1);
                     setCookie("fullName", actualAccountArray[x][2], 1);
                     setCookie("accountID", actualAccountArray[x][0], 1);
+                    setCookie("number", actualAccountArray[x][5], 1);
                     checkTOF = true;
                     if(actualAccountArray[x][1] == "customer"){
                         window.location.href = "../customer/customer_landingPage.php";
