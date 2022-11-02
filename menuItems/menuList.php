@@ -1027,6 +1027,10 @@ require_once("deliveryOrderDB.php");
             setCookie("waitingTiming", waitingTime, 1);
             setCookie("preparationTiming", waitingTime, 1);
         }
+
+        function backButton(){
+            window.location.href = "../customer/customer_landingPage.php";
+        }
     </script>
     <style>
         .mouseOverEffects{
@@ -1277,6 +1281,19 @@ require_once("deliveryOrderDB.php");
             border: 2px solid black;
             cursor: pointer;
         }
+
+        .backEffects{
+            border: none;
+            cursor: pointer;
+            display:inline-block;
+            height:40px;
+        }
+
+        .backEffects:hover{
+            border: 2px solid black;
+            cursor: pointer;
+            display:inline-block;
+        }
     </style>
     <body onload="profileDetails();createItemTables();displayCartNo();getTotalDelivery()" style="background-color:#FEF2E5;">
         <form action="order_details_data.php/" method ="POST">
@@ -1395,6 +1412,9 @@ require_once("deliveryOrderDB.php");
                                 <a href="#beveragesDisplay"><input type="button" id="beveragesButton" name="beveragesButton" value="Beverages" style="padding:10px;border:0px;background-color:transparent;cursor:pointer"></a></br>
                             </div>
                         </div></br>
+                    </div>
+                    <div style="margin-top:30px;display:block;float:left;margin-left:40px;">
+                        <input class="backEffects" type="button" value="<= Back" style="width:100px;font-size:20px;background-color:#437E96;color:white;border-radius:7px" onclick="backButton()">
                     </div>
                 </div>
 

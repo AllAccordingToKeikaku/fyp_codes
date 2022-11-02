@@ -863,7 +863,7 @@ require_once('promoCodesDB.php');
         <br><text id="item_4" name="item_4"></text>
         <br><text id="item_5" name="item_5"></text>
       </p>
-      <br><input type="button" style="float:left;margin-left:15%;width:30%;cursor:pointer" value="back" onclick="backButton()"><input type="button" name="submitDetails" id="submitDetails" value="Reserve a Table" style="float:right;margin-right:15%;width:30%;" onclick="submittedDetails();return confirm('Are you sure?');">
+      <br><input type="button" style="float:left;margin-left:15%;width:30%;cursor:pointer" value="Back" onclick="backButton()"><input type="button" name="submitDetails" id="submitDetails" value="Reserve a Table" style="float:right;margin-right:15%;width:30%;" onclick="submittedDetails();return confirm('Are you sure?');">
     </form>
     </fieldset>
     </div>

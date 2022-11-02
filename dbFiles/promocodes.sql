@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 16, 2022 at 10:45 AM
+-- Generation Time: Nov 02, 2022 at 04:51 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -30,15 +30,17 @@ SET time_zone = "+00:00";
 CREATE TABLE `promocodes` (
   `promoID` int(255) NOT NULL,
   `codeName` varchar(999) NOT NULL,
-  `discountRate` varchar(999) NOT NULL
+  `discountRate` varchar(999) NOT NULL,
+  `imgFile` varchar(999) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `promocodes`
 --
 
-INSERT INTO `promocodes` (`promoID`, `codeName`, `discountRate`) VALUES
-(1, 'moshiqq50', '50');
+INSERT INTO `promocodes` (`promoID`, `codeName`, `discountRate`, `imgFile`) VALUES
+(1, 'moshiqq50', '50', '../MoshiQ2 IMG Assets/Promo code 1.png'),
+(3, 'moshiqq30', '30', '../MoshiQ2 IMG Assets/Promo code 2.png');
 
 --
 -- Indexes for dumped tables
@@ -58,7 +60,7 @@ ALTER TABLE `promocodes`
 -- AUTO_INCREMENT for table `promocodes`
 --
 ALTER TABLE `promocodes`
-  MODIFY `promoID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `promoID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
