@@ -250,6 +250,10 @@ require_once("deliveryInboxDB.php");
                         '</div>'
             return listing;
         }
+
+        function createProfile(){
+            alert("Create profile clicked");
+        }
     </script>
     <style>
         .mouseOverEffects{
@@ -293,6 +297,15 @@ require_once("deliveryInboxDB.php");
         /* Hide scrollbar for IE, Edge and Firefox */
         .example {
             -ms-overflow-style: none;  /* IE and Edge */
+        }
+
+        .buttonHoverEffect {
+            border: none;
+            cursor:pointer;
+        }
+        .buttonHoverEffect:hover {
+            border: 2px solid black;
+            cursor:pointer;
         }
     </style>
     <body onload="profileDetails()" style="background-color:#FEF2E5">
@@ -355,7 +368,7 @@ require_once("deliveryInboxDB.php");
 
                 <div style="float:left;margin-left:300px;">
                     <div id="emailDisplay" style="display:none;width:900px;">
-                        <text style="color:#437E96;font-size:30px;">
+                        <text style="color:#437E96;font-size:40px;">
                             Email                               
                         </text></br></br></br>
                         <div>
@@ -380,18 +393,34 @@ require_once("deliveryInboxDB.php");
 
                 <div style="float:left;margin-left:300px;">
                     <div id="createUserProfileDisplay" style="display:none;width:600px;">
-                        <text style="color:#437E96;font-size:30px;">
+                        <text style="color:#437E96;font-size:40px;">
                             Create user profile                              
-                        </text></br></br>
-                        <text>Create user profile</text>
+                        </text></br></br></br>
+                        <div id="userProfile" style="font-size:20px;height:200px;display:block">
+                            <label style="width:120px;display:inline-block">Email: </label><input type="text" id="createProfileEmail" style="margin-top:5px;margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
+                            <label style="width:120px;display:inline-block">Profile type: </label>
+                            <select id="createProfileType" style="margin-left:25px;width:304px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer">
+                                <option value="Admin">Admin</option>
+                                <option value="Staff">Staff</option>
+                                <option value="Owner">Owner</option>
+                                <option value="Customer">Customer</option>
+                            </select>
+                            </br></br>
+                            <label style="width:120px;display:inline-block">Password: </label><input type="text" id="createProfilePassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                            <label style="width:120px;display:inline-block">Description: </label><input type="text" id="createProfileDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br>
+                        </div></br>
+                        <input type="button" class="buttonHoverEffect" style="display:inline-block;width:450px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create profile" onclick="createProfile()">
                     </div>
                 </div>
                 <div style="float:left;margin-left:300px;">
                     <div id="viewUserProfileDisplay" style="display:none;width:600px;">
-                        <text style="color:#437E96;font-size:30px;">
+                        <text style="color:#437E96;font-size:40px;">
                             View user profile                          
-                        </text></br></br>
-                        <text>View user profile</text>
+                        </text></br></br></br>
+                        <div>
+                            <input type="text" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter email address">
+                            <input type="button" class="buttonHoverEffect" style="margin-left:20px;width:100px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="search">
+                        </div>
                     </div>
                 </div> 
                 <div style="float:left;margin-left:300px;">

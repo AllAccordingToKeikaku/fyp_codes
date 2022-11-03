@@ -46,7 +46,7 @@ require_once("menuItems/deliveryOrderDB.php");
             var preparationTime;
             var waitingTimeColor;
             var preparationTimeColor;
-            var reservationAvailability = "Unavailable";
+            var reservationAvailability = "Available";
             var reservationColor;
 
             waitingTime = deliveryNumber*5+20;
