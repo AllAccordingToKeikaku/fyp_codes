@@ -253,7 +253,10 @@ require_once("reservationDB.php");
 
             var j=0;
             for (x=reservationArrays.length-1; x>=0; x--){
-                document.getElementById("reservation"+String(j)).innerHTML = '<text style="border-radius:15px;background-color:#A0D5EB;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +
+                document.getElementById("reservation"+String(j)).innerHTML = '<text style="border-radius:15px;background-color:#A0D5EB;border:0px;margin-top:2px;width:550px;padding:5px;display:inline-block">' +
+                                                        '<div style="float:right;display:inline-block;text-align:right;">' +
+                                                        '<b><u><text id="' + idArray[x] + '" style="cursor:pointer" onclick="editReservation(this.id)">Edit reservation</text></u></b></br></br>' + 
+                                                        '<b><u><text id="' + idArray[x] + '" style="cursor:pointer" onclick="cancelReservation(this.id)">Cancel reservation</text></u></b></div>' +
                                                         '<b>Reservation ID:</b> ' + idArray[x] + '</br></br>' +
                                                         '<b>Date & Time:</b> '+ dayArray[x] + ', ' + dateArray[x] + ', ' + timeArray[x] + '</br></br>' +
                                                         '<b>Pax amount:</b> ' + paxArray[x] + '</br></br>' +
@@ -261,6 +264,14 @@ require_once("reservationDB.php");
                                                         ;     
                 j++;           
             }
+        }
+
+        function editReservation(reservationID){
+            alert("Edit reservation ID: " + reservationID);
+        }
+
+        function cancelReservation(reservationID){
+            alert("Cancelled reservation ID: " + reservationID);
         }
 
         function accountFunction(){
