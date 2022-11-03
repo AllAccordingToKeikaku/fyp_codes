@@ -316,7 +316,7 @@ require_once("deliveryInboxDB.php");
                     <text style="color:#437E96;font-size:30px">EMAIL</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                         <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="emailButton" name="emailButton" value="Email" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="emailFunction();displayInbox(this.id)"></br>
+                            <input type="button" id="emailButton" name="emailButton" value="Email" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="emailFunction();"></br>
                         </div></br></br>
                     </div></br>
 
