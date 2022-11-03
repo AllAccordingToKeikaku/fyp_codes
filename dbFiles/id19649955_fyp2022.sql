@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2022 at 11:16 PM
+-- Generation Time: Nov 03, 2022 at 01:08 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -43,8 +43,21 @@ CREATE TABLE `account` (
 INSERT INTO `account` (`accountID`, `profileID`, `fullName`, `email`, `accountPassword`, `phoneNumber`) VALUES
 (1, 'customer', 'Alan Bobby Cedric Daniel', 'fyp2022test@gmail.com', 'fyp_22_s3_22', '91238123'),
 (2, 'customer', 'lucas', 'lucasleeht@gmail.com', 'lucas', '91239123'),
-(3, 'customer', 'lucas', 'lucas@gmail.com', 'lucas', '91239122'),
-(4, 'customer', 'lu', 'lu@gmail.com', 'lu', '09120912');
+(3, 'admin', '', 'lucasleeht@gmail.com', 'lucas', ''),
+(4, 'admin', 'lu', 'lu@gmail.com', 'lu', '09120912');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `delivery_inbox`
+--
+
+CREATE TABLE `delivery_inbox` (
+  `id` int(255) NOT NULL,
+  `inboxStatus` varchar(999) NOT NULL,
+  `inboxDescription` varchar(999) NOT NULL,
+  `inboxDate` varchar(999) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -60,6 +73,7 @@ CREATE TABLE `delivery_orders` (
   `order_price` varchar(999) NOT NULL,
   `order_status` varchar(999) NOT NULL,
   `order_promocode` varchar(999) NOT NULL,
+  `order_address` varchar(999) NOT NULL,
   `HAWAIIAN_SALMON` int(255) NOT NULL,
   `COLOURFUL_GODDESS` int(255) NOT NULL,
   `SPICY_MIXED_SALMON` int(255) NOT NULL,
@@ -71,44 +85,8 @@ CREATE TABLE `delivery_orders` (
   `CARAMEL_NUTTIN` int(255) NOT NULL,
   `INCREDIBLE_HULK` int(255) NOT NULL,
   `ORANGE_MADNESS` int(255) NOT NULL,
-  `SPIDEY_SENSES` int(255) NOT NULL,
-  `cc_number` varchar(999) NOT NULL
+  `SPIDEY_SENSES` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `delivery_orders`
---
-
-INSERT INTO `delivery_orders` (`orderID`, `accountID`, `order_date`, `order_time`, `order_price`, `order_status`, `order_promocode`, `HAWAIIAN_SALMON`, `COLOURFUL_GODDESS`, `SPICY_MIXED_SALMON`, `SHOYU_TUNA_SPECIAL`, `FULL_VEGGIELICIOUS`, `AVOCADO_SUPREME`, `SUMMER_FLING`, `CHOC_SWEET`, `CARAMEL_NUTTIN`, `INCREDIBLE_HULK`, `ORANGE_MADNESS`, `SPIDEY_SENSES`, `cc_number`) VALUES
-(7, '2', '2022-10-27', '00:17', '$98.90', 'In-progress', 'moshiqq50', 4, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, '1234123412341235'),
-(8, '2', '2022-10-27', '00:17', '$59.85', 'Delivered', 'moshiqq50', 1, 0, 2, 0, 1, 0, 0, 1, 0, 1, 0, 3, '1234123112321233'),
-(9, '1', '2022-22-2', '11:11', '$50.00', 'Delivered', 'None', 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, '1231231231231231'),
-(10, '2', '2022-10-27', '00:17', '$43.20', 'In-progress', 'None', 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, '1234123412341234'),
-(11, '2', '2022-10-27', '21:41', '$51.50', 'In-progress', 'None', 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, '1234123412341231'),
-(12, '2', '2022-10-27', '22:16', '$13.75', 'In-progress', 'moshiqq50', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '1234123412341231');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `inbox`
---
-
-CREATE TABLE `inbox` (
-  `id` int(255) NOT NULL,
-  `inboxStatus` varchar(999) NOT NULL,
-  `inboxDescription` varchar(999) NOT NULL,
-  `inboxDate` varchar(999) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `inbox`
---
-
-INSERT INTO `inbox` (`id`, `inboxStatus`, `inboxDescription`, `inboxDate`) VALUES
-(1, 'Reservation', 'RNaN: Reservation for lucas~~ at 2022/10/20~~ 11:00~~ for 4(H)', '2022/10/15'),
-(2, 'Reservation', 'RNaN: Reservation for lucas~~ at 2022/10/20~~ 17:00~~ for 4(H)', '2022/10/15'),
-(3, 'Reservation', 'R3: Reservation for fyp2022~~ at 2022/10/20~~ 11:00~~ for 1(B)', '2022/10/16'),
-(4, 'Reservation', 'R4: Reservation for lucas~~ at 2022/10/20~~ 15:00~~ for 1(G)', '2022/10/16');
 
 -- --------------------------------------------------------
 
@@ -153,15 +131,17 @@ INSERT INTO `menu_item` (`menu_item_ID`, `item_category`, `item_name`, `item_des
 CREATE TABLE `promocodes` (
   `promoID` int(255) NOT NULL,
   `codeName` varchar(999) NOT NULL,
-  `discountRate` varchar(999) NOT NULL
+  `discountRate` varchar(999) NOT NULL,
+  `imgFile` varchar(999) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `promocodes`
 --
 
-INSERT INTO `promocodes` (`promoID`, `codeName`, `discountRate`) VALUES
-(1, 'moshiqq50', '50');
+INSERT INTO `promocodes` (`promoID`, `codeName`, `discountRate`, `imgFile`) VALUES
+(1, 'moshiqq50', '50', '../MoshiQ2 IMG Assets/Promo code 1.png'),
+(3, 'moshiqq30', '30', '../MoshiQ2 IMG Assets/Promo code 2.png');
 
 -- --------------------------------------------------------
 
@@ -188,15 +168,18 @@ CREATE TABLE `reservation` (
   `item_5` varchar(999) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `reservation`
+-- Table structure for table `reservation_inbox`
 --
 
-INSERT INTO `reservation` (`reservation_ID`, `cust_ID`, `user_fullname`, `emailAddress`, `phoneNumber`, `outletLocation`, `dateSlot`, `timeSlot`, `paxAmount`, `seatingArea`, `promoCode`, `item_1`, `item_2`, `item_3`, `item_4`, `item_5`) VALUES
-(1, '2', 'lucas', 'lucasleeht@gmail.com', '91239123', 'CHANGI', '2022-10-20', 'timeSlot1', '4', 'H', 'moshiqq50', 'none', 'none', 'none', 'Summer Fling', 'Spidey Senses'),
-(2, '2', 'lucas', 'lucasleeht@gmail.com', '91239123', 'CHANGI', '2022-10-20', 'timeSlot7', '4', 'H', 'moshiqq50', 'none', 'none', 'none', 'Summer Fling', 'Spidey Senses'),
-(3, '3', 'fyp2022', 'fyp2022test@gmail.com', '91239123', 'YISHUN', '2022-10-20', 'timeSlot1', '1', 'B', 'moshiqq50', 'none', 'none', 'none', 'none', 'Spidey Senses'),
-(4, '3', 'lucas', 'fyp2022test@gmail.com', '90009000', 'CHANGI', '2022-10-20', 'timeSlot5', '1', 'G', 'none', 'none', 'none', 'Shoyu Tuna Specials', 'none', 'none');
+CREATE TABLE `reservation_inbox` (
+  `id` int(255) NOT NULL,
+  `inboxStatus` varchar(999) NOT NULL,
+  `inboxDescription` varchar(999) NOT NULL,
+  `inboxDate` varchar(999) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
@@ -209,16 +192,16 @@ ALTER TABLE `account`
   ADD PRIMARY KEY (`accountID`);
 
 --
+-- Indexes for table `delivery_inbox`
+--
+ALTER TABLE `delivery_inbox`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `delivery_orders`
 --
 ALTER TABLE `delivery_orders`
   ADD PRIMARY KEY (`orderID`);
-
---
--- Indexes for table `inbox`
---
-ALTER TABLE `inbox`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `menu_item`
@@ -239,6 +222,12 @@ ALTER TABLE `reservation`
   ADD PRIMARY KEY (`reservation_ID`);
 
 --
+-- Indexes for table `reservation_inbox`
+--
+ALTER TABLE `reservation_inbox`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -249,16 +238,16 @@ ALTER TABLE `account`
   MODIFY `accountID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `delivery_inbox`
+--
+ALTER TABLE `delivery_inbox`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `delivery_orders`
 --
 ALTER TABLE `delivery_orders`
-  MODIFY `orderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT for table `inbox`
---
-ALTER TABLE `inbox`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `orderID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `menu_item`
@@ -270,13 +259,19 @@ ALTER TABLE `menu_item`
 -- AUTO_INCREMENT for table `promocodes`
 --
 ALTER TABLE `promocodes`
-  MODIFY `promoID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `promoID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `reservation_ID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `reservation_ID` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `reservation_inbox`
+--
+ALTER TABLE `reservation_inbox`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

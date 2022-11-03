@@ -1,5 +1,5 @@
 <?php
-require_once("dbConnection.php");
+require_once("../dbConnection.php");
 ?>
 <?php
 $query = "SELECT * FROM `reservation`";
