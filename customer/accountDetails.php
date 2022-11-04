@@ -55,7 +55,7 @@ require_once("reservationDB.php");
                     var getD = new Date(actualOrderArray[x][2]);
                     dayArray.push(weekday[getD.getDay()]);
 
-                    for(var y=7; y<18; y++){
+                    for(var y=7; y<=18; y++){
                         var itemName;
                         switch(y){
                             case 7:
@@ -136,7 +136,6 @@ require_once("reservationDB.php");
                 }
             }
             var j=0;
-            //for (x=0; x<promoArrays.length; x++){
             for (x=promoArrays.length-1; x>=0; x--){
                 if(orderStatusArray[x] == "In-progress"){
                     document.getElementById("order"+String(j)).innerHTML = '<text style="border-radius:15px;background-color:#C7FAC9;border:0px;margin-top:2px;width:600px;padding:5px;display:inline-block">' +

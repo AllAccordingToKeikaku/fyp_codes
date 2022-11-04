@@ -9,13 +9,15 @@ if(isset($_POST['profileID'])){
     $email = $_POST['email'];
     $accountPassword = $_POST['accountPassword'];
     $phoneNumber = $_POST['phoneNumber'];
+    $accountStatus = $_POST['accountStatus'];
+    $accountDescription = $_POST['accountDescription'];
 
     $INSERT = "INSERT into account (profileID, fullName, email, accountPassword, phoneNumber)
-                VALUES(?, ?, ?, ?, ?)";
+                VALUES(?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($INSERT);
 
-    $stmt -> bind_param("sssss", $profileID, $fullName, $email, $accountPassword, $phoneNumber);
+    $stmt -> bind_param("sssss", $profileID, $fullName, $email, $accountPassword, $phoneNumber, $accountStatus, $accountDescription);
 
     $stmt -> execute();
     if($stmt){

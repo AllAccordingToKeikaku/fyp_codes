@@ -1,10 +1,14 @@
 <?php
 require_once("reservationInboxDB.php");
 require_once("deliveryInboxDB.php");
+require_once("accountDB.php");
 ?>
 <!DOCTYPE html>
 <html>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script>
         var isProfileClicked = false;
         
@@ -191,15 +195,300 @@ require_once("deliveryInboxDB.php");
             alert("Create customer account clicked");
         }
 
-        function checkProfileType(){
-            if(document.getElementById("createAccountProfile").value == "Customer"){
-                document.getElementById("customerType").style.display = "block";
-                document.getElementById("miscType").style.display = "none";
+        function checkProfileType(createOrUpdate){
+            if(createOrUpdate == "create"){
+                if(document.getElementById("create").value == "Customer"){
+                    document.getElementById("customerType").style.display = "block";
+                    document.getElementById("miscType").style.display = "none";
+                }           
+                else{
+                    document.getElementById("customerType").style.display = "none";
+                    document.getElementById("miscType").style.display = "block";
+                }
             }
             else{
-                document.getElementById("customerType").style.display = "none";
-                document.getElementById("miscType").style.display = "block";
+                if(document.getElementById("updateDetails").value == "Customer"){
+                    document.getElementById("updateCustomerType").style.display = "block";
+                    document.getElementById("updateMiscType").style.display = "none";
+                    for(var x=0; x<actualAccountArray.length; x++){
+                        if(actualAccountArray[x][1] == document.getElementById("updateDetails").value.toLowerCase() &&
+                            actualAccountArray[x][3] == document.getElementById("searchUpdateEmail").value.toLowerCase()){
+                                document.getElementById("updateCustomerAccountName").value = actualAccountArray[x][2];
+                                document.getElementById("updateCustomerAccountPassword").value = actualAccountArray[x][4];
+                                document.getElementById("updateCustomerAccountNumber").value = actualAccountArray[x][5];
+                                document.getElementById("updateCustomerAccountDescription").value = actualAccountArray[x][7];
+                                document.getElementById("customerStatus").value = actualAccountArray[x][6];
+                                break;
+                        }
+                    }
+                }           
+                else{
+                    document.getElementById("updateCustomerType").style.display = "none";
+                    document.getElementById("updateMiscType").style.display = "block";
+                    for(var x=0; x<actualAccountArray.length; x++){
+                        if(actualAccountArray[x][1] == document.getElementById("updateDetails").value.toLowerCase() &&
+                            actualAccountArray[x][3] == document.getElementById("searchUpdateEmail").value.toLowerCase()){
+                                document.getElementById("updateAccountPassword").value = actualAccountArray[x][4];
+                                document.getElementById("updateAccountDescription").value = actualAccountArray[x][7];
+                                document.getElementById("miscStatus").value = actualAccountArray[x][6];
+                                break;
+                        }
+                    }
+                }
             }
+        }
+
+        var profileTypeArray;
+        var profileDescriptionArray;
+        var profileStatusArray;
+        function checkProfileSize(accountEmail){
+            profileTypeArray = [];
+            profileDescriptionArray = [];
+            profileStatusArray = [];
+            for(var x=0; x<actualAccountArray.length; x++){
+                if(actualAccountArray[x][3] == accountEmail){
+                    profileTypeArray.push(actualAccountArray[x][1]);
+                    profileDescriptionArray.push(actualAccountArray[x][7]);
+                    profileStatusArray.push(actualAccountArray[x][6]);
+                }
+            }
+        }
+        var profileType;
+        var profileDescription;
+        var profileStatus;
+        
+        function suspendProfileList(){
+            for(var x=0;x<profileTypeArray.length;x++){
+                document.getElementById('suspend' + String(x+1) + 'TR').style.display = "";
+                document.getElementById("suspendType" + String(x+1)).innerHTML = profileTypeArray[x];
+                document.getElementById("suspendDescription" + String(x+1)).innerHTML = profileDescriptionArray[x];
+                document.getElementById("suspendStatus" + String(x+1)).innerHTML = profileStatusArray[x];
+                document.getElementById("suspendButton").style.display = "block";
+            }
+        }
+
+        function selectProfileType(selectedRow){
+            profileType = "";
+            profileDescription = "";
+            profileStatus = "";
+            var checkFound = false;
+            for(var x=0;x<profileTypeArray.length;x++){
+                if(('suspend' + String(x+1) + 'TR').includes(selectedRow) && document.getElementById(selectedRow).checked){
+                    document.getElementById('suspend' + String(x+1) + 'TR').style.backgroundColor = "yellow";
+                    profileType = document.getElementById('suspendType' + String(x+1)).innerHTML;
+                    profileDescription = document.getElementById('suspendDescription' + String(x+1)).innerHTML;
+                    profileStatus = document.getElementById('suspendStatus' + String(x+1)).innerHTML;
+                    checkFound = true;
+                }
+                else{
+                    document.getElementById('suspend' + String(x+1) + 'TR').style.backgroundColor = "#A8A1A166";
+                    document.getElementById('suspend' + String(x+1)).checked = false;
+                }
+                if(checkFound == true){
+                    document.getElementById("suspendButton").disabled = false;
+                }
+                else{
+                    document.getElementById("suspendButton").disabled = true;
+                }
+            }
+        }
+
+        var actualAccountArray = [];
+        function checkAccounts(accountType){
+            document.getElementById("suspend1TR").style.display = "none";
+            document.getElementById("suspend2TR").style.display = "none";
+            document.getElementById("suspend3TR").style.display = "none";
+            document.getElementById("suspend4TR").style.display = "none";
+            document.getElementById("updateCustomerType").style.display = "none";
+            document.getElementById("updateMiscType").style.display = "none";
+            document.getElementById("suspendButton").disabled = true;
+            actualAccountArray = [];
+            var slotArrays = '<?php echo json_encode($accountDataArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+            var slotArray = slotArrays.split('].');
+            var accountArray = [];
+            var x;
+            var tempString = "";
+            for (x=0;x<slotArray.length;x++){
+                accountArray.push(slotArray[x]);
+            }
+            for (x=0;x<accountArray.length;x++){
+                tempString = String(accountArray[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                actualAccountArray.push(tempString);
+            }
+            if(accountType == "suspend"){
+                if(document.getElementById("searchSuspendEmail").value.length > 0){
+                    checkProfileSize(document.getElementById("searchSuspendEmail").value.toLowerCase());
+                }
+                if(document.getElementById("searchSuspendEmail").value.toLowerCase().length === null || document.getElementById("searchSuspendEmail").value.toLowerCase() === ""){
+                    document.getElementById("suspend1TR").style.display = "none";
+                    document.getElementById("suspend2TR").style.display = "none";
+                    document.getElementById("suspend3TR").style.display = "none";
+                    document.getElementById("suspend4TR").style.display = "none";
+                    document.getElementById("suspendButton").style.display = "none";
+                }
+                else{
+                    document.getElementById("updateList").style.display = "none";
+                    document.getElementById("suspendButton").style.display = "none";
+                    suspendProfileList();
+                }
+            }
+            else if(accountType == "view"){
+                if(document.getElementById("searchViewEmail").value.length > 0){
+                    checkProfileSize(document.getElementById("searchViewEmail").value.toLowerCase());
+                }
+                if(document.getElementById("searchViewEmail").value.toLowerCase().length === null || document.getElementById("searchViewEmail").value.toLowerCase() === ""){
+                    document.getElementById("view1").style.display = "none";
+                    document.getElementById("view2").style.display = "none";
+                    document.getElementById("view3").style.display = "none";
+                    document.getElementById("view4").style.display = "none";
+                }
+                else{
+                    document.getElementById("updateList").style.display = "none";
+                    viewProfileList();
+                }
+            }
+            else{
+                if(document.getElementById("searchUpdateEmail").value.length > 0){
+                    checkProfileSize(document.getElementById("searchUpdateEmail").value.toLowerCase());
+                }
+                if(document.getElementById("searchUpdateEmail").value.toLowerCase().length === null || document.getElementById("searchUpdateEmail").value.toLowerCase() === ""){
+                    document.getElementById("updateList").style.display = "none";
+                }
+                else{
+                    updateProfileList();
+                }
+            }
+        }
+
+        function viewProfileList(){
+            for(var x=0;x<profileTypeArray.length;x++){
+                document.getElementById('view' + String(x+1)).style.display = "";
+                document.getElementById("viewType" + String(x+1)).innerHTML = profileTypeArray[x];
+                document.getElementById("viewDescription" + String(x+1)).innerHTML = profileDescriptionArray[x];
+                document.getElementById("viewStatus" + String(x+1)).innerHTML = profileStatusArray[x];
+            }
+        }
+
+        var updateProfile;
+        var updateName;
+        var updateEmail;
+        var updatePassword;
+        var updatePhoneNumber;
+        var updateStatus;
+        var updateDescription;
+
+        function updateProfileList(){
+            document.getElementById("updateList").style.display = "none";
+            var op = document.getElementById("updateDetails").getElementsByTagName("option");
+            for(var x=0; x<op.length; x++){
+                op[x].disabled = true;
+            }
+            for(var x=0; x<profileTypeArray.length; x++){
+                for(var y=0; y<op.length; y++){
+                    if(op[y].value.toLowerCase() == profileTypeArray[x]){
+                        op[y].disabled = false;
+                        document.getElementById("updateList").style.display = "block";
+                        document.getElementById("updateDetails").value = op[y].value;
+                    }
+                }
+            }
+        }
+
+        function suspendAccountProfile(){
+            $.ajax({
+                type: "POST",
+                url: "suspend_account_data.php",
+                data:{
+                    email:document.getElementById("searchSuspendEmail").value.toLowerCase(),
+                    profileID: profileType
+                },
+                success: function(data){
+                    Swal.fire({
+                        'title': 'Successfully suspended profile!',
+                        'text': data,
+                        'type': 'success'
+                    }).then(setTimeout(function(){window.location.replace("admin_homepage.php");}, 2000))
+                },
+                error: function(data){
+                    Swal.fire({
+                        'title': 'Errors',
+                        'text': 'There were errors in suspending profile, please refresh the page and try again.'
+                    })
+                }
+            });
+        }
+
+        function updateMiscAccount(){
+            updateStatus = document.getElementById("miscStatus").value;
+            updateProfile = document.getElementById("updateDetails").value;
+            updateName = "";
+            updatePhoneNumber = "";
+            updateDescription = document.getElementById("updateAccountDescription").value;
+            updatePassword = document.getElementById("updateAccountPassword").value;
+            updateEmail = document.getElementById("searchUpdateEmail").value;
+            $.ajax({
+                type: "POST",
+                url: "update_account_data.php",
+                data:{
+                    profileID: updateProfile,
+                    fullName: updateName,
+                    email: updateEmail,
+                    accountPassword: updatePassword,
+                    phoneNumber: updatePhoneNumber,
+                    accountStatus: updateStatus,
+                    accountDescription: updateDescription
+                },
+                success: function(data){
+                    Swal.fire({
+                        'title': 'Successfully updated profile details!',
+                        'text': data,
+                        'type': 'success'
+                    }).then(setTimeout(function(){window.location.replace("admin_homepage.php");}, 2000))
+                },
+                error: function(data){
+                    Swal.fire({
+                        'title': 'Errors',
+                        'text': 'There were errors in updating your profile, please refresh the page and try again.'
+                    })
+                }
+            });
+        }
+
+        function updateCustomerAccount(){
+            updateStatus = document.getElementById("customerStatus").value;
+            updateProfile = document.getElementById("updateDetails").value;
+            updateName = document.getElementById("updateCustomerAccountName").value;
+            updatePhoneNumber = document.getElementById("updateCustomerAccountNumber").value;
+            updateDescription = document.getElementById("updateCustomerAccountDescription").value;
+            updatePassword = document.getElementById("updateCustomerAccountPassword").value;
+            updateEmail = document.getElementById("searchUpdateEmail").value;
+            $.ajax({
+                type: "POST",
+                url: "update_account_data.php",
+                data:{
+                    profileID: updateProfile,
+                    fullName: updateName,
+                    email: updateEmail,
+                    accountPassword: updatePassword,
+                    phoneNumber: updatePhoneNumber,
+                    accountStatus: updateStatus,
+                    accountDescription: updateDescription
+                },
+                success: function(data){
+                    Swal.fire({
+                        'title': 'Successfully updated profile details!',
+                        'text': data,
+                        'type': 'success'
+                    }).then(setTimeout(function(){window.location.replace("admin_homepage.php");}, 2000))
+                },
+                error: function(data){
+                    Swal.fire({
+                        'title': 'Errors',
+                        'text': 'There were errors in updating your profile, please refresh the page and try again.'
+                    })
+                }
+            });
         }
     </script>
     <style>
@@ -256,7 +545,7 @@ require_once("deliveryInboxDB.php");
         }
     </style>
     <body onload="profileDetails()" style="background-color:#FEF2E5">
-        <form>
+        <form method="POST">
             <div style="width:1400px;margin-left:auto;margin-right:auto">
                 <div style="float:right">
                     <img src="../MoshiQ2 IMG Assets/Profile Icon.png" style="display:block;margin-left:auto;width:70px;height:auto;cursor:pointer;" onclick="profileClicked()"></br>
@@ -289,10 +578,10 @@ require_once("deliveryInboxDB.php");
                             <input type="button" id="viewUserAccountButton" name="viewUserAccountButton" value="View user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="viewUserAccountFunction()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="suspendUserAccountButton" name="suspendUserAccountButton" value="Suspend user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="suspendUserAccountFunction()"></br>
+                            <input type="button" id="suspendUserAccountButton" name="suspendUserAccountButton" value="Suspend user profile" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="suspendUserAccountFunction()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="updateUserAccountButton" name="updateUserAccountButton" value="Update user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="updateUserAccountFunction()"></br>
+                            <input type="button" id="updateUserAccountButton" name="updateUserAccountButton" value="Update user profile" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="updateUserAccountFunction()"></br>
                         </div></br></br>
                     </div></br>
                 </div>
@@ -329,7 +618,7 @@ require_once("deliveryInboxDB.php");
                         </text></br></br>
                         <div id="createAccount" style="font-size:20px;display:block">
                             <label style="width:150px;display:inline-block">Profile type: </label>
-                            <select id="createAccountProfile" style="margin-left:25px;width:304px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType()" onclick="checkProfileType()">
+                            <select id="create" style="margin-left:25px;width:304px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
                                 <option value="Admin">Admin</option>
                                 <option value="Staff">Staff</option>
                                 <option value="Owner">Owner</option>
@@ -359,8 +648,8 @@ require_once("deliveryInboxDB.php");
                             View user account                          
                         </text></br></br>
                         <div>
-                            <input type="text" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter email address">
-                            <input type="button" class="buttonHoverEffect" style="margin-left:20px;width:100px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="search">
+                            <input type="text" id="searchViewEmail" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter email address">
+                            <input type="button" id="view" class="buttonHoverEffect" style="margin-left:20px;width:100px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="search" onclick="checkAccounts(this.id);">
                         </div></br>
                         <div style="display:block">
                             <table rules="all">
@@ -369,25 +658,25 @@ require_once("deliveryInboxDB.php");
                                     <td style="width:300px;padding:5px">Description</td>
                                     <td style="width:200px;padding:5px">Account status</td>
                                 </tr>
-                                <tr style="background-color:#A8A1A166;">
-                                    <td id="profileType1" style="width:200px;padding:5px">Owner</td>
-                                    <td id="profileDescription1" style="width:300px;padding:5px">Owner type</td>
-                                    <td id="profileStatus1" style="width:200px;padding:5px">Suspended</td>
+                                <tr id="view1" style="background-color:#A8A1A166;display:none">
+                                    <td id="viewType1" style="width:200px;padding:5px"></td>
+                                    <td id="viewDescription1" style="width:300px;padding:5px"></td>
+                                    <td id="viewStatus1" style="width:200px;padding:5px"></td>
                                 </tr>
-                                <tr style="background-color:#A8A1A166;">
-                                    <td id="profileType2" style="width:200px;padding:5px">Admin</td>
-                                    <td id="profileDescription2" style="width:300px;padding:5px">Admin type</td>
-                                    <td id="profileStatus2" style="width:200px;padding:5px">Active</td>
+                                <tr id="view2" style="background-color:#A8A1A166;display:none">
+                                    <td id="viewType2" style="width:200px;padding:5px"></td>
+                                    <td id="viewDescription2" style="width:300px;padding:5px"></td>
+                                    <td id="viewStatus2" style="width:200px;padding:5px"></td>
                                 </tr>
-                                <tr style="background-color:#A8A1A166;"> 
-                                    <td id="profileType3" style="width:200px;padding:5px">Staff</td>
-                                    <td id="profileDescription3" style="width:300px;padding:5px">Staff type</td>
-                                    <td id="profileStatus3" style="width:200px;padding:5px">Active</td>
+                                <tr id="view3" style="background-color:#A8A1A166;display:none"> 
+                                    <td id="viewType3" style="width:200px;padding:5px"></td>
+                                    <td id="viewDescription3" style="width:300px;padding:5px"></td>
+                                    <td id="viewStatus3" style="width:200px;padding:5px"></td>
                                 </tr>
-                                <tr style="background-color:#A8A1A166;">
-                                    <td id="profileType4" style="width:200px;padding:5px">Customer</td>
-                                    <td id="profileDescription4" style="width:300px;padding:5px">Customer type</td>
-                                    <td id="profileStatus4" style="width:200px;padding:5px">Suspended</td>
+                                <tr id="view4" style="background-color:#A8A1A166;display:none">
+                                    <td id="viewType4" style="width:200px;padding:5px"></td>
+                                    <td id="viewDescription4" style="width:300px;padding:5px"></td>
+                                    <td id="viewStatus4" style="width:200px;padding:5px"></td>
                                 </tr>
                             </table>
                         </div>
@@ -396,50 +685,91 @@ require_once("deliveryInboxDB.php");
                 <div style="float:left;margin-left:300px;">
                     <div id="suspendUserAccountDisplay" style="display:none;width:600px;">
                         <text style="color:#437E96;font-size:30px;">
-                            Suspend user account                              
+                            Suspend user profile                            
                         </text></br></br>
+                        <div>
+                            <input type="text" id="searchSuspendEmail" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter email address">
+                            <input type="button" id="suspend" class="buttonHoverEffect" style="margin-left:20px;width:100px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="search" onclick="checkAccounts(this.id);">
+                        </div></br>
                         <div style="display:block">
-                            <table rules="all">
+                            <table id="suspendTable" rules="all">
                                 <tr style="background-color:#5BBDE4CC;">
                                     <td style="width:200px;padding:5px"><center>Select</center></td>
                                     <td style="width:200px;padding:5px">Profile Type</td>
                                     <td style="width:300px;padding:5px">Description</td>
                                     <td style="width:200px;padding:5px">Account status</td>
                                 </tr>
-                                <tr style="background-color:#A8A1A166;">
-                                    <td><center><input type="checkbox" style="cursor:pointer"></center></td>
-                                    <td id="profileType1" style="width:200px;padding:5px">Owner</td>
-                                    <td id="profileDescription1" style="width:300px;padding:5px">Owner type</td>
-                                    <td id="profileStatus1" style="width:200px;padding:5px">Suspended</td>
+                                <tr id="suspend1TR" style="background-color:#A8A1A166;display:none">
+                                    <td><center><input type="checkbox" id="suspend1" style="cursor:pointer" onclick="selectProfileType(this.id)"></center></td>
+                                    <td id="suspendType1" style="width:200px;padding:5px"></td>
+                                    <td id="suspendDescription1" style="width:300px;padding:5px"></td>
+                                    <td id="suspendStatus1" style="width:200px;padding:5px"></td>
                                 </tr>
-                                <tr style="background-color:#A8A1A166;">
-                                    <td><center><input type="checkbox" style="cursor:pointer"></center></td>
-                                    <td id="profileType2" style="width:200px;padding:5px">Admin</td>
-                                    <td id="profileDescription2" style="width:300px;padding:5px">Admin type</td>
-                                    <td id="profileStatus2" style="width:200px;padding:5px">Active</td>
+                                <tr id="suspend2TR" style="background-color:#A8A1A166;display:none">
+                                    <td><center><input type="checkbox" id="suspend2" style="cursor:pointer" onclick="selectProfileType(this.id)"></center></td>
+                                    <td id="suspendType2" style="width:200px;padding:5px"></td>
+                                    <td id="suspendDescription2" style="width:300px;padding:5px"></td>
+                                    <td id="suspendStatus2" style="width:200px;padding:5px"></td>
                                 </tr>
-                                <tr style="background-color:#A8A1A166;"> 
-                                    <td><center><input type="checkbox" style="cursor:pointer"></center></td>
-                                    <td id="profileType3" style="width:200px;padding:5px">Staff</td>
-                                    <td id="profileDescription3" style="width:300px;padding:5px">Staff type</td>
-                                    <td id="profileStatus3" style="width:200px;padding:5px">Active</td>
+                                <tr id="suspend3TR" style="background-color:#A8A1A166;display:none"> 
+                                    <td><center><input type="checkbox" id="suspend3" style="cursor:pointer" onclick="selectProfileType(this.id)"></center></td>
+                                    <td id="suspendType3" style="width:200px;padding:5px"></td>
+                                    <td id="suspendDescription3" style="width:300px;padding:5px"></td>
+                                    <td id="suspendStatus3" style="width:200px;padding:5px"></td>
                                 </tr>
-                                <tr style="background-color:#A8A1A166;">
-                                    <td><center><input type="checkbox" style="cursor:pointer"></center></td>
-                                    <td id="profileType4" style="width:200px;padding:5px">Customer</td>
-                                    <td id="profileDescription4" style="width:300px;padding:5px">Customer type</td>
-                                    <td id="profileStatus4" style="width:200px;padding:5px">Suspended</td>
+                                <tr id="suspend4TR" style="background-color:#A8A1A166;display:none">
+                                    <td><center><input type="checkbox" id="suspend4" style="cursor:pointer" onclick="selectProfileType(this.id)"></center></td>
+                                    <td id="suspendType4" style="width:200px;padding:5px"></td>
+                                    <td id="suspendDescription4" style="width:300px;padding:5px"></td>
+                                    <td id="suspendStatus4" style="width:200px;padding:5px"></td>
                                 </tr>
-                            </table>
+                            </table></br>
+                            <div>
+                                <input type="button" id="suspendButton" class="buttonHoverEffect" style="display:inline-block;width:600px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px;display:none" value="Suspend account" onclick="suspendAccountProfile()" disabled>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div style="float:left;margin-left:300px;">
                     <div id="updateUserAccountDisplay" style="display:none;width:600px;">
                         <text style="color:#437E96;font-size:30px;">
-                            Update user account                              
+                            Update user profile                            
                         </text></br></br>
-                        <text>Update user account</text>
+                        <div>
+                            <input type="text" id="searchUpdateEmail" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter email address">
+                            <input type="button" id="update" class="buttonHoverEffect" style="margin-left:20px;width:100px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="search" onclick="checkAccounts(this.id);">
+                        </div></br>
+                        <div id="updateList" style="font-size:20px;display:none">
+                            <label style="width:160px;display:inline-block">Select profile type: </label>
+                            <select id="updateDetails" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
+                                <option value="Admin">Admin</option>
+                                <option value="Staff">Staff</option>
+                                <option value="Owner">Owner</option>
+                                <option value="Customer">Customer</option>
+                            </select></br></br>
+                            <div id="updateMiscType" style="display:none">
+                                <label style="width:150px;display:inline-block">Password: </label><input type="text" id="updateAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                                <label style="width:150px;display:inline-block">Description: </label><input type="text" id="updateAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
+                                <label style="width:160px;display:inline-block">Select status type: </label>
+                                <select id="miscStatus" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
+                                    <option value="Active">Active</option>
+                                    <option value="Suspended">Suspended</option>
+                                </select></br></br>
+                                <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Update profile" onclick="updateMiscAccount()">
+                            </div>
+                            <div id="updateCustomerType" style="display:none">
+                                <label style="width:150px;display:inline-block">Full name: </label><input type="text" id="updateCustomerAccountName" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter full name"></br></br>
+                                <label style="width:150px;display:inline-block">Password: </label><input type="text" id="updateCustomerAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                                <label style="width:150px;display:inline-block">Phone number: </label><input type="text" id="updateCustomerAccountNumber" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter phone number"></br></br>
+                                <label style="width:150px;display:inline-block">Description: </label><input type="text" id="updateCustomerAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
+                                <label style="width:160px;display:inline-block">Select status type: </label>
+                                <select id="customerStatus" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
+                                    <option value="Active">Active</option>
+                                    <option value="Suspended">Suspended</option>
+                                </select></br></br>
+                                <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Update profile" onclick="updateCustomerAccount()">
+                            </div>
+                        </div>
                     </div>
                 </div> 
             </div>

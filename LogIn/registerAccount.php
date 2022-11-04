@@ -69,7 +69,9 @@ require_once("accountDB.php");
                     fullName:fullName,
                     email:email,
                     accountPassword:accountPassword,
-                    phoneNumber:phoneNumber
+                    phoneNumber:phoneNumber,
+                    accountStatus: "Active",
+                    accountDescription: "Created by customer"
                 },
                 success: function(data){
                     Swal.fire({

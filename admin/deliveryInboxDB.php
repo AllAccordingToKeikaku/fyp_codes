@@ -19,5 +19,4 @@ if ($num_rows > 0) {
     $deliveryInboxArray[]=array($status, $description, $date);
     }
 }
-mysqli_close($conn);
 ?>

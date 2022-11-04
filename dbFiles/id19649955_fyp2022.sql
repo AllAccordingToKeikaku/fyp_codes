@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2022 at 01:08 PM
+-- Generation Time: Nov 04, 2022 at 09:50 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -33,18 +33,20 @@ CREATE TABLE `account` (
   `fullName` varchar(999) NOT NULL,
   `email` varchar(999) NOT NULL,
   `accountPassword` varchar(999) NOT NULL,
-  `phoneNumber` varchar(999) NOT NULL
+  `phoneNumber` varchar(999) NOT NULL,
+  `accountStatus` varchar(999) NOT NULL,
+  `accountDescription` varchar(999) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `account`
 --
 
-INSERT INTO `account` (`accountID`, `profileID`, `fullName`, `email`, `accountPassword`, `phoneNumber`) VALUES
-(1, 'customer', 'Alan Bobby Cedric Daniel', 'fyp2022test@gmail.com', 'fyp_22_s3_22', '91238123'),
-(2, 'customer', 'lucas', 'lucasleeht@gmail.com', 'lucas', '91239123'),
-(3, 'admin', '', 'lucasleeht@gmail.com', 'lucas', ''),
-(4, 'admin', 'lu', 'lu@gmail.com', 'lu', '09120912');
+INSERT INTO `account` (`accountID`, `profileID`, `fullName`, `email`, `accountPassword`, `phoneNumber`, `accountStatus`, `accountDescription`) VALUES
+(1, 'customer', 'Alan Bobby Cedric Daniel', 'fyp2022test@gmail.com', 'fyp_22_s3_22', '91238123', '', ''),
+(2, 'customer', 'lucas', 'lucasleeht@gmail.com', 'lucas', '91239123', '', ''),
+(3, 'admin', '', 'lucasleeht@gmail.com', 'lucas', '', '', ''),
+(4, 'admin', 'lu', 'lu@gmail.com', 'lu', '09120912', '', '');
 
 -- --------------------------------------------------------
 
@@ -168,6 +170,13 @@ CREATE TABLE `reservation` (
   `item_5` varchar(999) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `reservation`
+--
+
+INSERT INTO `reservation` (`reservation_ID`, `cust_ID`, `user_fullname`, `emailAddress`, `phoneNumber`, `outletLocation`, `dateSlot`, `timeSlot`, `paxAmount`, `seatingArea`, `promoCode`, `item_1`, `item_2`, `item_3`, `item_4`, `item_5`) VALUES
+(1, '2', 'lucas', 'lucasleeht@gmail.com', '91239123', 'SENTOSA', '2022-11-07', 'timeSlot3', '2', 'C', 'none', 'none', 'none', 'none', 'none', 'Spidey Senses');
+
 -- --------------------------------------------------------
 
 --
@@ -180,6 +189,13 @@ CREATE TABLE `reservation_inbox` (
   `inboxDescription` varchar(999) NOT NULL,
   `inboxDate` varchar(999) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `reservation_inbox`
+--
+
+INSERT INTO `reservation_inbox` (`id`, `inboxStatus`, `inboxDescription`, `inboxDate`) VALUES
+(1, 'Reservation', 'R1: Reservation for lucas~~ at 2022/11/07~~ 13:00~~ for 2(C)', '2022/11/03');
 
 --
 -- Indexes for dumped tables
@@ -265,13 +281,13 @@ ALTER TABLE `promocodes`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `reservation_ID` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `reservation_ID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `reservation_inbox`
 --
 ALTER TABLE `reservation_inbox`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

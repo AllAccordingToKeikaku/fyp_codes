@@ -570,6 +570,11 @@ require_once('promoCodesDB.php');
           console.log("Promo Code is valid");
           break;
         }
+        else if(tempPromoCode == "" || tempPromoCode == null){
+          checkDiscount = "none";
+          document.getElementById("validityText").innerHTML = "";
+          console.log("Promo Code is empty");
+        }
         else{
           checkDiscount = "none";
           document.getElementById("validityText").innerHTML = "Invalid";
