@@ -10,58 +10,6 @@ require_once("deliveryInboxDB.php");
         
         function emailFunction(){
             document.getElementById("emailDisplay").style.display = 'block';
-            document.getElementById("createUserProfileDisplay").style.display = 'none';
-            document.getElementById("viewUserProfileDisplay").style.display = 'none';
-            document.getElementById("suspendUserProfileDisplay").style.display = 'none';
-            document.getElementById("updateUserProfileDisplay").style.display = 'none';
-            document.getElementById("createUserAccountDisplay").style.display = 'none';
-            document.getElementById("viewUserAccountDisplay").style.display = 'none';
-            document.getElementById("suspendUserAccountDisplay").style.display = 'none';
-            document.getElementById("updateUserAccountDisplay").style.display = 'none';
-        }
-
-        function createUserProfileFunction(){
-            document.getElementById("emailDisplay").style.display = 'none';
-            document.getElementById("createUserProfileDisplay").style.display = 'block';
-            document.getElementById("viewUserProfileDisplay").style.display = 'none';
-            document.getElementById("suspendUserProfileDisplay").style.display = 'none';
-            document.getElementById("updateUserProfileDisplay").style.display = 'none';
-            document.getElementById("createUserAccountDisplay").style.display = 'none';
-            document.getElementById("viewUserAccountDisplay").style.display = 'none';
-            document.getElementById("suspendUserAccountDisplay").style.display = 'none';
-            document.getElementById("updateUserAccountDisplay").style.display = 'none';
-        }
-
-        function viewUserProfileFunction(){
-            document.getElementById("emailDisplay").style.display = 'none';
-            document.getElementById("createUserProfileDisplay").style.display = 'none';
-            document.getElementById("viewUserProfileDisplay").style.display = 'block';
-            document.getElementById("suspendUserProfileDisplay").style.display = 'none';
-            document.getElementById("updateUserProfileDisplay").style.display = 'none';
-            document.getElementById("createUserAccountDisplay").style.display = 'none';
-            document.getElementById("viewUserAccountDisplay").style.display = 'none';
-            document.getElementById("suspendUserAccountDisplay").style.display = 'none';
-            document.getElementById("updateUserAccountDisplay").style.display = 'none';
-        }
-
-        function suspendUserProfileFunction(){
-            document.getElementById("emailDisplay").style.display = 'none';
-            document.getElementById("createUserProfileDisplay").style.display = 'none';
-            document.getElementById("viewUserProfileDisplay").style.display = 'none';
-            document.getElementById("suspendUserProfileDisplay").style.display = 'block';
-            document.getElementById("updateUserProfileDisplay").style.display = 'none';
-            document.getElementById("createUserAccountDisplay").style.display = 'none';
-            document.getElementById("viewUserAccountDisplay").style.display = 'none';
-            document.getElementById("suspendUserAccountDisplay").style.display = 'none';
-            document.getElementById("updateUserAccountDisplay").style.display = 'none';
-        }
-
-        function updateUserProfileFunction(){
-            document.getElementById("emailDisplay").style.display = 'none';
-            document.getElementById("createUserProfileDisplay").style.display = 'none';
-            document.getElementById("viewUserProfileDisplay").style.display = 'none';
-            document.getElementById("suspendUserProfileDisplay").style.display = 'none';
-            document.getElementById("updateUserProfileDisplay").style.display = 'block';
             document.getElementById("createUserAccountDisplay").style.display = 'none';
             document.getElementById("viewUserAccountDisplay").style.display = 'none';
             document.getElementById("suspendUserAccountDisplay").style.display = 'none';
@@ -70,10 +18,6 @@ require_once("deliveryInboxDB.php");
 
         function createUserAccountFunction(){
             document.getElementById("emailDisplay").style.display = 'none';
-            document.getElementById("createUserProfileDisplay").style.display = 'none';
-            document.getElementById("viewUserProfileDisplay").style.display = 'none';
-            document.getElementById("suspendUserProfileDisplay").style.display = 'none';
-            document.getElementById("updateUserProfileDisplay").style.display = 'none';
             document.getElementById("createUserAccountDisplay").style.display = 'block';
             document.getElementById("viewUserAccountDisplay").style.display = 'none';
             document.getElementById("suspendUserAccountDisplay").style.display = 'none';
@@ -82,10 +26,6 @@ require_once("deliveryInboxDB.php");
 
         function viewUserAccountFunction(){
             document.getElementById("emailDisplay").style.display = 'none';
-            document.getElementById("createUserProfileDisplay").style.display = 'none';
-            document.getElementById("viewUserProfileDisplay").style.display = 'none';
-            document.getElementById("suspendUserProfileDisplay").style.display = 'none';
-            document.getElementById("updateUserProfileDisplay").style.display = 'none';
             document.getElementById("createUserAccountDisplay").style.display = 'none';
             document.getElementById("viewUserAccountDisplay").style.display = 'block';
             document.getElementById("suspendUserAccountDisplay").style.display = 'none';
@@ -94,10 +34,6 @@ require_once("deliveryInboxDB.php");
 
         function suspendUserAccountFunction(){
             document.getElementById("emailDisplay").style.display = 'none';
-            document.getElementById("createUserProfileDisplay").style.display = 'none';
-            document.getElementById("viewUserProfileDisplay").style.display = 'none';
-            document.getElementById("suspendUserProfileDisplay").style.display = 'none';
-            document.getElementById("updateUserProfileDisplay").style.display = 'none';
             document.getElementById("createUserAccountDisplay").style.display = 'none';
             document.getElementById("viewUserAccountDisplay").style.display = 'none';
             document.getElementById("suspendUserAccountDisplay").style.display = 'block';
@@ -106,10 +42,6 @@ require_once("deliveryInboxDB.php");
 
         function updateUserAccountFunction(){
             document.getElementById("emailDisplay").style.display = 'none';
-            document.getElementById("createUserProfileDisplay").style.display = 'none';
-            document.getElementById("viewUserProfileDisplay").style.display = 'none';
-            document.getElementById("suspendUserProfileDisplay").style.display = 'none';
-            document.getElementById("updateUserProfileDisplay").style.display = 'none';
             document.getElementById("createUserAccountDisplay").style.display = 'none';
             document.getElementById("viewUserAccountDisplay").style.display = 'none';
             document.getElementById("suspendUserAccountDisplay").style.display = 'none';
@@ -251,8 +183,23 @@ require_once("deliveryInboxDB.php");
             return listing;
         }
 
-        function createProfile(){
-            alert("Create profile clicked");
+        function createMiscAccount(){
+            alert("Create admin/staff/owner account clicked");
+        }
+
+        function createCustomerAccount(){
+            alert("Create customer account clicked");
+        }
+
+        function checkProfileType(){
+            if(document.getElementById("createAccountProfile").value == "Customer"){
+                document.getElementById("customerType").style.display = "block";
+                document.getElementById("miscType").style.display = "none";
+            }
+            else{
+                document.getElementById("customerType").style.display = "none";
+                document.getElementById("miscType").style.display = "block";
+            }
         }
     </script>
     <style>
@@ -328,39 +275,23 @@ require_once("deliveryInboxDB.php");
                 <div style="float:left;margin-left:30px;display:inline-block">
                     <text style="color:#437E96;font-size:30px">EMAIL</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
-                        <div class="mouseOverEffects" style="width:120px">
+                        <div class="mouseOverEffects" style="width:150px">
                             <input type="button" id="emailButton" name="emailButton" value="Email" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="emailFunction();"></br>
-                        </div></br></br>
-                    </div></br>
-
-                    <text style="color:#437E96;font-size:30px;">ROLES</text></br>
-                    <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
-                        <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="createUserProfileButton" name="createUserProfileButton" value="Create user profile" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="createUserProfileFunction()"></br>
-                        </div>
-                        <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="viewUserProfileButton" name="viewUserProfileButton" value="View user profile" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="viewUserProfileFunction()"></br>
-                        </div>
-                        <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="suspendUserProfileButton" name="suspendUserProfileButton" value="Suspend user profile" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="suspendUserProfileFunction()"></br>
-                        </div>
-                        <div class="mouseOverEffects" style="width:120px">
-                            <input type="button" id="updateUserProfileButton" name="updateUserProfileButton" value="Update user profile" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="updateUserProfileFunction()"></br>
                         </div></br></br>
                     </div></br>
 
                     <text style="color:#437E96;font-size:30px;">ACCOUNTS</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
-                        <div class="mouseOverEffects" style="width:120px">
+                        <div class="mouseOverEffects" style="width:150px">
                             <input type="button" id="createUserAccountButton" name="createUserAccountButton" value="Create user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="createUserAccountFunction()"></br>
                         </div>
-                        <div class="mouseOverEffects" style="width:120px">
+                        <div class="mouseOverEffects" style="width:150px">
                             <input type="button" id="viewUserAccountButton" name="viewUserAccountButton" value="View user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="viewUserAccountFunction()"></br>
                         </div>
-                        <div class="mouseOverEffects" style="width:120px">
+                        <div class="mouseOverEffects" style="width:150px">
                             <input type="button" id="suspendUserAccountButton" name="suspendUserAccountButton" value="Suspend user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="suspendUserAccountFunction()"></br>
                         </div>
-                        <div class="mouseOverEffects" style="width:120px">
+                        <div class="mouseOverEffects" style="width:150px">
                             <input type="button" id="updateUserAccountButton" name="updateUserAccountButton" value="Update user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="updateUserAccountFunction()"></br>
                         </div></br></br>
                     </div></br>
@@ -392,60 +323,34 @@ require_once("deliveryInboxDB.php");
                 </div>    
 
                 <div style="float:left;margin-left:300px;">
-                    <div id="createUserProfileDisplay" style="display:none;width:600px;">
-                        <text style="color:#437E96;font-size:40px;">
-                            Create user profile                              
-                        </text></br></br></br>
-                        <div id="userProfile" style="font-size:20px;height:200px;display:block">
-                            <label style="width:120px;display:inline-block">Email: </label><input type="text" id="createProfileEmail" style="margin-top:5px;margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
-                            <label style="width:120px;display:inline-block">Profile type: </label>
-                            <select id="createProfileType" style="margin-left:25px;width:304px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer">
+                    <div id="createUserAccountDisplay" style="display:none;width:600px;">
+                        <text style="color:#437E96;font-size:30px;">
+                            Create user account                              
+                        </text></br></br>
+                        <div id="createAccount" style="font-size:20px;display:block">
+                            <label style="width:150px;display:inline-block">Profile type: </label>
+                            <select id="createAccountProfile" style="margin-left:25px;width:304px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType()" onclick="checkProfileType()">
                                 <option value="Admin">Admin</option>
                                 <option value="Staff">Staff</option>
                                 <option value="Owner">Owner</option>
                                 <option value="Customer">Customer</option>
                             </select>
                             </br></br>
-                            <label style="width:120px;display:inline-block">Password: </label><input type="text" id="createProfilePassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
-                            <label style="width:120px;display:inline-block">Description: </label><input type="text" id="createProfileDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br>
+                            <div id="miscType" style="display:none">
+                                <label style="width:150px;display:inline-block">Email: </label><input type="text" id="createAccountEmail" style="margin-top:5px;margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
+                                <label style="width:150px;display:inline-block">Password: </label><input type="text" id="createAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                                <label style="width:150px;display:inline-block">Description: </label><input type="text" id="createAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
+                                <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create profile" onclick="createMiscAccount()">
+                            </div>
+                            <div id="customerType" style="display:none">
+                                <label style="width:150px;display:inline-block">Full name: </label><input type="text" id="createAccountName" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter full name"></br></br>
+                                <label style="width:150px;display:inline-block">Email: </label><input type="text" id="createAccountEmail" style="margin-top:5px;margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
+                                <label style="width:150px;display:inline-block">Password: </label><input type="text" id="createAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                                <label style="width:150px;display:inline-block">Phone number: </label><input type="text" id="createAccountNumber" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter phone number"></br></br>
+                                <label style="width:150px;display:inline-block">Description: </label><input type="text" id="createAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
+                                <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create profile" onclick="createCustomerAccount()">
+                            </div>
                         </div></br>
-                        <input type="button" class="buttonHoverEffect" style="display:inline-block;width:450px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create profile" onclick="createProfile()">
-                    </div>
-                </div>
-                <div style="float:left;margin-left:300px;">
-                    <div id="viewUserProfileDisplay" style="display:none;width:600px;">
-                        <text style="color:#437E96;font-size:40px;">
-                            View user profile                          
-                        </text></br></br></br>
-                        <div>
-                            <input type="text" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter email address">
-                            <input type="button" class="buttonHoverEffect" style="margin-left:20px;width:100px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="search">
-                        </div>
-                    </div>
-                </div> 
-                <div style="float:left;margin-left:300px;">
-                    <div id="suspendUserProfileDisplay" style="display:none;width:600px;">
-                        <text style="color:#437E96;font-size:30px;">
-                            Suspend user profile                              
-                        </text></br></br>
-                        <text>Suspend user profile</text>
-                    </div>
-                </div>
-                <div style="float:left;margin-left:300px;">
-                    <div id="updateUserProfileDisplay" style="display:none;width:600px;">
-                        <text style="color:#437E96;font-size:30px;">
-                            Update user profile                              
-                        </text></br></br>
-                        <text>Update user profile</text>
-                    </div>
-                </div>
-
-                <div style="float:left;margin-left:300px;">
-                    <div id="createUserAccountDisplay" style="display:none;width:600px;">
-                        <text style="color:#437E96;font-size:30px;">
-                            Create user account                              
-                        </text></br></br>
-                        <text>Create user account</text>
                     </div>
                 </div>
                 <div style="float:left;margin-left:300px;">
@@ -453,7 +358,39 @@ require_once("deliveryInboxDB.php");
                         <text style="color:#437E96;font-size:30px;">
                             View user account                          
                         </text></br></br>
-                        <text>View user account</text>
+                        <div>
+                            <input type="text" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter email address">
+                            <input type="button" class="buttonHoverEffect" style="margin-left:20px;width:100px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="search">
+                        </div></br>
+                        <div style="display:block">
+                            <table rules="all">
+                                <tr style="background-color:#5BBDE4CC;">
+                                    <td style="width:200px;padding:5px">Profile Type</td>
+                                    <td style="width:300px;padding:5px">Description</td>
+                                    <td style="width:200px;padding:5px">Account status</td>
+                                </tr>
+                                <tr style="background-color:#A8A1A166;">
+                                    <td id="profileType1" style="width:200px;padding:5px">Owner</td>
+                                    <td id="profileDescription1" style="width:300px;padding:5px">Owner type</td>
+                                    <td id="profileStatus1" style="width:200px;padding:5px">Suspended</td>
+                                </tr>
+                                <tr style="background-color:#A8A1A166;">
+                                    <td id="profileType2" style="width:200px;padding:5px">Admin</td>
+                                    <td id="profileDescription2" style="width:300px;padding:5px">Admin type</td>
+                                    <td id="profileStatus2" style="width:200px;padding:5px">Active</td>
+                                </tr>
+                                <tr style="background-color:#A8A1A166;"> 
+                                    <td id="profileType3" style="width:200px;padding:5px">Staff</td>
+                                    <td id="profileDescription3" style="width:300px;padding:5px">Staff type</td>
+                                    <td id="profileStatus3" style="width:200px;padding:5px">Active</td>
+                                </tr>
+                                <tr style="background-color:#A8A1A166;">
+                                    <td id="profileType4" style="width:200px;padding:5px">Customer</td>
+                                    <td id="profileDescription4" style="width:300px;padding:5px">Customer type</td>
+                                    <td id="profileStatus4" style="width:200px;padding:5px">Suspended</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div style="float:left;margin-left:300px;">
@@ -461,7 +398,40 @@ require_once("deliveryInboxDB.php");
                         <text style="color:#437E96;font-size:30px;">
                             Suspend user account                              
                         </text></br></br>
-                        <text>Suspend user account</text>
+                        <div style="display:block">
+                            <table rules="all">
+                                <tr style="background-color:#5BBDE4CC;">
+                                    <td style="width:200px;padding:5px"><center>Select</center></td>
+                                    <td style="width:200px;padding:5px">Profile Type</td>
+                                    <td style="width:300px;padding:5px">Description</td>
+                                    <td style="width:200px;padding:5px">Account status</td>
+                                </tr>
+                                <tr style="background-color:#A8A1A166;">
+                                    <td><center><input type="checkbox" style="cursor:pointer"></center></td>
+                                    <td id="profileType1" style="width:200px;padding:5px">Owner</td>
+                                    <td id="profileDescription1" style="width:300px;padding:5px">Owner type</td>
+                                    <td id="profileStatus1" style="width:200px;padding:5px">Suspended</td>
+                                </tr>
+                                <tr style="background-color:#A8A1A166;">
+                                    <td><center><input type="checkbox" style="cursor:pointer"></center></td>
+                                    <td id="profileType2" style="width:200px;padding:5px">Admin</td>
+                                    <td id="profileDescription2" style="width:300px;padding:5px">Admin type</td>
+                                    <td id="profileStatus2" style="width:200px;padding:5px">Active</td>
+                                </tr>
+                                <tr style="background-color:#A8A1A166;"> 
+                                    <td><center><input type="checkbox" style="cursor:pointer"></center></td>
+                                    <td id="profileType3" style="width:200px;padding:5px">Staff</td>
+                                    <td id="profileDescription3" style="width:300px;padding:5px">Staff type</td>
+                                    <td id="profileStatus3" style="width:200px;padding:5px">Active</td>
+                                </tr>
+                                <tr style="background-color:#A8A1A166;">
+                                    <td><center><input type="checkbox" style="cursor:pointer"></center></td>
+                                    <td id="profileType4" style="width:200px;padding:5px">Customer</td>
+                                    <td id="profileDescription4" style="width:300px;padding:5px">Customer type</td>
+                                    <td id="profileStatus4" style="width:200px;padding:5px">Suspended</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div style="float:left;margin-left:300px;">
