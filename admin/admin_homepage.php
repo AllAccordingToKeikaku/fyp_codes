@@ -189,11 +189,57 @@ require_once("accountDB.php");
         }
 
         function createMiscAccount(){
-            alert("Create admin/staff/owner account clicked");
+            $.ajax({
+                type: "POST",
+                url: "create_account_data.php",
+                data:{
+                    input_email1:document.getElementById("createAccountEmail1").value.toLowerCase(),
+                    input_profile: document.getElementById("create").value,
+                    input_password1: document.getElementById("createAccountPassword1").value,
+                    input_description1: document.getElementById("createAccountDescription1").value
+                },
+                success: function(data){
+                    Swal.fire({
+                        'title': 'Successfully created account!',
+                        'text': data,
+                        'type': 'success'
+                    }).then(setTimeout(function(){window.location.replace("admin_homepage.php");}, 2000))
+                },
+                error: function(data){
+                    Swal.fire({
+                        'title': 'Errors',
+                        'text': 'There were errors in creating account, please refresh the page and try again.'
+                    })
+                }
+            });
         }
 
         function createCustomerAccount(){
-            alert("Create customer account clicked");
+            $.ajax({
+                type: "POST",
+                url: "create_account_data.php",
+                data:{
+                    input_email2:document.getElementById("createAccountEmail2").value.toLowerCase(),
+                    input_profile: document.getElementById("create").value,
+                    input_fullname2: document.getElementById("createAccountName2").value,
+                    input_password2: document.getElementById("createAccountPassword2").value,
+                    input_phone2: document.getElementById("createAccountNumber2").value,
+                    input_description2: document.getElementById("createAccountDescription2").value
+                },
+                success: function(data){
+                    Swal.fire({
+                        'title': 'Successfully created account!',
+                        'text': data,
+                        'type': 'success'
+                    }).then(setTimeout(function(){window.location.replace("admin_homepage.php");}, 2000))
+                },
+                error: function(data){
+                    Swal.fire({
+                        'title': 'Errors',
+                        'text': 'There were errors in creating account, please refresh the page and try again.'
+                    })
+                }
+            });
         }
 
         function checkProfileType(createOrUpdate){
@@ -653,8 +699,8 @@ require_once("accountDB.php");
                             Create user account                              
                         </text></br></br>
                         <div id="createAccount" style="font-size:20px;display:block">
-                            <label style="width:auto;display:inline-block">Profile type: </label>
-                            <select id="create" style="margin-left:25px;width:304px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
+                            <label style="width:120px;display:inline-block">Profile type: </label>
+                            <select id="create" name="input_profile" style="margin-left:25px;width:304px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
                                 <option value="Admin">Admin</option>
                                 <option value="Staff">Staff</option>
                                 <option value="Owner">Owner</option>
@@ -662,18 +708,18 @@ require_once("accountDB.php");
                             </select>
                             </br></br>
                             <div id="miscType" style="display:none">
-                                <label style="width:auto;display:inline-block">Email: </label><input type="text" id="createAccountEmail" style="margin-top:5px;margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
-                                <label style="width:auto;display:inline-block">Password: </label><input type="text" id="createAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
-                                <label style="width:auto;display:inline-block">Description: </label><input type="text" id="createAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
-                                <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create profile" onclick="createMiscAccount()">
+                                <label style="width:120px;display:inline-block">Email: </label><input type="text" id="createAccountEmail1" name="input_email1" style="margin-top:5px;margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
+                                <label style="width:120px;display:inline-block">Password: </label><input type="text" id="createAccountPassword1" name="input_password1" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                                <label style="width:120px;display:inline-block">Description: </label><input type="text" id="createAccountDescription1" name="input_description1" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
+                                <input type="button" name="create1" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create profile" onclick="createMiscAccount()">
                             </div>
                             <div id="customerType" style="display:none">
-                                <label style="width:auto;display:inline-block">Full name: </label><input type="text" id="createAccountName" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter full name"></br></br>
-                                <label style="width:auto;display:inline-block">Email: </label><input type="text" id="createAccountEmail" style="margin-top:5px;margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
-                                <label style="width:auto;display:inline-block">Password: </label><input type="text" id="createAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
-                                <label style="width:auto;display:inline-block">Phone number: </label><input type="text" id="createAccountNumber" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter phone number"></br></br>
-                                <label style="width:auto;display:inline-block">Description: </label><input type="text" id="createAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
-                                <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create profile" onclick="createCustomerAccount()">
+                                <label style="width:120px;display:inline-block">Full name: </label><input type="text" id="createAccountName2" name="input_fullname2" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter full name"></br></br>
+                                <label style="width:120px;display:inline-block">Email: </label><input type="text" id="createAccountEmail2" name="input_email2" style="margin-top:5px;margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
+                                <label style="width:120px;display:inline-block">Password: </label><input type="text" id="createAccountPassword2" name="input_password2" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                                <label style="width:140px;display:inline-block">Phone number: </label><input type="text" id="createAccountNumber2" name="input_phone2" style="margin-left:10px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter phone number"></br></br>
+                                <label style="width:120px;display:inline-block">Description: </label><input type="text" id="createAccountDescription2" name="input_description2" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
+                                <input type="button" name="create2" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create profile" onclick="createCustomerAccount()">
                             </div>
                         </div></br>
                     </div>
@@ -755,8 +801,8 @@ require_once("accountDB.php");
                                 <option value="Customer">Customer</option>
                             </select></br></br>
                             <div id="updateMiscType" style="display:none">
-                                <label style="width:auto;display:inline-block">Password: </label><input type="text" id="updateAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
-                                <label style="width:auto;display:inline-block">Description: </label><input type="text" id="updateAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
+                                <label style="width:150px;display:inline-block">Password: </label><input type="text" id="updateAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                                <label style="width:150px;display:inline-block">Description: </label><input type="text" id="updateAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
                                 <label style="width:160px;display:inline-block">Select status type: </label>
                                 <select id="miscStatus" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
                                     <option value="Active">Active</option>
@@ -765,10 +811,10 @@ require_once("accountDB.php");
                                 <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Update profile" onclick="updateMiscAccount()">
                             </div>
                             <div id="updateCustomerType" style="display:none">
-                                <label style="width:auto;display:inline-block">Full name: </label><input type="text" id="updateCustomerAccountName" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter full name"></br></br>
-                                <label style="width:auto;display:inline-block">Password: </label><input type="text" id="updateCustomerAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
-                                <label style="width:auto;display:inline-block">Phone number: </label><input type="text" id="updateCustomerAccountNumber" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter phone number"></br></br>
-                                <label style="width:auto;display:inline-block">Description: </label><input type="text" id="updateCustomerAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
+                                <label style="width:150px;display:inline-block">Full name: </label><input type="text" id="updateCustomerAccountName" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter full name"></br></br>
+                                <label style="width:150px;display:inline-block">Password: </label><input type="text" id="updateCustomerAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                                <label style="width:150px;display:inline-block">Phone number: </label><input type="text" id="updateCustomerAccountNumber" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter phone number"></br></br>
+                                <label style="width:150px;display:inline-block">Description: </label><input type="text" id="updateCustomerAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
                                 <label style="width:160px;display:inline-block">Select status type: </label>
                                 <select id="customerStatus" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
                                     <option value="Active">Active</option>
