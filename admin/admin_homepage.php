@@ -586,7 +586,7 @@ require_once("accountDB.php");
                     </div></br>
                 </div>
 
-                <div style="float:left;margin-left:300px;">
+                <div style="float:left;margin-left:200px;">
                     <div id="emailDisplay" style="display:none;width:900px;">
                         <text style="color:#437E96;font-size:40px;">
                             Email                               

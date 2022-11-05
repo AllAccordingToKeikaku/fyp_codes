@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+    <script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script>
         var isProfileClicked = false;
 
@@ -77,6 +80,30 @@
         function searchMenuItemFunction(){
             
         }
+
+        function submitCreate(){
+            console.log(document.getElementById('createItemPicture').value);
+            /*$.ajax({
+                type: "POST",
+                url: "uploadPicture.php",
+                data:{
+                    my_image: document.getElementById('createItemPicture')
+                },
+                success: function(data){
+                    Swal.fire({
+                        'title': 'Successfully uploaded image!',
+                        'text': data,
+                        'type': 'success'
+                    }).then(setTimeout(function(){window.location.replace("staff_homepage.php");}, 2000))
+                },
+                error: function(data){
+                    Swal.fire({
+                        'title': 'Errors',
+                        'text': 'There were errors in uploading image, please refresh the page and try again.'
+                    })
+                }
+            });*/
+        }
     </script>
     <style>
         .mouseOverEffects{
@@ -132,7 +159,6 @@
         }
     </style>
     <body onload="profileDetails()" style="background-color:#FEF2E5">
-        <form method="POST">
             <div style="width:1400px;margin-left:auto;margin-right:auto">
                 <div style="float:right">
                     <img src="../MoshiQ2 IMG Assets/Profile Icon.png" style="display:block;margin-left:auto;width:70px;height:auto;cursor:pointer;" onclick="profileClicked()"></br>
@@ -216,6 +242,7 @@
 
                 <div id="menuTab">
                     <div style="float:left;margin-left:200px;">
+                    <form method="POST" action="create_item_data.php" enctype="multipart/form-data">
                         <div class="sideBar" id="createMenuItemDIV" style="display:none;width:auto">
                             <text style="color:#437E96;font-size:40px;">
                                 Create menu item                               
@@ -226,20 +253,20 @@
                             <text>Step 3) Save or move the file into this folder. </text></br></br>
                             <text>Step 4) When entering picture URL link, always add </text></br></br>
                             <text>"../MoshiQ2 IMG Assets/Menu/" before adding the file name! </text></br></br></span>
-                            <label style="width:150px;display:inline-block">Name: </label><input type="text" id="createItemName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="POMELLO PUNCH"></br></br>
-                            <label style="width:150px;display:inline-block">Category: </label><input type="text" id="createItemCategory" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="drinks"></br></br>
-                            <label style="width:150px;display:inline-block">Price: </label><input type="text" id="createItemPrice" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="15.50"></br></br>
-                            <label style="width:150px;display:inline-block">Description: </label><input type="text" id="createItemDescription" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Savoury goodness"></br></br>
+                            <label style="width:150px;display:inline-block">Name: </label><input type="text" id="createItemName" name="createItemName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="POMELLO PUNCH"></br></br>
+                            <label style="width:150px;display:inline-block">Category: </label><input type="text" id="createItemCategory" name="createItemCategory" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="drinks"></br></br>
+                            <label style="width:150px;display:inline-block">Price: </label><input type="text" id="createItemPrice" name="createItemPrice" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="15.50"></br></br>
+                            <label style="width:150px;display:inline-block">Description: </label><input type="text" id="createItemDescription" name="createItemDescription" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Savoury goodness"></br></br>
                             <label style="width:150px;display:inline-block">Picture link: </label>
-                                <!--input type="text" id="createItemLink" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="../MoshiQ2 IMG Assets/Menu/drinks.png"></br></br-->
-                                <input type="file" id="createItemPicture" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
+                                <input type="file" id="my_image" name="my_image" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
                             <label style="width:150px;display:inline-block">Stock: </label>
-                            <select id="createItemStock" style="margin-top:5px;margin-left:25px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px">
+                            <select id="createItemStock" name="createItemStock" style="margin-top:5px;margin-left:25px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px">
                                 <option value="Available">Available</option>
                                 <option value="Unavailable">Unavailable</option>
                             </select></br></br>
-                            <input type="button" class="buttonHoverEffect" style="display:inline-block;width:585px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create item">
+                            <input type="submit" class="buttonHoverEffect" name="createSubmit" style="display:inline-block;width:585px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create item">
                         </div>
+                    </form>
                     </div>   
                     
                     <div style="float:left;margin-left:200px;">
@@ -369,6 +396,5 @@
                     </div>
                 </div>
             </div>
-        </form>
     </body>
 </html>
