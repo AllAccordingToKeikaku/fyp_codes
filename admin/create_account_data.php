@@ -13,21 +13,24 @@ if(isset($_POST['input_email1'])){
     $profile_fullname = '';
     $profile_phone= '';
     $profile_status = 'Active';
-    if($conn){
 
 
 
-        $sqlCommand = "INSERT INTO account (profileID, fullName, email, accountPassword, phoneNumber, accountStatus, accountDescription) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $sqlCommand = "INSERT INTO account (profileID, fullName, email, accountPassword, phoneNumber, accountStatus, accountDescription) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-          $stmt= $conn->prepare($sqlCommand);
-        $stmt-> bind_param("sssssss", $profile_profile,$profile_fullname, $profile_email, $profile_password,$profile_phone, $profile_status, $profile_description);
-                                    
-        $stmt->execute();
+    $stmt= $conn->prepare($sqlCommand);
+    $stmt-> bind_param("sssssss", $profile_profile,$profile_fullname, $profile_email, $profile_password,$profile_phone, $profile_status, $profile_description);
+                                
+    $stmt->execute();
+    if($stmt){
+        echo 'Account successfully created!';
+    }
+    else{
+        echo 'There were errors during account creation, please refresh the page and try again';
     }
 }
 
-if(isset($_POST['input_email2']))
-{
+if(isset($_POST['input_email2'])){
 
   //get INPUT data from the form 
   $profile_profile = $_POST['input_profile'];
@@ -39,14 +42,16 @@ if(isset($_POST['input_email2']))
   $profile_status = 'Active';
 
   
-  if($conn){
-    $sqlCommand = "INSERT INTO account (profileID, fullName, email, accountPassword, phoneNumber, accountStatus, accountDescription) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    $stmt= $conn->prepare($sqlCommand);
-    $stmt-> bind_param("sssssss", $profile_profile,$profile_fullname, $profile_email, $profile_password,$profile_phone, $profile_status, $profile_description);
-                                
-    $stmt->execute();
-
-
+  $sqlCommand = "INSERT INTO account (profileID, fullName, email, accountPassword, phoneNumber, accountStatus, accountDescription) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  $stmt= $conn->prepare($sqlCommand);
+  $stmt-> bind_param("sssssss", $profile_profile,$profile_fullname, $profile_email, $profile_password,$profile_phone, $profile_status, $profile_description);
+                              
+  $stmt->execute();
+  if($stmt){
+      echo 'Account successfully created!';
+  }
+  else{
+      echo 'There were errors during account creation, please refresh the page and try again';
   }
 }
 ?>
