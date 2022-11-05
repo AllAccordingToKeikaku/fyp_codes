@@ -80,30 +80,6 @@
         function searchMenuItemFunction(){
             
         }
-
-        function submitCreate(){
-            console.log(document.getElementById('createItemPicture').value);
-            /*$.ajax({
-                type: "POST",
-                url: "uploadPicture.php",
-                data:{
-                    my_image: document.getElementById('createItemPicture')
-                },
-                success: function(data){
-                    Swal.fire({
-                        'title': 'Successfully uploaded image!',
-                        'text': data,
-                        'type': 'success'
-                    }).then(setTimeout(function(){window.location.replace("staff_homepage.php");}, 2000))
-                },
-                error: function(data){
-                    Swal.fire({
-                        'title': 'Errors',
-                        'text': 'There were errors in uploading image, please refresh the page and try again.'
-                    })
-                }
-            });*/
-        }
     </script>
     <style>
         .mouseOverEffects{

@@ -34,6 +34,7 @@ require_once("accountDB.php");
             document.getElementById("viewUserAccountDisplay").style.display = 'block';
             document.getElementById("suspendUserAccountDisplay").style.display = 'none';
             document.getElementById("updateUserAccountDisplay").style.display = 'none';
+            viewTable();
         }
 
         function suspendUserAccountFunction(){
@@ -333,21 +334,6 @@ require_once("accountDB.php");
                     suspendProfileList();
                 }
             }
-            else if(accountType == "view"){
-                if(document.getElementById("searchViewEmail").value.length > 0){
-                    checkProfileSize(document.getElementById("searchViewEmail").value.toLowerCase());
-                }
-                if(document.getElementById("searchViewEmail").value.toLowerCase().length === null || document.getElementById("searchViewEmail").value.toLowerCase() === ""){
-                    document.getElementById("view1").style.display = "none";
-                    document.getElementById("view2").style.display = "none";
-                    document.getElementById("view3").style.display = "none";
-                    document.getElementById("view4").style.display = "none";
-                }
-                else{
-                    document.getElementById("updateList").style.display = "none";
-                    viewProfileList();
-                }
-            }
             else{
                 if(document.getElementById("searchUpdateEmail").value.length > 0){
                     checkProfileSize(document.getElementById("searchUpdateEmail").value.toLowerCase());
@@ -358,15 +344,6 @@ require_once("accountDB.php");
                 else{
                     updateProfileList();
                 }
-            }
-        }
-
-        function viewProfileList(){
-            for(var x=0;x<profileTypeArray.length;x++){
-                document.getElementById('view' + String(x+1)).style.display = "";
-                document.getElementById("viewType" + String(x+1)).innerHTML = profileTypeArray[x];
-                document.getElementById("viewDescription" + String(x+1)).innerHTML = profileDescriptionArray[x];
-                document.getElementById("viewStatus" + String(x+1)).innerHTML = profileStatusArray[x];
             }
         }
 
@@ -490,6 +467,65 @@ require_once("accountDB.php");
                 }
             });
         }
+
+        function viewTable(){
+            $("#viewTableData tr").remove(); 
+            var dataArrays = '<?php echo json_encode($accountDataArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+            var dataArray = dataArrays.split('].');
+            var profileArray = [];
+            var totalProfileArray = [];
+
+            var x;
+            var tempString = "";
+            for (x=0;x<dataArray.length;x++)
+            {
+                profileArray.push(dataArray[x]);
+            }
+            for (x=0;x<profileArray.length;x++){
+                tempString = String(profileArray[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                totalProfileArray.push(tempString);
+            }
+
+            var x;
+            var y;
+            var tempString = "";
+            var table = document.getElementById('viewTableData');
+            var row;
+            for (x=0; x<totalProfileArray.length; x++){
+                
+                if (x==0){
+                    row = table.insertRow(x);
+                    row.style.backgroundColor = "#5BBDE4CC";
+                    var cell0 = row.insertCell(0);
+                    cell0.innerHTML = '<td id="viewEmail' + String(x) +'" style="width:auto;padding:5px;">'+
+                                    '<text style="width:auto;padding:5px;display:inline-block">Email</text></td>';
+                    var cell1 = row.insertCell(1);
+                    cell1.innerHTML = '<td id="viewType' + String(x) +'" style="width:auto;padding:5px;">'+
+                                    '<text style="width:120px;padding:5px;display:inline-block">Profile Type</text></td>';
+                    var cell2 = row.insertCell(2);
+                    cell2.innerHTML = '<td id="viewDescription' + String(x) +'" style="width:300px;padding:5px;">'+
+                                    '<text style="width:300px;padding:5px;display:inline-block">Description</text></td>';
+                    var cell3 = row.insertCell(3);
+                    cell3.innerHTML = '<td id="viewStatus' + String(x) +'" style="width:auto;padding:5px;">'+
+                                    '<text style="width:auto;padding:5px;display:inline-block;">Account status</text></td>';
+                }
+                row = table.insertRow(x+1);
+                row.style.backgroundColor = "#A8A1A166";
+                var cell0 = row.insertCell(0);
+                cell0.innerHTML = '<td id="viewEmail' + String(x) +'" style="width:auto;padding:5px">'+
+                                '<text style="width:auto;padding:5px;display:inline-block">' + totalProfileArray[x][3] +'</text></td>';
+                var cell1 = row.insertCell(1);
+                cell1.innerHTML = '<td id="viewType' + String(x) +'" style="width:auto;padding:5px">'+
+                                '<text style="width:auto;padding:5px;display:inline-block">' + totalProfileArray[x][1] +'</text></td>';
+                var cell2 = row.insertCell(2);
+                cell2.innerHTML = '<td id="viewDescription' + String(x) +'" style="width:300px;padding:5px">'+
+                                '<text style="width:300px;padding:5px;display:inline-block">' + totalProfileArray[x][7] +'</text></td>';
+                var cell3 = row.insertCell(3);
+                cell3.innerHTML = '<td id="viewStatus' + String(x) +'" style="width:auto;padding:5px">'+
+                                '<text style="width:auto;padding:5px;display:inline-block">' + totalProfileArray[x][6] +'</text></td>';           
+            }        
+        }
     </script>
     <style>
         .mouseOverEffects{
@@ -564,23 +600,23 @@ require_once("accountDB.php");
                 <div style="float:left;margin-left:30px;display:inline-block">
                     <text style="color:#437E96;font-size:30px">EMAIL</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
-                        <div class="mouseOverEffects" style="width:150px">
+                        <div class="mouseOverEffects" style="width:auto">
                             <input type="button" id="emailButton" name="emailButton" value="Email" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="emailFunction();"></br>
                         </div></br></br>
                     </div></br>
 
                     <text style="color:#437E96;font-size:30px;">ACCOUNTS</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
-                        <div class="mouseOverEffects" style="width:150px">
+                        <div class="mouseOverEffects" style="width:auto">
                             <input type="button" id="createUserAccountButton" name="createUserAccountButton" value="Create user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="createUserAccountFunction()"></br>
                         </div>
-                        <div class="mouseOverEffects" style="width:150px">
+                        <div class="mouseOverEffects" style="width:auto">
                             <input type="button" id="viewUserAccountButton" name="viewUserAccountButton" value="View user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="viewUserAccountFunction()"></br>
                         </div>
-                        <div class="mouseOverEffects" style="width:150px">
+                        <div class="mouseOverEffects" style="width:auto">
                             <input type="button" id="suspendUserAccountButton" name="suspendUserAccountButton" value="Suspend user profile" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="suspendUserAccountFunction()"></br>
                         </div>
-                        <div class="mouseOverEffects" style="width:150px">
+                        <div class="mouseOverEffects" style="width:auto">
                             <input type="button" id="updateUserAccountButton" name="updateUserAccountButton" value="Update user profile" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="updateUserAccountFunction()"></br>
                         </div></br></br>
                     </div></br>
@@ -617,7 +653,7 @@ require_once("accountDB.php");
                             Create user account                              
                         </text></br></br>
                         <div id="createAccount" style="font-size:20px;display:block">
-                            <label style="width:150px;display:inline-block">Profile type: </label>
+                            <label style="width:auto;display:inline-block">Profile type: </label>
                             <select id="create" style="margin-left:25px;width:304px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
                                 <option value="Admin">Admin</option>
                                 <option value="Staff">Staff</option>
@@ -626,17 +662,17 @@ require_once("accountDB.php");
                             </select>
                             </br></br>
                             <div id="miscType" style="display:none">
-                                <label style="width:150px;display:inline-block">Email: </label><input type="text" id="createAccountEmail" style="margin-top:5px;margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
-                                <label style="width:150px;display:inline-block">Password: </label><input type="text" id="createAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
-                                <label style="width:150px;display:inline-block">Description: </label><input type="text" id="createAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
+                                <label style="width:auto;display:inline-block">Email: </label><input type="text" id="createAccountEmail" style="margin-top:5px;margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
+                                <label style="width:auto;display:inline-block">Password: </label><input type="text" id="createAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                                <label style="width:auto;display:inline-block">Description: </label><input type="text" id="createAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
                                 <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create profile" onclick="createMiscAccount()">
                             </div>
                             <div id="customerType" style="display:none">
-                                <label style="width:150px;display:inline-block">Full name: </label><input type="text" id="createAccountName" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter full name"></br></br>
-                                <label style="width:150px;display:inline-block">Email: </label><input type="text" id="createAccountEmail" style="margin-top:5px;margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
-                                <label style="width:150px;display:inline-block">Password: </label><input type="text" id="createAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
-                                <label style="width:150px;display:inline-block">Phone number: </label><input type="text" id="createAccountNumber" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter phone number"></br></br>
-                                <label style="width:150px;display:inline-block">Description: </label><input type="text" id="createAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
+                                <label style="width:auto;display:inline-block">Full name: </label><input type="text" id="createAccountName" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter full name"></br></br>
+                                <label style="width:auto;display:inline-block">Email: </label><input type="text" id="createAccountEmail" style="margin-top:5px;margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
+                                <label style="width:auto;display:inline-block">Password: </label><input type="text" id="createAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                                <label style="width:auto;display:inline-block">Phone number: </label><input type="text" id="createAccountNumber" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter phone number"></br></br>
+                                <label style="width:auto;display:inline-block">Description: </label><input type="text" id="createAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
                                 <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create profile" onclick="createCustomerAccount()">
                             </div>
                         </div></br>
@@ -647,37 +683,8 @@ require_once("accountDB.php");
                         <text style="color:#437E96;font-size:30px;">
                             View user account                          
                         </text></br></br>
-                        <div>
-                            <input type="text" id="searchViewEmail" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter email address">
-                            <input type="button" id="view" class="buttonHoverEffect" style="margin-left:20px;width:100px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="search" onclick="checkAccounts(this.id);">
-                        </div></br>
                         <div style="display:block">
-                            <table rules="all">
-                                <tr style="background-color:#5BBDE4CC;">
-                                    <td style="width:200px;padding:5px">Profile Type</td>
-                                    <td style="width:300px;padding:5px">Description</td>
-                                    <td style="width:200px;padding:5px">Account status</td>
-                                </tr>
-                                <tr id="view1" style="background-color:#A8A1A166;display:none">
-                                    <td id="viewType1" style="width:200px;padding:5px"></td>
-                                    <td id="viewDescription1" style="width:300px;padding:5px"></td>
-                                    <td id="viewStatus1" style="width:200px;padding:5px"></td>
-                                </tr>
-                                <tr id="view2" style="background-color:#A8A1A166;display:none">
-                                    <td id="viewType2" style="width:200px;padding:5px"></td>
-                                    <td id="viewDescription2" style="width:300px;padding:5px"></td>
-                                    <td id="viewStatus2" style="width:200px;padding:5px"></td>
-                                </tr>
-                                <tr id="view3" style="background-color:#A8A1A166;display:none"> 
-                                    <td id="viewType3" style="width:200px;padding:5px"></td>
-                                    <td id="viewDescription3" style="width:300px;padding:5px"></td>
-                                    <td id="viewStatus3" style="width:200px;padding:5px"></td>
-                                </tr>
-                                <tr id="view4" style="background-color:#A8A1A166;display:none">
-                                    <td id="viewType4" style="width:200px;padding:5px"></td>
-                                    <td id="viewDescription4" style="width:300px;padding:5px"></td>
-                                    <td id="viewStatus4" style="width:200px;padding:5px"></td>
-                                </tr>
+                            <table id="viewTableData" rules="all" style="font-size:20px">
                             </table>
                         </div>
                     </div>
@@ -748,8 +755,8 @@ require_once("accountDB.php");
                                 <option value="Customer">Customer</option>
                             </select></br></br>
                             <div id="updateMiscType" style="display:none">
-                                <label style="width:150px;display:inline-block">Password: </label><input type="text" id="updateAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
-                                <label style="width:150px;display:inline-block">Description: </label><input type="text" id="updateAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
+                                <label style="width:auto;display:inline-block">Password: </label><input type="text" id="updateAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                                <label style="width:auto;display:inline-block">Description: </label><input type="text" id="updateAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
                                 <label style="width:160px;display:inline-block">Select status type: </label>
                                 <select id="miscStatus" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
                                     <option value="Active">Active</option>
@@ -758,10 +765,10 @@ require_once("accountDB.php");
                                 <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Update profile" onclick="updateMiscAccount()">
                             </div>
                             <div id="updateCustomerType" style="display:none">
-                                <label style="width:150px;display:inline-block">Full name: </label><input type="text" id="updateCustomerAccountName" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter full name"></br></br>
-                                <label style="width:150px;display:inline-block">Password: </label><input type="text" id="updateCustomerAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
-                                <label style="width:150px;display:inline-block">Phone number: </label><input type="text" id="updateCustomerAccountNumber" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter phone number"></br></br>
-                                <label style="width:150px;display:inline-block">Description: </label><input type="text" id="updateCustomerAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
+                                <label style="width:auto;display:inline-block">Full name: </label><input type="text" id="updateCustomerAccountName" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter full name"></br></br>
+                                <label style="width:auto;display:inline-block">Password: </label><input type="text" id="updateCustomerAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
+                                <label style="width:auto;display:inline-block">Phone number: </label><input type="text" id="updateCustomerAccountNumber" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter phone number"></br></br>
+                                <label style="width:auto;display:inline-block">Description: </label><input type="text" id="updateCustomerAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
                                 <label style="width:160px;display:inline-block">Select status type: </label>
                                 <select id="customerStatus" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
                                     <option value="Active">Active</option>
