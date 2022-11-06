@@ -223,20 +223,21 @@
                             <text style="color:#437E96;font-size:40px;">
                                 Create menu item                               
                             </text></br></br></br>
-                            <span style="color:red"><text>How to store and use an image in the correct folder?</text></br></br>
-                            <text>Step 1) Locate "MoshiQ2 IMG Assets" folder, double click it.</text></br></br>
-                            <text>Step 2) Locate "Menu" folder, double click it.</text></br></br>
-                            <text>Step 3) Save or move the file into this folder. </text></br></br>
-                            <text>Step 4) When entering picture URL link, always add </text></br></br>
-                            <text>"../MoshiQ2 IMG Assets/Menu/" before adding the file name! </text></br></br></span>
-                            <label style="width:150px;display:inline-block">Name: </label><input type="text" id="createItemName" name="createItemName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="POMELLO PUNCH"></br></br>
-                            <label style="width:150px;display:inline-block">Category: </label><input type="text" id="createItemCategory" name="createItemCategory" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="drinks"></br></br>
+                            <label style="width:150px;display:inline-block">Name: </label><input type="text" id="createItemName" name="createItemName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;text-transform:uppercase" placeholder="POMELLO PUNCH"></br></br>
+                            <label style="width:150px;display:inline-block">Category: </label>
+                                <!--input type="text" id="createItemCategory" name="createItemCategory" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="drinks"></br></br-->
+                            <select id="createItemCategory" name="createItemCategory" style="margin-top:5px;margin-left:25px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer">
+                                <option value="signature">Signature</option>
+                                <option value="diy">DIY</option>
+                                <option value="acai">Acai</option>
+                                <option value="beverages">Beverages</option>
+                            </select></br></br>
                             <label style="width:150px;display:inline-block">Price: </label><input type="text" id="createItemPrice" name="createItemPrice" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="15.50"></br></br>
                             <label style="width:150px;display:inline-block">Description: </label><input type="text" id="createItemDescription" name="createItemDescription" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Savoury goodness"></br></br>
                             <label style="width:150px;display:inline-block">Picture link: </label>
                                 <input type="file" id="my_image" name="my_image" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
                             <label style="width:150px;display:inline-block">Stock: </label>
-                            <select id="createItemStock" name="createItemStock" style="margin-top:5px;margin-left:25px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px">
+                            <select id="createItemStock" name="createItemStock" style="margin-top:5px;margin-left:25px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer">
                                 <option value="Available">Available</option>
                                 <option value="Unavailable">Unavailable</option>
                             </select></br></br>
