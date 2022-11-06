@@ -409,7 +409,7 @@ require_once("accountDB.php");
             }
             for(var x=0; x<profileTypeArray.length; x++){
                 for(var y=0; y<op.length; y++){
-                    if(op[y].value.toLowerCase() == profileTypeArray[x]){
+                    if(op[y].value.toLowerCase() == profileTypeArray[x].toLowerCase()){
                         op[y].disabled = false;
                         document.getElementById("updateList").style.display = "block";
                         document.getElementById("updateDetails").value = op[y].value;
