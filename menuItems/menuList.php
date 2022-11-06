@@ -388,20 +388,23 @@ require_once("deliveryOrderDB.php");
         function createItemListing(menu_item_ID, item_name, item_picture, item_price, item_stock){
             var checkItemAvailability = false;
             var listingValueColor;
-            if (item_stock == "Available"){
+            var stockAvailability;
+            if (parseInt(item_stock) > 0){
                 listingValueColor = "#C3E3A2";
                 checkItemAvailability = true;
+                stockAvailability = "Available";
             }
             else{
                 listingValueColor = "#E09E9999";
                 checkItemAvailability = false;
+                stockAvailability = "Unavailable";
             }
 
             var listing='<td><img src="' + item_picture + '" style="width:200px;height:200px">'+
                             '</br><text>' + item_name + '</text></br></br>' +
                             '<div style="float:left;">' +
                                 '<b><text>$' + item_price + '</text></b></br>' +
-                                '<input type="button" value="' + item_stock + '" style="background-color:' + listingValueColor + ';border:1px;border-radius:10px;margin-top:10px;font-weight:bold">' +
+                                '<input type="button" value="' + stockAvailability + '" style="background-color:' + listingValueColor + ';border:1px;border-radius:10px;margin-top:10px;font-weight:bold">' +
                             '</div>' +
                             '<input class="addButton" id="' + menu_item_ID + '" type="button" value="View" onclick="addFunction(this.id, ' + checkItemAvailability + ')"></td>';
 
@@ -1435,7 +1438,7 @@ require_once("deliveryOrderDB.php");
                         </table>
                     </div></br>
 
-                    <div id="diyDisplay" style="width:800px;margin-top:100px">
+                    <div id="diyDisplay" style="width:800px;margin-top:50px">
                         <table style="border-spacing:20px 0px">
                             <tr>
                                 <text style="color:black;font-size:30px;">
@@ -1448,7 +1451,7 @@ require_once("deliveryOrderDB.php");
                         </table>
                     </div></br>
 
-                    <div id="acaiDisplay" style="width:800px;margin-top:100px">
+                    <div id="acaiDisplay" style="width:800px;margin-top:50px">
                         <table style="border-spacing:20px 0px">
                             <tr>
                                 <text style="color:black;font-size:30px;">
@@ -1461,7 +1464,7 @@ require_once("deliveryOrderDB.php");
                         </table>
                     </div></br>
 
-                    <div id="beveragesDisplay" style="width:800px;margin-top:100px">
+                    <div id="beveragesDisplay" style="width:800px;margin-top:50px">
                         <table style="border-spacing:20px 0px">
                             <tr>
                                 <text style="color:black;font-size:30px;">
@@ -1550,7 +1553,7 @@ require_once("deliveryOrderDB.php");
                                 <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Pay" onclick="cc_PaymentMethod()"></br></br>
                             </div>
                         </div>
-                        <div style="width:100%;height:auto;display:block;border:1px solid black;border-radius:10px;background-color:#BDBDBD26;margin-top:20px">
+                        <!--div style="width:100%;height:auto;display:block;border:1px solid black;border-radius:10px;background-color:#BDBDBD26;margin-top:20px">
                             <div style="width:auto;height:40px;display:block;">
                                 <input type="radio" id="grabPay" name="grabPay" value="grabPay" style="float:left;margin-top:12px" onclick="displayGrabPay()">
                                 <img src="../MoshiQ2 IMG Assets/Payment/grabpay.png" style="height:30px;width:auto;float:left;display:block;margin-top:4px">
@@ -1570,7 +1573,7 @@ require_once("deliveryOrderDB.php");
                                 <img src="../MoshiQ2 IMG Assets/Payment/Pay.png" style="float:left;position:absolute;width:60px;height:auto;margin-left:250px;cursor:pointer">
                                 <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Pay" onclick="grab_PaymentMethod()"></br></br>
                             </div>
-                        </div>
+                        </div-->
                     </div>
                     </span>
                 </div>

@@ -544,7 +544,7 @@ require_once("reservationDB.php");
                     </div>
                 </div>
 
-                <div style="float:left;margin-left:200px;">
+                <div style="float:left;margin-left:210px;margin-top:-30px">
                     <div id="ordersDisplay" style="display:none;width:600px;">
                         <text style="color:#437E96;font-size:30px;">
                             Orders                               
