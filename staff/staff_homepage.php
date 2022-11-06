@@ -24,7 +24,10 @@ include("delete_item_data.php");
 
         function signOut(){
             document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-            window.location.replace("../index.php");
+            var confirmMessage = "Are you sure you want to sign out?";
+            if (confirm(confirmMessage) == true) {
+                window.location.replace("../index.php");
+            }
         }
 
         function profileClicked(){
