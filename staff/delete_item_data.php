@@ -4,9 +4,9 @@ include('../dbConnection.php');
 
 if(isset($_POST['delete']))
 {
-    $name = strtoupper($_POST['deleteSearchItem']);
+    $itemID = strtoupper($_POST['deleteSearchItem']);
 
-    $sqlCommand = "DELETE FROM menu_item WHERE item_name = '$name'";
+    $sqlCommand = "DELETE FROM menu_item WHERE menu_item_ID = '$itemID'";
 
     echo $sqlCommand;
 

@@ -113,12 +113,41 @@ include("delete_item_data.php");
             }   
         }
 
-        function deleteMenuItemFunction(){
-            
-        }
-
-        function searchMenuItemFunction(){
-            
+        function searchCurrentItems(){
+            var viewArrays = '<?php echo json_encode($viewArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");;
+            var viewarray = viewArrays.split('].');
+            var viewArray1 = [];
+            var totalViewArray = [];
+            var x;
+            var y;
+            var tempString = "";
+            for (x=0;x<viewarray.length;x++)
+            {
+                viewArray1.push(viewarray[x]);
+            }
+            for (x=0;x<viewArray1.length;x++){
+                tempString = String(viewArray1[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                totalViewArray.push(tempString);
+            }
+            var table = document.getElementById("displayViewTable");
+            var y = 0;
+            for (x=0; x<totalViewArray.length; x++)
+            {
+                if(String(totalViewArray[x][0]) == document.getElementById("updateSearchItem").value){
+                    document.getElementById("displayUpdate").style.display = "block";
+                    document.getElementById("updateItemName").value = totalViewArray[x][2];
+                    document.getElementById("updateItemCategory").value = totalViewArray[x][1];
+                    document.getElementById("updateItemPrice").value = totalViewArray[x][5];
+                    document.getElementById("updateItemDescription").value = totalViewArray[x][3];
+                    document.getElementById("previousImage").value = totalViewArray[x][4];
+                    document.getElementById("updateItemStock").value = totalViewArray[x][6];
+                    break;
+                }
+                else{
+                    document.getElementById("displayUpdate").style.display = "none";
+                }
+            }
         }
     </script>
     <style>
@@ -275,7 +304,7 @@ include("delete_item_data.php");
                             <label style="width:150px;display:inline-block">Description: </label><input type="text" id="createItemDescription" name="createItemDescription" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Savoury goodness"></br></br>
                             <label style="width:150px;display:inline-block">Picture link: </label>
                                 <input type="file" id="my_image" name="my_image" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
-                            <label style="width:150px;display:inline-block">Stock: </label><input type="text" id="createItemStock" name="createItemStock" style="margin-top:5px;margin-left:25px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
+                            <label style="width:150px;display:inline-block">Stock: </label><input type="text" id="createItemStock" name="createItemStock" style="margin-top:5px;margin-left:30px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
                             <input type="submit" class="buttonHoverEffect" name="createSubmit" style="display:inline-block;width:585px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create item">
                         </div>
                     </form>
@@ -309,18 +338,41 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Delete menu item                               
                             </text></br></br></br>
-                            <input type="text" id="deleteSearchItem" name="deleteSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter item name">
+                            <input type="text" id="deleteSearchItem" name="deleteSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter item ID">
                             <input type="submit" name="delete" class="buttonHoverEffect" value="Delete" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                         </div>
                         </form>
                     </div>    
 
                     <div style="float:left;margin-left:200px;">
-                        <div class="sideBar" id="searchMenuItemDIV" style="display:none;width:800px;">
+                        <form method="POST" action="update_item_data.php" enctype="multipart/form-data">
+                        <div class="sideBar" id="updateMenuItemDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 Update menu item                               
                             </text></br></br></br>
+                            <input type="text" id="updateSearchItem" name="updateSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter item ID">
+                            <input type="button" class="buttonHoverEffect" value="Search" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" onclick="searchCurrentItems()"></br></br>
+                            <div id="displayUpdate" style="display:none">
+                                <label style="width:150px;display:inline-block">Name: </label><input type="text" id="updateItemName" name="updateItemName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;"></br></br>
+                                <label style="width:150px;display:inline-block">Category: </label>
+                                <select id="updateItemCategory" name="updateItemCategory" style="margin-top:5px;margin-left:25px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer">
+                                    <option value="signature">Signature</option>
+                                    <option value="diy">DIY</option>
+                                    <option value="acai">Acai</option>
+                                    <option value="beverages">Beverages</option>
+                                </select></br></br>
+                                <label style="width:150px;display:inline-block">Price: </label><input type="text" id="updateItemPrice" name="updateItemPrice" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
+                                <label style="width:150px;display:inline-block">Description: </label><input type="text" id="updateItemDescription" name="updateItemDescription" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
+                                <label style="width:150px;display:inline-block">Previous link: </label>
+                                    <input type="text" id="previousImage" name="previousImage" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" disabled></br></br>
+                                <label style="width:150px;display:inline-block">Picture link: </label>
+                                    <input type="file" id="updateItemMyImage" name="updateItemMyImage" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
+                                <text style="display:inline-block;font-size:20px;color:red;margin-left:100px">Leave picture link empty if change is not needed</text></br></br>
+                                <label style="width:150px;display:inline-block">Stock: </label><input type="text" id="updateItemStock" name="updateItemStock" style="margin-top:5px;margin-left:30px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
+                                <input type="submit" name="updateSubmit" class="buttonHoverEffect" style="display:inline-block;width:585px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create item">
+                            </div>
                         </div>
+                        </form>
                     </div>
                 </div>
                 
