@@ -317,10 +317,18 @@ require_once("reservationDB.php");
 
             var j=0;
             for (x=actualPromoArray.length-1; x>=0; x--){
-                document.getElementById("promo"+String(j)).innerHTML = '<text style="background-color:#A0D5EB;border:0px;margin-top:10px;width:600px;padding:5px;display:inline-block">' +
+                var codeName = actualPromoArray[x][0];
+                if(actualPromoArray[x][0] == ""){
+                    codeName = "Present this code to a staff!"
+                }
+                else{
+                    codeName = "Enter this code before check out to enjoy the benefit! </br> &emsp;&emsp;&emsp;&emsp;&emsp;" + codeName;
+                }
+                document.getElementById("promo"+String(j)).innerHTML = '<text style="background-color:#A8A1A166;border:0px;margin-top:10px;width:600px;padding:5px;display:inline-block">' +
                                                         '<center><img src="' + actualPromoArray[x][2] + '" style="width:100%;height:auto;"></center></br>' +
-                                                        '<text>Promo code: ' + actualPromoArray[x][0] + '</text></br></br>' + 
-                                                        '<text>Discounted rate: ' + actualPromoArray[x][1] + '%</text></br>';     
+                                                        '<text>' + actualPromoArray[x][1] + '% ' + actualPromoArray[x][5] +'</text></br></br>' + 
+                                                        '<text>Valid: ' + actualPromoArray[x][3].replaceAll("-", "/") + '-' + actualPromoArray[x][4].replaceAll("-", "/") + '</text></br></br>' +
+                                                        '<text>' + codeName + '</text>';     
                 j++;          
             }
         }
@@ -462,6 +470,14 @@ require_once("reservationDB.php");
                 }
             }
         }
+
+        function goToOrder(){
+            window.location.replace("../menuItems/menuList.php");
+        }
+
+        function goToReservation(){
+            window.location.replace("../reservation/reservation_details.php");
+        }
     </script>
     <style>
         .mouseOverEffects:hover{
@@ -520,12 +536,15 @@ require_once("reservationDB.php");
                     </div>
 
                     <div class="mouseOverEffects" style="width:120px">
-                        <input type="button" id="promoButton" name="promoButton" value="Promo Codes" style="padding:10px;border:0px;background-color:transparent;cursor:pointer;width:120px;text-align:left" onclick="promoFunction()"></br>
+                        <input type="button" id="promoButton" name="promoButton" value="Promo Codes" style="padding:10px;border:0px;background-color:transparent;cursor:pointer;width:120px;text-align:left" onclick="promoFunction()"></br></br>
+                    </div>
+                    <div>
+                        <input type="button" class="buttonEffects" style="border-radius:10px;font-size:20px;background-color:#A8A1A166;cursor:pointer" value="Place an order" onclick="goToOrder()"></br></br>
+                        <input type="button" class="buttonEffects" style="border-radius:10px;font-size:20px;background-color:#A8A1A166;cursor:pointer" value="Reserve a table" onclick="goToReservation()">
                     </div>
                 </div>
-                </div>
 
-                <div style="float:left;margin-left:300px;">
+                <div style="float:left;margin-left:200px;">
                     <div id="ordersDisplay" style="display:none;width:600px;">
                         <text style="color:#437E96;font-size:30px;">
                             Orders                               

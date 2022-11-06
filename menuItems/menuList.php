@@ -898,7 +898,7 @@ require_once("deliveryOrderDB.php");
 
                 const serviceID = "service_f6ewb26";
                 const templateID = "template_8xfm0mh";
-                var displaySubjectType = "Delivery";
+                var displaySubjectType = "Order";
                 var orderHours;
                 var orderMins;
                 var tempTimeArray = String(orderTime).split(":");

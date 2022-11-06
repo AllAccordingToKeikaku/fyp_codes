@@ -37,7 +37,7 @@ if(isset($_POST['order_address'])){
                         $item_1, $item_2, $item_3, $item_4, $item_5, $item_6, $item_7, $item_8, $item_9, $item_10, $item_11, $item_12);
     $stmt -> execute();
     if($stmt){
-        echo 'Successfully placed an order!';
+        echo 'Order and delivery details will be sent to you soon!';
     }
     else{
         echo 'There were errors in your order, please refresh the page and try again';
