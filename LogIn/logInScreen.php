@@ -48,36 +48,44 @@ require_once("accountDB.php");
             for (x=0;x<actualAccountArray.length;x++)
             {
                 if((document.getElementById("inputEmail").value).toLowerCase() == (actualAccountArray[x][3]).toLowerCase() &&
-                    document.getElementById("inputPassword").value == actualAccountArray[x][4]){
-                    var emailCookieText = document.getElementById("inputEmail").value;
-                    setCookie("email", emailCookieText, 1);
-
-                    var passwordCookieText = document.getElementById("inputPassword").value;
-                    setCookie("password", passwordCookieText, 1);
-                    setCookie("fullName", actualAccountArray[x][2], 1);
-                    setCookie("accountID", actualAccountArray[x][0], 1);
-                    setCookie("number", actualAccountArray[x][5], 1);
+                    document.getElementById("inputPassword").value == actualAccountArray[x][4] && 
+                    document.getElementById("selectProfile").value.toLowerCase() == actualAccountArray[x][1].toLowerCase()){
                     checkTOF = true;
-                    if(actualAccountArray[x][1].toLowerCase() == "customer"){
-                        window.location.href = "../customer/customer_landingPage.php";
+                    if (actualAccountArray[x][6].toLowerCase() != "suspended"){
+                        var emailCookieText = document.getElementById("inputEmail").value;
+                        setCookie("email", emailCookieText, 1);
+
+                        var passwordCookieText = document.getElementById("inputPassword").value;
+                        setCookie("password", passwordCookieText, 1);
+                        setCookie("fullName", actualAccountArray[x][2], 1);
+                        setCookie("accountID", actualAccountArray[x][0], 1);
+                        setCookie("number", actualAccountArray[x][5], 1);
+                        
+                        if(actualAccountArray[x][1].toLowerCase() == "customer"){
+                            window.location.href = "../customer/customer_landingPage.php";
+                        }
+                        else if(actualAccountArray[x][1].toLowerCase() == "admin"){
+                            window.location.href = "../admin/admin_homepage.php";
+                        }
+                        else if(actualAccountArray[x][1].toLowerCase() == "staff"){
+                            window.location.href = "../staff/staff_homepage.php";
+                        }
+                        else if(actualAccountArray[x][1].toLowerCase() == "owner"){
+                            window.location.href = "../owner/owner_homepage.php";
+                        }
+                        break;
                     }
-                    else if(actualAccountArray[x][1].toLowerCase() == "admin"){
-                        window.location.href = "../admin/admin_homepage.php";
+                    else{
+                        document.getElementById("myPopup").style.visibility = "visible";
+                        break;
                     }
-                    else if(actualAccountArray[x][1].toLowerCase() == "staff"){
-                        window.location.href = "../staff/staff_homepage.php";
-                    }
-                    else if(actualAccountArray[x][1].toLowerCase() == "owner"){
-                        window.location.href = "../owner/owner_homepage.php";
-                    }
-                    break;
                 }
                 else{
                     checkTOF = false;
                 }
             }    
             if(checkTOF == false){
-                    alert("Error in logging in");
+                document.getElementById("myPopup").style.visibility = "visible";
             }       
         }
 
@@ -162,6 +170,13 @@ require_once("accountDB.php");
                 <a href="../index.php"><img src="../MoshiQ2 IMG Assets/Logo.png" style="margin-left:auto;margin-right:auto;width:500px;height:200px;display:block"></a>
                 <text id="signInPrompt" name="singInPrompt" style="background-color:#E2B9B6;border-radius:5px;width:300px;margin-left:auto;margin-right:auto;font-size:20px;display:block"><center>Please sign-in to start ordering!</center></text></br></br>
                 <text id="welcomeText" name="welcomeText" style="margin-left:auto;margin-right:auto;width:250px;font-size:30px;display:block">WELCOME BACK</text></br></br>
+                <center><label  style="font-size:20px;display:inline-block">Log in as:</label>
+                    <select id="selectProfile" style="margin-left:25px;width:150px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer">
+                        <option value="Customer">Customer</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Owner">Owner</option>
+                    </select></center></br></br>
                 <text id="emailText" name="emailText" style="margin-left:auto;margin-right:auto;width:250px;font-size:15px;display:block">Email Address</text>
                 <input type="text" id="inputEmail" name="inputEmail" style="background-color:#D9D9D9;border-radius:15px;border:0px;margin-left:auto;margin-right:auto;width:250px;height:30px;padding:20px;font-size:15px;display:block" placeholder="Enter your email"></br>
                 <text id="passwordText" name="passwordText" style="margin-left:auto;margin-right:auto;width:250px;font-size:15px;display:block">Password</text>

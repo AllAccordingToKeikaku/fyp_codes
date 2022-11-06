@@ -6,7 +6,7 @@ require_once("../dbConnection.php");
 $query = "SELECT * FROM `account`";
 $select = mysqli_query($conn, $query);
 $num_rows = mysqli_num_rows($select);
-$dataArray = array();
+$accountArray = array();
 $accountID= "";
 $profileID = "";
 $fullName = "";
@@ -26,8 +26,7 @@ if ($num_rows > 0) {
     $accountStatus = $rows["accountStatus"];
     $accountDescription = $rows["accountDescription"];
 
-    $dataArray[]=array($accountID, $profileID, $fullName, $email, $accountPassword, $phoneNumber, $accountStatus, $accountDescription);
+    $accountArray[]=array($accountID, $profileID, $fullName, $email, $accountPassword, $phoneNumber, $accountStatus, $accountDescription);
     }
 }
-mysqli_close($conn);
 ?>

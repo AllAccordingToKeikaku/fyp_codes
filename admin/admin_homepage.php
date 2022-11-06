@@ -804,7 +804,7 @@ require_once("accountDB.php");
                                 <label style="width:150px;display:inline-block">Password: </label><input type="text" id="updateAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
                                 <label style="width:150px;display:inline-block">Description: </label><input type="text" id="updateAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
                                 <label style="width:160px;display:inline-block">Select status type: </label>
-                                <select id="miscStatus" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
+                                <select id="miscStatus" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer">
                                     <option value="Active">Active</option>
                                     <option value="Suspended">Suspended</option>
                                 </select></br></br>
@@ -816,7 +816,7 @@ require_once("accountDB.php");
                                 <label style="width:150px;display:inline-block">Phone number: </label><input type="text" id="updateCustomerAccountNumber" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter phone number"></br></br>
                                 <label style="width:150px;display:inline-block">Description: </label><input type="text" id="updateCustomerAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
                                 <label style="width:160px;display:inline-block">Select status type: </label>
-                                <select id="customerStatus" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
+                                <select id="customerStatus" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer">
                                     <option value="Active">Active</option>
                                     <option value="Suspended">Suspended</option>
                                 </select></br></br>
