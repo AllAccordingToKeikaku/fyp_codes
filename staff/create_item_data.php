@@ -38,14 +38,12 @@
                     $stmt->execute();
 
                     if($stmt){
-                    echo "Successfully created item";
+                        header("Location: staff_homepage.php?success");
                     }
                     else
                     {
-                    echo "Failed to create item";
+                        header("Location: staff_homepage.php?failed");
                     }
-
-                    header("Location: staff_homepage.php?success");
                 }
                 else {
                     $em = "You can't upload files of this type";

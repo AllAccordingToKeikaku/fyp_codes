@@ -1,3 +1,6 @@
+<?php
+include("itemDB.php");
+?>
 <!DOCTYPE html>
 <html>
     <script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
@@ -65,12 +68,48 @@
             }
         }
 
-        function createMenuItemFunction(){
-
-        }
-
-        function viewMenuItemFunction(){
-            
+        function searchItems(){
+            $("#displayViewTable tr").remove(); 
+            var viewArrays = '<?php echo json_encode($viewArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");;
+            var viewarray = viewArrays.split('].');
+            var viewArray1 = [];
+            var totalViewArray = [];
+            var x;
+            var y;
+            var tempString = "";
+            for (x=0;x<viewarray.length;x++)
+            {
+                viewArray1.push(viewarray[x]);
+            }
+            for (x=0;x<viewArray1.length;x++){
+                tempString = String(viewArray1[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                totalViewArray.push(tempString);
+            }
+            var table = document.getElementById("displayViewTable");
+            var y = 0;
+            for (x=0; x<totalViewArray.length; x++)
+            {
+                if(totalViewArray[x][0].toLowerCase().includes(document.getElementById("viewSearchItem").value.toLowerCase()) ||
+                    totalViewArray[x][2].toLowerCase().includes(document.getElementById("viewSearchItem").value.toLowerCase()) ||
+                    totalViewArray[x][3].toLowerCase().includes(document.getElementById("viewSearchItem").value.toLowerCase()) ||
+                    String(totalViewArray[x][6]).toLowerCase().includes(document.getElementById("viewSearchItem").value.toLowerCase())){
+                    var row = table.insertRow(y);
+                    var cell = row.insertCell(0);
+                    cell.innerHTML = '<text id="viewListingID' + String(x) + '" style="width:30px;display:block;padding:5px"></text>';
+                    document.getElementById("viewListingID"+String(x)).innerHTML = totalViewArray[x][0];  
+                    var cell = row.insertCell(1);
+                    cell.innerHTML = '<text id="viewListingName' + String(x) + '" style="width:200px;display:block;padding:5px"></text>';
+                    document.getElementById("viewListingName"+String(x)).innerHTML = totalViewArray[x][2];
+                    var cell = row.insertCell(2);
+                    cell.innerHTML = '<text id="viewListingDescription' + String(x) + '" style="width:320px;display:block;padding:5px"></text>';
+                    document.getElementById("viewListingDescription"+String(x)).innerHTML = totalViewArray[x][3];    
+                    var cell = row.insertCell(3);
+                    cell.innerHTML = '<text id="viewListingStock' + String(x) + '" style="width:100px;display:block;padding:5px"></text>';
+                    document.getElementById("viewListingStock"+String(x)).innerHTML = totalViewArray[x][6];  
+                    y++
+                }      
+            }   
         }
 
         function deleteMenuItemFunction(){
@@ -154,10 +193,10 @@
                     <text style="color:#437E96;font-size:30px;">Item</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="createMenuItem" name="createMenuItem" value="Create menu item" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);createMenuItemFunction()"></br>
+                            <input type="button" id="createMenuItem" name="createMenuItem" value="Create menu item" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="viewMenuItem" name="viewMenuItem" value="View menu item list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);viewMenuItemFunction()"></br>
+                            <input type="button" id="viewMenuItem" name="viewMenuItem" value="View menu item list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
                             <input type="button" id="deleteMenuItem" name="deleteMenuItem" value="Delete menu item" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);deleteMenuItemFunction()"></br>
@@ -225,7 +264,6 @@
                             </text></br></br></br>
                             <label style="width:150px;display:inline-block">Name: </label><input type="text" id="createItemName" name="createItemName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;text-transform:uppercase" placeholder="POMELLO PUNCH"></br></br>
                             <label style="width:150px;display:inline-block">Category: </label>
-                                <!--input type="text" id="createItemCategory" name="createItemCategory" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="drinks"></br></br-->
                             <select id="createItemCategory" name="createItemCategory" style="margin-top:5px;margin-left:25px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer">
                                 <option value="signature">Signature</option>
                                 <option value="diy">DIY</option>
@@ -236,22 +274,32 @@
                             <label style="width:150px;display:inline-block">Description: </label><input type="text" id="createItemDescription" name="createItemDescription" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Savoury goodness"></br></br>
                             <label style="width:150px;display:inline-block">Picture link: </label>
                                 <input type="file" id="my_image" name="my_image" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
-                            <label style="width:150px;display:inline-block">Stock: </label>
-                            <select id="createItemStock" name="createItemStock" style="margin-top:5px;margin-left:25px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer">
-                                <option value="Available">Available</option>
-                                <option value="Unavailable">Unavailable</option>
-                            </select></br></br>
+                            <label style="width:150px;display:inline-block">Stock: </label><input type="text" id="createItemStock" name="createItemStock" style="margin-top:5px;margin-left:25px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
                             <input type="submit" class="buttonHoverEffect" name="createSubmit" style="display:inline-block;width:585px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create item">
                         </div>
                     </form>
                     </div>   
                     
                     <div style="float:left;margin-left:200px;">
-                        <div class="sideBar" id="viewMenuItemDIV" style="display:none;width:800px;">
+                        <form method="POST">
+                        <div class="sideBar" id="viewMenuItemDIV" style="display:none;width:700px;">
                             <text style="color:#437E96;font-size:40px;">
                                 View menu item                               
                             </text></br></br></br>
+                            <input type="text" id="viewSearchItem" name="viewSearchItem" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Search by name">
+                            <input type="button" name="search" value="Search" onclick="searchItems()"></br></br>
+                            <div style="background-color:#3280F466;">
+                                <text style="display:inline-block;font-size:20px;width:30px;padding:5px;text-align:center">ID</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:200px;padding:5px;text-align:center">Name</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:320px;padding:5px;text-align:center">Description</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:70px;padding:5px;text-align:center">Stock</text>
+                            </div>
+                            <div id="displayView" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:block">
+                                <table id="displayViewTable" style="background-color:#A8A1A166;" rules="all">
+                                </table>
+                            </div>
                         </div>
+                        </form>
                     </div>  
                     
                     <div style="float:left;margin-left:200px;">
