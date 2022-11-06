@@ -34,7 +34,6 @@ require_once("accountDB.php");
             document.getElementById("viewUserAccountDisplay").style.display = 'block';
             document.getElementById("suspendUserAccountDisplay").style.display = 'none';
             document.getElementById("updateUserAccountDisplay").style.display = 'none';
-            viewTable();
         }
 
         function suspendUserAccountFunction(){
@@ -383,6 +382,9 @@ require_once("accountDB.php");
                     suspendProfileList();
                 }
             }
+            else if(accountType == "view"){
+                viewTable();
+            }
             else{
                 if(document.getElementById("searchUpdateEmail").value.length > 0){
                     checkProfileSize(document.getElementById("searchUpdateEmail").value.toLowerCase());
@@ -537,42 +539,48 @@ require_once("accountDB.php");
             }
 
             var x;
-            var y;
+            var y = 0;
             var tempString = "";
             var table = document.getElementById('viewTableData');
             var row;
+            var searchReq = document.getElementById('searchViewEmail').value;
             for (x=0; x<totalProfileArray.length; x++){
-                
-                if (x==0){
-                    row = table.insertRow(x);
-                    row.style.backgroundColor = "#5BBDE4CC";
+                if(totalProfileArray[x][3].toLowerCase().includes(searchReq.toLowerCase()) || 
+                    totalProfileArray[x][1].toLowerCase().includes(searchReq.toLowerCase()) ||
+                    totalProfileArray[x][7].toLowerCase().includes(searchReq.toLowerCase()) ||
+                    totalProfileArray[x][6].toLowerCase().includes(searchReq.toLowerCase())){
+                    if (y==0){
+                        row = table.insertRow(y);
+                        row.style.backgroundColor = "#5BBDE4CC";
+                        var cell0 = row.insertCell(0);
+                        cell0.innerHTML = '<td id="viewEmail' + String(x) +'" style="width:auto;padding:5px;">'+
+                                        '<text style="width:auto;padding:5px;display:inline-block">Email</text></td>';
+                        var cell1 = row.insertCell(1);
+                        cell1.innerHTML = '<td id="viewType' + String(x) +'" style="width:auto;padding:5px;">'+
+                                        '<text style="width:120px;padding:5px;display:inline-block">Profile Type</text></td>';
+                        var cell2 = row.insertCell(2);
+                        cell2.innerHTML = '<td id="viewDescription' + String(x) +'" style="width:300px;padding:5px;">'+
+                                        '<text style="width:300px;padding:5px;display:inline-block">Description</text></td>';
+                        var cell3 = row.insertCell(3);
+                        cell3.innerHTML = '<td id="viewStatus' + String(x) +'" style="width:auto;padding:5px;">'+
+                                        '<text style="width:150px;padding:5px;display:inline-block;">Account status</text></td>';
+                    }
+                    row = table.insertRow(y+1);
+                    row.style.backgroundColor = "#A8A1A166";
                     var cell0 = row.insertCell(0);
-                    cell0.innerHTML = '<td id="viewEmail' + String(x) +'" style="width:auto;padding:5px;">'+
-                                    '<text style="width:auto;padding:5px;display:inline-block">Email</text></td>';
+                    cell0.innerHTML = '<td id="viewEmail' + String(x) +'" style="width:auto;padding:5px">'+
+                                    '<text style="width:auto;padding:5px;display:inline-block">' + totalProfileArray[x][3] +'</text></td>';
                     var cell1 = row.insertCell(1);
-                    cell1.innerHTML = '<td id="viewType' + String(x) +'" style="width:auto;padding:5px;">'+
-                                    '<text style="width:120px;padding:5px;display:inline-block">Profile Type</text></td>';
+                    cell1.innerHTML = '<td id="viewType' + String(x) +'" style="width:auto;padding:5px">'+
+                                    '<text style="width:auto;padding:5px;display:inline-block">' + totalProfileArray[x][1] +'</text></td>';
                     var cell2 = row.insertCell(2);
-                    cell2.innerHTML = '<td id="viewDescription' + String(x) +'" style="width:300px;padding:5px;">'+
-                                    '<text style="width:300px;padding:5px;display:inline-block">Description</text></td>';
+                    cell2.innerHTML = '<td id="viewDescription' + String(x) +'" style="width:300px;padding:5px">'+
+                                    '<text style="width:300px;padding:5px;display:inline-block">' + totalProfileArray[x][7] +'</text></td>';
                     var cell3 = row.insertCell(3);
-                    cell3.innerHTML = '<td id="viewStatus' + String(x) +'" style="width:auto;padding:5px;">'+
-                                    '<text style="width:auto;padding:5px;display:inline-block;">Account status</text></td>';
-                }
-                row = table.insertRow(x+1);
-                row.style.backgroundColor = "#A8A1A166";
-                var cell0 = row.insertCell(0);
-                cell0.innerHTML = '<td id="viewEmail' + String(x) +'" style="width:auto;padding:5px">'+
-                                '<text style="width:auto;padding:5px;display:inline-block">' + totalProfileArray[x][3] +'</text></td>';
-                var cell1 = row.insertCell(1);
-                cell1.innerHTML = '<td id="viewType' + String(x) +'" style="width:auto;padding:5px">'+
-                                '<text style="width:auto;padding:5px;display:inline-block">' + totalProfileArray[x][1] +'</text></td>';
-                var cell2 = row.insertCell(2);
-                cell2.innerHTML = '<td id="viewDescription' + String(x) +'" style="width:300px;padding:5px">'+
-                                '<text style="width:300px;padding:5px;display:inline-block">' + totalProfileArray[x][7] +'</text></td>';
-                var cell3 = row.insertCell(3);
-                cell3.innerHTML = '<td id="viewStatus' + String(x) +'" style="width:auto;padding:5px">'+
-                                '<text style="width:auto;padding:5px;display:inline-block">' + totalProfileArray[x][6] +'</text></td>';           
+                    cell3.innerHTML = '<td id="viewStatus' + String(x) +'" style="width:auto;padding:5px">'+
+                                    '<text style="width:150px;padding:5px;display:inline-block">' + totalProfileArray[x][6] +'</text></td>';
+                    y++
+                }           
             }        
         }
     </script>
@@ -647,10 +655,10 @@ require_once("accountDB.php");
                 </div></br>
 
                 <div style="float:left;margin-left:30px;display:inline-block">
-                    <text style="color:#437E96;font-size:30px">EMAIL</text></br>
+                    <text style="color:#437E96;font-size:30px">INBOX</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                         <div class="mouseOverEffects" style="width:auto">
-                            <input type="button" id="emailButton" name="emailButton" value="Email" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="emailFunction();"></br>
+                            <input type="button" id="emailButton" name="emailButton" value="Check inbox" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="emailFunction();"></br>
                         </div></br></br>
                     </div></br>
 
@@ -674,7 +682,7 @@ require_once("accountDB.php");
                 <div style="float:left;margin-left:200px;">
                     <div id="emailDisplay" style="display:none;width:900px;">
                         <text style="color:#437E96;font-size:40px;">
-                            Email                               
+                            Check inbox                         
                         </text></br></br></br>
                         <div>
                             <input class="buttonEffects" type="button" style="float:left;margin-left:15%;width:200px;font-size:20px;padding-5px;" value="Reservation email" onclick="displayEmailR()">
@@ -696,7 +704,7 @@ require_once("accountDB.php");
                     </div>
                 </div>    
 
-                <div style="float:left;margin-left:300px;">
+                <div style="float:left;margin-left:200px;">
                     <div id="createUserAccountDisplay" style="display:none;width:600px;">
                         <text style="color:#437E96;font-size:30px;">
                             Create user account                              
@@ -727,18 +735,22 @@ require_once("accountDB.php");
                         </div></br>
                     </div>
                 </div>
-                <div style="float:left;margin-left:300px;">
+                <div style="float:left;margin-left:200px;">
                     <div id="viewUserAccountDisplay" style="display:none;width:600px;">
                         <text style="color:#437E96;font-size:30px;">
                             View user account                          
                         </text></br></br>
-                        <div style="display:block">
+                        <div>
+                            <input type="text" id="searchViewEmail" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;">
+                            <input type="button" id="view" class="buttonHoverEffect" style="margin-left:20px;width:100px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="search" onclick="checkAccounts(this.id);">
+                        </div></br>
+                        <div id="displayViewTable" style="display:block">
                             <table id="viewTableData" rules="all" style="font-size:20px">
                             </table>
                         </div>
                     </div>
                 </div>
-                <div style="float:left;margin-left:300px;">
+                <div style="float:left;margin-left:200px;">
                     <div id="suspendUserAccountDisplay" style="display:none;width:600px;">
                         <text style="color:#437E96;font-size:30px;">
                             Suspend user profile                            
@@ -786,7 +798,7 @@ require_once("accountDB.php");
                         </div>
                     </div>
                 </div>
-                <div style="float:left;margin-left:300px;">
+                <div style="float:left;margin-left:200px;">
                     <div id="updateUserAccountDisplay" style="display:none;width:600px;">
                         <text style="color:#437E96;font-size:30px;">
                             Update user profile                            
