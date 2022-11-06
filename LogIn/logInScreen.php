@@ -58,16 +58,16 @@ require_once("accountDB.php");
                     setCookie("accountID", actualAccountArray[x][0], 1);
                     setCookie("number", actualAccountArray[x][5], 1);
                     checkTOF = true;
-                    if(actualAccountArray[x][1] == "customer"){
+                    if(actualAccountArray[x][1].toLowerCase() == "customer"){
                         window.location.href = "../customer/customer_landingPage.php";
                     }
-                    else if(actualAccountArray[x][1] == "admin"){
+                    else if(actualAccountArray[x][1].toLowerCase() == "admin"){
                         window.location.href = "../admin/admin_homepage.php";
                     }
-                    else if(actualAccountArray[x][1] == "staff"){
+                    else if(actualAccountArray[x][1].toLowerCase() == "staff"){
                         window.location.href = "../staff/staff_homepage.php";
                     }
-                    else if(actualAccountArray[x][1] == "owner"){
+                    else if(actualAccountArray[x][1].toLowerCase() == "owner"){
                         window.location.href = "../owner/owner_homepage.php";
                     }
                     break;
