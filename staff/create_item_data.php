@@ -33,16 +33,16 @@
 
                     $stmt= $conn->prepare($sqlCommand1);
 
-                    $stmt-> bind_param("ssssss", $staff_item_create_category, $staff_item_create_name, $staff_item_create_describe, $staff_item_create_location, $staff_item_create_price, $staff_item_create_stock);
+                    $stmt-> bind_param("ssssss", $staff_item_create_category, strtoupper($staff_item_create_name), ucfirst($staff_item_create_describe), $staff_item_create_location, $staff_item_create_price, $staff_item_create_stock);
 
                     $stmt->execute();
 
                     if($stmt){
-                        header("Location: staff_homepage.php?success");
+                        header("Location: staff_homepage.php?successfullyCreated");
                     }
                     else
                     {
-                        header("Location: staff_homepage.php?failed");
+                        header("Location: staff_homepage.php?failedToCreate");
                     }
                 }
                 else {

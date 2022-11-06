@@ -12,12 +12,12 @@ if(isset($_POST['profileID'])){
     $accountStatus = $_POST['accountStatus'];
     $accountDescription = $_POST['accountDescription'];
 
-    $INSERT = "INSERT into account (profileID, fullName, email, accountPassword, phoneNumber)
+    $INSERT = "INSERT into account (profileID, fullName, email, accountPassword, phoneNumber, accountStatus, accountDescription)
                 VALUES(?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($INSERT);
 
-    $stmt -> bind_param("sssss", $profileID, $fullName, $email, $accountPassword, $phoneNumber, $accountStatus, $accountDescription);
+    $stmt -> bind_param("sssssss", $profileID, $fullName, $email, $accountPassword, $phoneNumber, $accountStatus, $accountDescription);
 
     $stmt -> execute();
     if($stmt){

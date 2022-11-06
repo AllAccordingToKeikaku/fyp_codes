@@ -2,17 +2,7 @@
 require_once('../dbConnection.php');
 ?>
 <?php 
-$sqlCommand = "";
-if(isset($_POST['search']))
-{
-    $filtervalues = $_POST['search'];
-    $sqlCommand = "SELECT * FROM menu_item WHERE CONCAT(item_category, item_name, item_description, item_picture, item_price, item_stock) LIKE '%$filtervalues%' ";
-
-
-}else 
-{
-    $sqlCommand = "SELECT * FROM menu_item";
-}
+$sqlCommand = "SELECT * FROM menu_item";
 $select = mysqli_query($conn, $sqlCommand);
 $num_rows = mysqli_num_rows($select);
 $viewArray = array();

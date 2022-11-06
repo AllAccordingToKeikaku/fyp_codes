@@ -1,5 +1,6 @@
 <?php
 include("itemDB.php");
+include("delete_item_data.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -199,58 +200,58 @@ include("itemDB.php");
                             <input type="button" id="viewMenuItem" name="viewMenuItem" value="View menu item list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="deleteMenuItem" name="deleteMenuItem" value="Delete menu item" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);deleteMenuItemFunction()"></br>
+                            <input type="button" id="deleteMenuItem" name="deleteMenuItem" value="Delete menu item" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="searchMenuItem" name="searchMenuItem" value="Search menu item" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);searchMenuItemFunction()"></br>
+                            <input type="button" id="updateMenuItem" name="updateMenuItem" value="Update menu item" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div></br></br>
                     </div></br>
 
                     <text style="color:#437E96;font-size:30px;">Coupon</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="createCouponCode" name="createCouponCode" value="Create coupon code" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);createCouponCodeFunction()"></br>
+                            <input type="button" id="createCouponCode" name="createCouponCode" value="Create coupon code" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="viewCouponCode" name="viewCouponCode" value="View coupon code list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);viewCouponCodeFunction()"></br>
+                            <input type="button" id="viewCouponCode" name="viewCouponCode" value="View coupon code list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="deleteCouponCode" name="deleteCouponCode" value="Delete coupon code" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);deleteCouponCodeFunction()"></br>
+                            <input type="button" id="deleteCouponCode" name="deleteCouponCode" value="Delete coupon code" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="searchCouponCode" name="searchCouponCode" value="Search coupon code" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);searchCouponCodeFunction()"></br>
+                            <input type="button" id="updateCouponCode" name="updateCouponCode" value="Update coupon code" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div></br></br>
                     </div></br>
 
                     <text style="color:#437E96;font-size:30px;">Reservation</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="createReservation" name="createReservation" value="Create reservation" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);createReservationFunction()"></br>
+                            <input type="button" id="createReservation" name="createReservation" value="Create reservation" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="viewReservation" name="viewReservation" value="View reservation list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);viewReservationFunction()"></br>
+                            <input type="button" id="viewReservation" name="viewReservation" value="View reservation list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="deleteReservation" name="deleteReservation" value="Delete reservation" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);deleteReservationFunction()"></br>
+                            <input type="button" id="deleteReservation" name="deleteReservation" value="Delete reservation" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="searchReservation" name="searchReservation" value="Search reservation" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);searchReservationFunction()"></br>
+                            <input type="button" id="updateReservation" name="updateReservation" value="Update reservation" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div></br></br>
                     </div></br>
 
                     <text style="color:#437E96;font-size:30px;">Order</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="createOrder" name="createOrder" value="Create order" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);createOrderFunction()"></br>
+                            <input type="button" id="createOrder" name="createOrder" value="Create order" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="viewOrder" name="viewOrder" value="View order list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);viewOrderFunction()"></br>
+                            <input type="button" id="viewOrder" name="viewOrder" value="View order list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="deleteOrder" name="deleteOrder" value="Delete order" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);deleteOrderFunction()"></br>
+                            <input type="button" id="deleteOrder" name="deleteOrder" value="Delete order" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="searchOrder" name="searchOrder" value="Search order" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);searchOrderFunction()"></br>
+                            <input type="button" id="updateOrder" name="updateOrder" value="Update order" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div></br></br>
                     </div></br>
                 </div>
@@ -262,7 +263,7 @@ include("itemDB.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Create menu item                               
                             </text></br></br></br>
-                            <label style="width:150px;display:inline-block">Name: </label><input type="text" id="createItemName" name="createItemName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;text-transform:uppercase" placeholder="POMELLO PUNCH"></br></br>
+                            <label style="width:150px;display:inline-block">Name: </label><input type="text" id="createItemName" name="createItemName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;" placeholder="POMELLO PUNCH"></br></br>
                             <label style="width:150px;display:inline-block">Category: </label>
                             <select id="createItemCategory" name="createItemCategory" style="margin-top:5px;margin-left:25px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer">
                                 <option value="signature">Signature</option>
@@ -286,8 +287,8 @@ include("itemDB.php");
                             <text style="color:#437E96;font-size:40px;">
                                 View menu item                               
                             </text></br></br></br>
-                            <input type="text" id="viewSearchItem" name="viewSearchItem" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Search by name">
-                            <input type="button" name="search" value="Search" onclick="searchItems()"></br></br>
+                            <input type="text" id="viewSearchItem" name="viewSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Search by name">
+                            <input type="button" name="search" class="buttonHoverEffect" value="Search" onclick="searchItems()" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                             <div style="background-color:#3280F466;">
                                 <text style="display:inline-block;font-size:20px;width:30px;padding:5px;text-align:center">ID</text>
                                 <text style="margin-right:auto;display:inline-block;font-size:20px;width:200px;padding:5px;text-align:center">Name</text>
@@ -303,17 +304,21 @@ include("itemDB.php");
                     </div>  
                     
                     <div style="float:left;margin-left:200px;">
+                        <form method="POST" action="delete_item_data.php" enctype="multipart/form-data">
                         <div class="sideBar" id="deleteMenuItemDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 Delete menu item                               
                             </text></br></br></br>
+                            <input type="text" id="deleteSearchItem" name="deleteSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter item name">
+                            <input type="submit" name="delete" class="buttonHoverEffect" value="Delete" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                         </div>
+                        </form>
                     </div>    
 
                     <div style="float:left;margin-left:200px;">
                         <div class="sideBar" id="searchMenuItemDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
-                                Search menu item                               
+                                Update menu item                               
                             </text></br></br></br>
                         </div>
                     </div>
@@ -347,7 +352,7 @@ include("itemDB.php");
                     <div style="float:left;margin-left:200px;">
                         <div class="sideBar" id="searchCouponCodeDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
-                                Search coupon code                            
+                                Update coupon code                            
                             </text></br></br></br>
                         </div>
                     </div>
@@ -379,9 +384,9 @@ include("itemDB.php");
                     </div>    
 
                     <div style="float:left;margin-left:200px;">
-                        <div class="sideBar" id="searchReservationDIV" style="display:none;width:800px;">
+                        <div class="sideBar" id="updateReservationDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
-                                Search reservation                             
+                                Update reservation                             
                             </text></br></br></br>
                         </div>
                     </div>
@@ -413,9 +418,9 @@ include("itemDB.php");
                     </div>    
 
                     <div style="float:left;margin-left:200px;">
-                        <div class="sideBar" id="searchOrderDIV" style="display:none;width:800px;">
+                        <div class="sideBar" id="updateOrderDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
-                                Search order                            
+                                Update order                            
                             </text></br></br></br>
                         </div>
                     </div>
