@@ -326,7 +326,7 @@ require_once("reservationDB.php");
                 }
                 document.getElementById("promo"+String(j)).innerHTML = '<text style="background-color:#A8A1A166;border:0px;margin-top:10px;width:600px;padding:5px;display:inline-block">' +
                                                         '<center><img src="' + actualPromoArray[x][2] + '" style="width:100%;height:auto;"></center></br>' +
-                                                        '<text>' + actualPromoArray[x][1] + '% ' + actualPromoArray[x][5] +'</text></br></br>' + 
+                                                        '<text>' + actualPromoArray[x][1] + '% OFF ' + actualPromoArray[x][5] +'</text></br></br>' + 
                                                         '<text>Valid: ' + actualPromoArray[x][3].replaceAll("-", "/") + '-' + actualPromoArray[x][4].replaceAll("-", "/") + '</text></br></br>' +
                                                         '<text>' + codeName + '</text>';     
                 j++;          

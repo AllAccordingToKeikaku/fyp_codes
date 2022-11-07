@@ -1,5 +1,6 @@
 <?php
 include("itemDB.php");
+include("couponDB.php");
 include("delete_item_data.php");
 ?>
 <!DOCTYPE html>
@@ -151,6 +152,50 @@ include("delete_item_data.php");
                     document.getElementById("displayUpdate").style.display = "none";
                 }
             }
+        }
+
+        function searchPromos(){
+            $("#displayCouponViewTable tr").remove(); 
+            var viewArrays = '<?php echo json_encode($promoArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");;
+            var viewarray = viewArrays.split('].');
+            var viewArray1 = [];
+            var totalViewArray = [];
+            var x;
+            var y;
+            var tempString = "";
+            for (x=0;x<viewarray.length;x++)
+            {
+                viewArray1.push(viewarray[x]);
+            }
+            for (x=0;x<viewArray1.length;x++){
+                tempString = String(viewArray1[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                totalViewArray.push(tempString);
+            }
+            var table = document.getElementById("displayCouponViewTable");
+            var y = 0;
+            for (x=0; x<totalViewArray.length; x++)
+            {
+                if(totalViewArray[x][0].toLowerCase().includes(document.getElementById("viewSearchPromo").value.toLowerCase()) ||
+                    totalViewArray[x][1].toLowerCase().includes(document.getElementById("viewSearchPromo").value.toLowerCase()) ||
+                    totalViewArray[x][6].toLowerCase().includes(document.getElementById("viewSearchPromo").value.toLowerCase()) ||
+                    String(totalViewArray[x][2]).toLowerCase().includes(document.getElementById("viewSearchPromo").value.toLowerCase())){
+                    var row = table.insertRow(y);
+                    var cell = row.insertCell(0);
+                    cell.innerHTML = '<text id="viewPromoID' + String(x) + '" style="width:30px;display:block;padding:5px"></text>';
+                    document.getElementById("viewPromoID"+String(x)).innerHTML = totalViewArray[x][0];  
+                    var cell = row.insertCell(1);
+                    cell.innerHTML = '<text id="viewPromoName' + String(x) + '" style="width:200px;display:block;padding:5px"></text>';
+                    document.getElementById("viewPromoName"+String(x)).innerHTML = totalViewArray[x][1];
+                    var cell = row.insertCell(2);
+                    cell.innerHTML = '<text id="viewPromoDescription' + String(x) + '" style="width:400px;display:block;padding:5px"></text>';
+                    document.getElementById("viewPromoDescription"+String(x)).innerHTML = totalViewArray[x][6];    
+                    var cell = row.insertCell(3);
+                    cell.innerHTML = '<text id="viewPromoRate' + String(x) + '" style="width:150px;display:block;padding:5px"></text>';
+                    document.getElementById("viewPromoRate"+String(x)).innerHTML = totalViewArray[x][2];  
+                    y++
+                }      
+            }   
         }
     </script>
     <style>
@@ -353,7 +398,7 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Update menu item                               
                             </text></br></br></br>
-                            <input type="text" id="updateSearchItem" name="updateSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter item ID">
+                            <input type="text" id="updateSearchItem" name="updateSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter keywords">
                             <input type="button" class="buttonHoverEffect" value="Search" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" onclick="searchCurrentItems()"></br></br>
                             <div id="displayUpdate" style="display:none">
                                 <label style="width:150px;display:inline-block">Name: </label><input type="text" id="updateItemName" name="updateItemName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;"></br></br>
@@ -381,11 +426,21 @@ include("delete_item_data.php");
                 
                 <div id="couponTab">
                     <div style="float:left;margin-left:200px;">
+                    <form method="POST" action="create_coupon_data.php" enctype="multipart/form-data">
                         <div class="sideBar" id="createCouponCodeDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 Create coupon code                               
                             </text></br></br></br>
+                            <label style="width:150px;display:inline-block">Coupon name: </label><input type="text" id="createCouponName" name="createCouponName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" placeholder="Leave empty if Dine-in exclusive"></br></br>
+                            <label style="width:150px;display:inline-block">Discount rate: </label><input type="text" id="createCouponDiscount" name="createCouponDiscount" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" placeholder="25"></br></br>
+                            <label style="width:150px;display:inline-block">Valid from: </label><input type="date" id="createCouponValidFrom" name="createCouponValidFrom" style="margin-top:5px;margin-left:30px;width:auto;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" placeholder="Click to select date"></br></br>
+                            <label style="width:150px;display:inline-block">Valid to: </label><input type="date" id="createCouponValidTo" name="createCouponValidTo" style="margin-top:5px;margin-left:30px;width:auto;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" placeholder="Click to select date"></br></br>
+                            <label style="width:150px;display:inline-block">Coupon description: </label><input type="text" id="createCouponDescription" name="createCouponDescription" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" placeholder="on all orders - Dine-in Exclusive"></br></br>
+                            <label style="width:150px;display:inline-block">Picture link: </label>
+                                <input type="file" id="coupon_image" name="coupon_image" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
+                            <input type="submit" name="createCouponSubmit" class="buttonHoverEffect" style="display:inline-block;width:585px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create coupon">
                         </div>
+                    </form>
                     </div>   
                     
                     <div style="float:left;margin-left:200px;">
@@ -393,6 +448,18 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 View coupon code                              
                             </text></br></br></br>
+                            <input type="text" id="viewSearchPromo" name="viewSearchPromo" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter keywords">
+                            <input type="button" name="searchPromo" class="buttonHoverEffect" value="Search" onclick="searchPromos()" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
+                            <div style="background-color:#3280F466;">
+                                <text style="display:inline-block;font-size:20px;width:30px;padding:5px;text-align:center">ID</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:200px;padding:5px;text-align:center">Name</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:400px;padding:5px;text-align:center">Description</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:70px;padding:5px;text-align:center">Rate</text>
+                            </div>
+                            <div id="displayCouponView" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:block">
+                                <table id="displayCouponViewTable" style="background-color:#A8A1A166;" rules="all">
+                                </table>
+                            </div>
                         </div>
                     </div>  
                     

@@ -37,12 +37,12 @@
 
 
             <label for="input_valid">Valid FROM (yyyy-dd--mm):</label>
-            <input type="text" " name="input_from" id='dateFrom' >
+            <input type="text" name="input_from" id='dateFrom' >
             <br><br> 
 
 
             <label for="input_valid">Valid TO (yyyy-dd--mm):</label>
-            <input type="text" " name="input_to" id='dateTo' >
+            <input type="text" name="input_to" id='dateTo' >
             <br><br>  
 
             <label for="input_name">Coupon Name:</label>
