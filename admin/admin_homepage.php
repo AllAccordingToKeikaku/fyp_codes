@@ -726,10 +726,10 @@ require_once("accountDB.php");
                             <input type="button" id="viewUserAccountButton" name="viewUserAccountButton" value="View user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="viewUserAccountFunction()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:auto">
-                            <input type="button" id="suspendUserAccountButton" name="suspendUserAccountButton" value="Suspend user profile" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="suspendUserAccountFunction()"></br>
+                            <input type="button" id="suspendUserAccountButton" name="suspendUserAccountButton" value="Suspend user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="suspendUserAccountFunction()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:auto">
-                            <input type="button" id="updateUserAccountButton" name="updateUserAccountButton" value="Update user profile" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="updateUserAccountFunction()"></br>
+                            <input type="button" id="updateUserAccountButton" name="updateUserAccountButton" value="Update user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="updateUserAccountFunction()"></br>
                         </div></br></br>
                     </div></br>
                 </div>
@@ -777,7 +777,7 @@ require_once("accountDB.php");
                                 <label style="width:120px;display:inline-block">Email: </label><input type="text" id="createAccountEmail1" name="input_email1" style="margin-top:5px;margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter email address"></br></br>
                                 <label style="width:120px;display:inline-block">Password: </label><input type="text" id="createAccountPassword1" name="input_password1" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
                                 <label style="width:120px;display:inline-block">Description: </label><input type="text" id="createAccountDescription1" name="input_description1" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
-                                <input type="button" name="create1" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create profile" onclick="createMiscAccount()">
+                                <input type="button" name="create1" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create account" onclick="createMiscAccount()">
                             </div>
                             <div id="customerType" style="display:none">
                                 <label style="width:120px;display:inline-block">Full name: </label><input type="text" id="createAccountName2" name="input_fullname2" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter full name"></br></br>
@@ -785,7 +785,7 @@ require_once("accountDB.php");
                                 <label style="width:120px;display:inline-block">Password: </label><input type="text" id="createAccountPassword2" name="input_password2" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
                                 <label style="width:140px;display:inline-block">Phone number: </label><input type="text" id="createAccountNumber2" name="input_phone2" style="margin-left:10px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter phone number"></br></br>
                                 <label style="width:120px;display:inline-block">Description: </label><input type="text" id="createAccountDescription2" name="input_description2" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
-                                <input type="button" name="create2" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create profile" onclick="createCustomerAccount()">
+                                <input type="button" name="create2" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create account" onclick="createCustomerAccount()">
                             </div>
                         </div></br>
                     </div>
@@ -796,7 +796,7 @@ require_once("accountDB.php");
                             View user account                          
                         </text></br></br>
                         <div>
-                            <input type="text" id="searchViewEmail" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;">
+                            <input type="text" id="searchViewEmail" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter keywords">
                             <input type="button" id="view" class="buttonHoverEffect" style="margin-left:20px;width:100px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="search" onclick="checkAccounts(this.id);">
                         </div></br>
                         <div id="displayViewTable" style="display:block">
@@ -878,7 +878,7 @@ require_once("accountDB.php");
                                     <option value="active">Active</option>
                                     <option value="suspended">Suspended</option>
                                 </select></br></br>
-                                <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Update profile" onclick="updateMiscAccount()">
+                                <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Update account" onclick="updateMiscAccount()">
                             </div>
                             <div id="updateCustomerType" style="display:none">
                                 <label style="width:150px;display:inline-block">Full name: </label><input type="text" id="updateCustomerAccountName" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter full name"></br></br>
@@ -890,7 +890,7 @@ require_once("accountDB.php");
                                     <option value="active">Active</option>
                                     <option value="suspended">Suspended</option>
                                 </select></br></br>
-                                <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Update profile" onclick="updateCustomerAccount()">
+                                <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Update account" onclick="updateCustomerAccount()">
                             </div>
                         </div>
                     </div>

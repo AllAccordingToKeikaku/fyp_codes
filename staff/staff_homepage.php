@@ -1,6 +1,7 @@
 <?php
 include("itemDB.php");
 include("couponDB.php");
+include("reservationDB.php");
 include("delete_item_data.php");
 ?>
 <!DOCTYPE html>
@@ -214,7 +215,7 @@ include("delete_item_data.php");
                 tempString = String(viewArray1[x]).replaceAll('[','').replaceAll(']','');
                 tempString = tempString.split(',');
                 totalViewArray.push(tempString);
-            }
+            }           
             for (x=0; x<totalViewArray.length; x++)
             {
                 if(String(totalViewArray[x][0]) == document.getElementById("updateSearchCoupon").value){
@@ -231,6 +232,63 @@ include("delete_item_data.php");
                     document.getElementById("displayUpdate").style.display = "none";
                 }
             }
+        }
+
+        function searchReservations(){
+            $("#displayReservationsTable tr").remove();
+            var viewArrays = '<?php echo json_encode($reservationsArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");;
+            var viewarray = viewArrays.split('].');
+            var viewArray1 = [];
+            var totalViewArray = [];
+            var x;
+            var y=0;
+            var tempString = "";
+            for (x=0;x<viewarray.length;x++)
+            {
+                viewArray1.push(viewarray[x]);
+            }
+            for (x=0;x<viewArray1.length;x++){
+                tempString = String(viewArray1[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                totalViewArray.push(tempString);
+            }
+            var table = document.getElementById("displayReservationsTable");
+            var y = 0;
+            for (x=0; x<totalViewArray.length; x++)
+            {
+                if(totalViewArray[x][0].toLowerCase().includes(document.getElementById("viewSearchReservation").value.toLowerCase()) ||
+                    totalViewArray[x][3].toLowerCase().includes(document.getElementById("viewSearchReservation").value.toLowerCase()) ||
+                    totalViewArray[x][9].toLowerCase().includes(document.getElementById("viewSearchReservation").value.toLowerCase()) ||
+                    totalViewArray[x][4].toLowerCase().includes(document.getElementById("viewSearchReservation").value.toLowerCase()) ||
+                    totalViewArray[x][5].toLowerCase().includes(document.getElementById("viewSearchReservation").value.toLowerCase()) ||
+                    totalViewArray[x][6].toLowerCase().includes(document.getElementById("viewSearchReservation").value.toLowerCase()) ||
+                    String(totalViewArray[x][8]).toLowerCase().includes(document.getElementById("viewSearchReservation").value.toLowerCase())){
+                    var row = table.insertRow(y);
+                    var cell = row.insertCell(0);
+                    cell.innerHTML = '<text id="viewReservationID' + String(x) + '" style="width:30px;display:block;padding:5px"></text>';
+                    document.getElementById("viewReservationID"+String(x)).innerHTML = totalViewArray[x][0];  
+                    var cell = row.insertCell(1);
+                    cell.innerHTML = '<text id="viewReservationEmail' + String(x) + '" style="width:250px;display:block;padding:5px"></text>';
+                    document.getElementById("viewReservationEmail"+String(x)).innerHTML = totalViewArray[x][3];
+                    var cell = row.insertCell(2);
+                    cell.innerHTML = '<text id="viewReservationNumber' + String(x) + '" style="width:90px;display:block;padding:5px"></text>';
+                    document.getElementById("viewReservationNumber"+String(x)).innerHTML = totalViewArray[x][4];
+                    var cell = row.insertCell(3);
+                    cell.innerHTML = '<text id="viewReservationSeating' + String(x) + '" style="width:80px;display:block;padding:5px"></text>';
+                    document.getElementById("viewReservationSeating"+String(x)).innerHTML = totalViewArray[x][9];    
+                    var cell = row.insertCell(4);
+                    cell.innerHTML = '<text id="viewReservationPax' + String(x) + '" style="width:30px;display:block;padding:5px"></text>';
+                    document.getElementById("viewReservationPax"+String(x)).innerHTML = totalViewArray[x][8];  
+                    var cell = row.insertCell(5);
+                    cell.innerHTML = '<text id="viewReservationLocation' + String(x) + '" style="width:100px;display:block;padding:5px"></text>';
+                    document.getElementById("viewReservationLocation"+String(x)).innerHTML = totalViewArray[x][5];    
+                    var cell = row.insertCell(6);
+                    cell.innerHTML = '<text id="viewReservationDate' + String(x) + '" style="width:140px;display:block;padding:5px"></text>';
+                    document.getElementById("viewReservationDate"+String(x)).innerHTML = totalViewArray[x][6];
+                        
+                    y++
+                }      
+            }   
         }
     </script>
     <style>
@@ -338,24 +396,15 @@ include("delete_item_data.php");
                     <text style="color:#437E96;font-size:30px;">Reservation</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="createReservation" name="createReservation" value="Create reservation" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
-                        </div>
-                        <div class="mouseOverEffects" style="width:150px">
                             <input type="button" id="viewReservation" name="viewReservation" value="View reservation list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
                             <input type="button" id="deleteReservation" name="deleteReservation" value="Delete reservation" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
-                        </div>
-                        <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="updateReservation" name="updateReservation" value="Update reservation" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div></br></br>
                     </div></br>
 
                     <text style="color:#437E96;font-size:30px;">Order</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
-                        <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="createOrder" name="createOrder" value="Create order" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
-                        </div>
                         <div class="mouseOverEffects" style="width:150px">
                             <input type="button" id="viewOrder" name="viewOrder" value="View order list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
@@ -363,7 +412,7 @@ include("delete_item_data.php");
                             <input type="button" id="deleteOrder" name="deleteOrder" value="Delete order" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="updateOrder" name="updateOrder" value="Update order" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
+                            <input type="button" id="updateOrder" name="updateOrder" value="Update order status" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div></br></br>
                     </div></br>
                 </div>
@@ -399,7 +448,7 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 View menu item                               
                             </text></br></br></br>
-                            <input type="text" id="viewSearchItem" name="viewSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Search by name">
+                            <input type="text" id="viewSearchItem" name="viewSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter keywords">
                             <input type="button" name="search" class="buttonHoverEffect" value="Search" onclick="searchItems()" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                             <div style="background-color:#3280F466;">
                                 <text style="display:inline-block;font-size:20px;width:30px;padding:5px;text-align:center">ID</text>
@@ -421,7 +470,7 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Delete menu item                               
                             </text></br></br></br>
-                            <input type="text" id="deleteSearchItem" name="deleteSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter item ID">
+                            <input type="text" id="deleteSearchItem" name="deleteSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
                             <input type="submit" name="delete" class="buttonHoverEffect" value="Delete" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                         </div>
                         </form>
@@ -433,7 +482,7 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Update menu item                               
                             </text></br></br></br>
-                            <input type="text" id="updateSearchItem" name="updateSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter keywords">
+                            <input type="text" id="updateSearchItem" name="updateSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
                             <input type="button" class="buttonHoverEffect" value="Search" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" onclick="searchCurrentItems()"></br></br>
                             <div id="displayUpdate" style="display:none">
                                 <label style="width:150px;display:inline-block">Name: </label><input type="text" id="updateItemName" name="updateItemName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;"></br></br>
@@ -504,7 +553,7 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Delete coupon code                              
                             </text></br></br></br>
-                            <input type="text" id="deleteSearchCoupon" name="deleteSearchCoupon" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter coupon ID">
+                            <input type="text" id="deleteSearchCoupon" name="deleteSearchCoupon" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
                             <input type="submit" name="deleteCoupon" class="buttonHoverEffect" value="Delete" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                         </div>
                     </form>
@@ -516,7 +565,7 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Update coupon code                            
                             </text></br></br></br>
-                            <input type="text" id="updateSearchCoupon" name="updateSearchCoupon" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter keywords">
+                            <input type="text" id="updateSearchCoupon" name="updateSearchCoupon" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
                             <input type="button" class="buttonHoverEffect" value="Search" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" onclick="searchCurrentPromos()"></br></br>
                             <div id="displayUpdateCoupon" style="display:none">
                                 <label style="width:150px;display:inline-block">Coupon name: </label><input type="text" id="updateCouponName" name="updateCouponName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" placeholder="Leave empty if Dine-in exclusive"></br></br>
@@ -529,56 +578,51 @@ include("delete_item_data.php");
                                 <label style="width:150px;display:inline-block">Picture link: </label>
                                     <input type="file" id="udpate_coupon_image" name="update_coupon_image" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
                                 <text style="display:inline-block;font-size:20px;color:red;margin-left:100px">Leave picture link empty if change is not needed</text></br></br>
-                                <input type="submit" name="updateCouponSubmit" class="buttonHoverEffect" style="display:inline-block;width:585px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create coupon">
+                                <input type="submit" name="updateCouponSubmit" class="buttonHoverEffect" style="display:inline-block;width:585px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Update coupon">
                             </div>
                         </div>
                         </form>
                     </div>
                 </div>
 
-                <div id="reservationTab">
-                    <div style="float:left;margin-left:200px;">
-                        <div class="sideBar" id="createReservationDIV" style="display:none;width:800px;">
-                            <text style="color:#437E96;font-size:40px;">
-                                Create reservation                               
-                            </text></br></br></br>
-                        </div>
-                    </div>   
-                    
+                <div id="reservationTab">                    
                     <div style="float:left;margin-left:200px;">
                         <div class="sideBar" id="viewReservationDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 View reservation                              
                             </text></br></br></br>
+                            <input type="text" id="viewSearchReservation" name="viewSearchReservation" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter keywords">
+                            <input type="button" name="search" class="buttonHoverEffect" value="Search" onclick="searchReservations()" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
+                            <div style="background-color:#3280F466;">
+                                <text style="display:inline-block;font-size:20px;width:30px;padding:2px;text-align:center">ID</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:250px;padding:2px;text-align:center">Email</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:90px;padding:2px;text-align:center">Number</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:93px;padding:2px;text-align:center">Seating</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:30px;padding:2px;text-align:center">Pax</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px;padding:2px;text-align:center">Location</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:150px;padding:2px;text-align:center">Date</text>
+                            </div>
+                            <div id="displayReservations" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:block">
+                                <table id="displayReservationsTable" style="background-color:#A8A1A166;" rules="all">
+                                </table>
+                            </div>
                         </div>
                     </div>  
                     
                     <div style="float:left;margin-left:200px;">
+                    <form method="POST" action="delete_reservation_data.php" enctype="multipart/form-data">
                         <div class="sideBar" id="deleteReservationDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 Delete reservation                              
                             </text></br></br></br>
+                            <input type="text" id="deleteSearchReservation" name="deleteSearchReservation" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
+                            <input type="submit" name="deleteReservation" class="buttonHoverEffect" value="Delete" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                         </div>
+                    </form>
                     </div>    
-
-                    <div style="float:left;margin-left:200px;">
-                        <div class="sideBar" id="updateReservationDIV" style="display:none;width:800px;">
-                            <text style="color:#437E96;font-size:40px;">
-                                Update reservation                             
-                            </text></br></br></br>
-                        </div>
-                    </div>
                 </div>
 
-                <div id="orderTab">
-                    <div style="float:left;margin-left:200px;">
-                        <div class="sideBar" id="createOrderDIV" style="display:none;width:800px;">
-                            <text style="color:#437E96;font-size:40px;">
-                                Create order                               
-                            </text></br></br></br>
-                        </div>
-                    </div>   
-                    
+                <div id="orderTab">                    
                     <div style="float:left;margin-left:200px;">
                         <div class="sideBar" id="viewOrderDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
@@ -598,7 +642,7 @@ include("delete_item_data.php");
                     <div style="float:left;margin-left:200px;">
                         <div class="sideBar" id="updateOrderDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
-                                Update order                            
+                                Update order status                         
                             </text></br></br></br>
                         </div>
                     </div>
