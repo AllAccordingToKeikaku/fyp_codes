@@ -2,6 +2,7 @@
 include("itemDB.php");
 include("couponDB.php");
 include("reservationDB.php");
+include("ordersDB.php");
 include("delete_item_data.php");
 ?>
 <!DOCTYPE html>
@@ -290,6 +291,101 @@ include("delete_item_data.php");
                 }      
             }   
         }
+
+        function searchOrder(){
+            $("#displayOrderTable tr").remove();
+            var viewArrays = '<?php echo json_encode($ordersArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");;
+            var viewarray = viewArrays.split('].');
+            var viewArray1 = [];
+            var totalViewArray = [];
+            var x;
+            var y=0;
+            var tempString = "";
+            for (x=0;x<viewarray.length;x++)
+            {
+                viewArray1.push(viewarray[x]);
+            }
+            for (x=0;x<viewArray1.length;x++){
+                tempString = String(viewArray1[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                totalViewArray.push(tempString);
+            }
+            var table = document.getElementById("displayOrderTable");
+            var y = 0;
+            for (x=0; x<totalViewArray.length; x++)
+            {
+                if(String(totalViewArray[x][0]).toLowerCase().includes(document.getElementById("viewSearchOrder").value.toLowerCase()) ||
+                    String(totalViewArray[x][2]).toLowerCase().includes(document.getElementById("viewSearchOrder").value.toLowerCase()) ||
+                    String(totalViewArray[x][3]).toLowerCase().includes(document.getElementById("viewSearchOrder").value.toLowerCase()) ||
+                    String(totalViewArray[x][4]).toLowerCase().includes(document.getElementById("viewSearchOrder").value.toLowerCase()) ||
+                    String(totalViewArray[x][5]).toLowerCase().includes(document.getElementById("viewSearchOrder").value.toLowerCase()) ||
+                    totalViewArray[x][6].toLowerCase().includes(document.getElementById("viewSearchOrder").value.toLowerCase())){
+                    var row = table.insertRow(y);
+                    var cell = row.insertCell(0);
+                    cell.innerHTML = '<text id="viewOrderID' + String(x) + '" style="width:30px;display:block;padding:5px"></text>';
+                    document.getElementById("viewOrderID"+String(x)).innerHTML = totalViewArray[x][0];  
+                    var cell = row.insertCell(1);
+                    cell.innerHTML = '<text id="viewOrderDate' + String(x) + '" style="width:100px;display:block;padding:5px"></text>';
+                    document.getElementById("viewOrderDate"+String(x)).innerHTML = totalViewArray[x][2];
+                    var cell = row.insertCell(2);
+                    cell.innerHTML = '<text id="viewOrderTime' + String(x) + '" style="width:50px;display:block;padding:5px"></text>';
+                    document.getElementById("viewOrderTime"+String(x)).innerHTML = totalViewArray[x][3];
+                    var cell = row.insertCell(3);
+                    cell.innerHTML = '<text id="viewOrderPrice' + String(x) + '" style="width:70px;display:block;padding:5px"></text>';
+                    document.getElementById("viewOrderPrice"+String(x)).innerHTML = totalViewArray[x][4];    
+                    var cell = row.insertCell(4);
+                    cell.innerHTML = '<text id="viewOrderCoupon' + String(x) + '" style="width:133px;display:block;padding:5px"></text>';
+                    document.getElementById("viewOrderCoupon"+String(x)).innerHTML = totalViewArray[x][6];    
+                    var cell = row.insertCell(5);
+                    cell.innerHTML = '<text id="viewOrderStatus' + String(x) + '" style="width:120px;display:block;padding:5px"></text>';
+                    document.getElementById("viewOrderStatus"+String(x)).innerHTML = totalViewArray[x][5];    
+                    y++
+                }      
+            }   
+        }
+
+        function searchUpdateOrder(){
+            $("#displayOrderUpdateTable tr").remove();
+            var viewArrays = '<?php echo json_encode($ordersArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");;
+            var viewarray = viewArrays.split('].');
+            var viewArray1 = [];
+            var totalViewArray = [];
+            var x;
+            var y=0;
+            var tempString = "";
+            for (x=0;x<viewarray.length;x++)
+            {
+                viewArray1.push(viewarray[x]);
+            }
+            for (x=0;x<viewArray1.length;x++){
+                tempString = String(viewArray1[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                totalViewArray.push(tempString);
+            }
+            var table = document.getElementById("displayOrderUpdateTable");
+            for (x=0; x<totalViewArray.length; x++)
+            {
+                var row = table.insertRow(x);
+                var cell = row.insertCell(0);
+                cell.innerHTML = '<text id="viewOrderID' + String(x) + '" style="width:30px;display:block;padding:5px"></text>';
+                document.getElementById("viewOrderID"+String(x)).innerHTML = totalViewArray[x][0];  
+                var cell = row.insertCell(1);
+                cell.innerHTML = '<text id="viewOrderDate' + String(x) + '" style="width:100px;display:block;padding:5px"></text>';
+                document.getElementById("viewOrderDate"+String(x)).innerHTML = totalViewArray[x][2];
+                var cell = row.insertCell(2);
+                cell.innerHTML = '<text id="viewOrderTime' + String(x) + '" style="width:50px;display:block;padding:5px"></text>';
+                document.getElementById("viewOrderTime"+String(x)).innerHTML = totalViewArray[x][3];
+                var cell = row.insertCell(3);
+                cell.innerHTML = '<text id="viewOrderPrice' + String(x) + '" style="width:70px;display:block;padding:5px"></text>';
+                document.getElementById("viewOrderPrice"+String(x)).innerHTML = totalViewArray[x][4];    
+                var cell = row.insertCell(4);
+                cell.innerHTML = '<text id="viewOrderCoupon' + String(x) + '" style="width:133px;display:block;padding:5px"></text>';
+                document.getElementById("viewOrderCoupon"+String(x)).innerHTML = totalViewArray[x][6];    
+                var cell = row.insertCell(5);
+                cell.innerHTML = '<text id="viewOrderStatus' + String(x) + '" style="width:120px;display:block;padding:5px"></text>';
+                document.getElementById("viewOrderStatus"+String(x)).innerHTML = totalViewArray[x][5];    
+            }   
+        }
     </script>
     <style>
         .mouseOverEffects{
@@ -412,7 +508,7 @@ include("delete_item_data.php");
                             <input type="button" id="deleteOrder" name="deleteOrder" value="Delete order" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="updateOrder" name="updateOrder" value="Update order status" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
+                            <input type="button" id="updateOrder" name="updateOrder" value="Update order status" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);searchUpdateOrder()"></br>
                         </div></br></br>
                     </div></br>
                 </div>
@@ -628,23 +724,61 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 View order                             
                             </text></br></br></br>
+                            <input type="text" id="viewSearchOrder" name="viewSearchOrder" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter keywords">
+                            <input type="button" name="search" class="buttonHoverEffect" value="Search" onclick="searchOrder()" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
+                            <div style="background-color:#3280F466;width:580px">
+                                <text style="display:inline-block;font-size:20px;width:30px;padding:5px;text-align:center">ID</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px;padding:5px;text-align:center">Date</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:50px;padding:5px;text-align:center">Time</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:70px;padding:5px;text-align:center">Price</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:130px;padding:5px;text-align:center">Promo Code</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:120px;padding:5px;text-align:center">Status</text>
+                            </div>
+                            <div id="displayOrder" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:block">
+                                <table id="displayOrderTable" style="background-color:#A8A1A166;" rules="all">
+                                </table>
+                            </div>
                         </div>
                     </div>  
                     
                     <div style="float:left;margin-left:200px;">
+                    <form method="POST" action="delete_order_data.php" enctype="multipart/form-data">
                         <div class="sideBar" id="deleteOrderDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 Delete order                             
                             </text></br></br></br>
+                            <input type="text" id="deleteSearchOrder" name="deleteSearchOrder" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
+                            <input type="submit" name="deleteOrder" class="buttonHoverEffect" value="Delete" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                         </div>
+                    </form>
                     </div>    
-
+                    
                     <div style="float:left;margin-left:200px;">
+                    <form method="POST" action="update_order_status_data.php" enctype="multipart/form-data">
                         <div class="sideBar" id="updateOrderDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 Update order status                         
                             </text></br></br></br>
+                            <input type="text" id="updateSearchOrder" name="updateSearchOrder" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID"></br></br>
+                            <select id="updateOrderStatus" name="updateOrderStatus" style="margin-top:5px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px;cursor:pointer">
+                                <option value="Delivered">Delivered</option>
+                                <option value="In-progress">In-progress</option>
+                            </select></br></br>
+                            <input type="submit" name="updateOrder" class="buttonHoverEffect" value="Update" style="width:405px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
+                            <div style="background-color:#3280F466;width:580px">
+                                <text style="display:inline-block;font-size:20px;width:30px;padding:5px;text-align:center">ID</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px;padding:5px;text-align:center">Date</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:50px;padding:5px;text-align:center">Time</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:70px;padding:5px;text-align:center">Price</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:130px;padding:5px;text-align:center">Promo Code</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:120px;padding:5px;text-align:center">Status</text>
+                            </div>
+                            <div id="displayOrderUpdate" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:block">
+                                <table id="displayOrderUpdateTable" style="background-color:#A8A1A166;" rules="all">
+                                </table>
+                            </div>
                         </div>
+                    </form>
                     </div>
                 </div>
             </div>

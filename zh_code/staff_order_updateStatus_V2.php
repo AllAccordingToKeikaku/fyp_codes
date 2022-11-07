@@ -12,7 +12,7 @@
 			<div class="col-md-8 col-md-offset-2" style="margin-top: 5%;">
 				<div class="row">
         <?php 
-        include('constants.php');
+        include('../dbConnection.php');
 
 				if(isset($_POST['update']))
 				{

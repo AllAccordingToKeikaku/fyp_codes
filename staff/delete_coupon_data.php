@@ -4,7 +4,7 @@ include('../dbConnection.php');
 
 if(isset($_POST['deleteCoupon']))
 {
-    $promoID = strtoupper($_POST['deleteSearchCoupon']);
+    $promoID = $_POST['deleteSearchCoupon'];
 
     $sqlCommand = "DELETE FROM promocodes WHERE promoID = '$promoID'";
 

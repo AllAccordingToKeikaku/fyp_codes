@@ -4,7 +4,7 @@ include('../dbConnection.php');
 
 if(isset($_POST['delete']))
 {
-    $itemID = strtoupper($_POST['deleteSearchItem']);
+    $itemID = $_POST['deleteSearchItem'];
 
     $sqlCommand = "DELETE FROM menu_item WHERE menu_item_ID = '$itemID'";
 
