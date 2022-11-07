@@ -15,12 +15,11 @@ if(isset($_POST['delete']))
 
     if($result==true)
     {
-        $_SESSION['delete'] = "Account deleted successfully";
-        header('Location: staff_homepage.php?successfullyDeleted');
+        header('Location: staff_homepage.php?successfullyDeletedItem');
     }
     else 
     {
-        header('Location: staff_homepage.php?failedToCreate');
+        header('Location: staff_homepage.php?failedToDeleteItem');
     }
 }
 ?>

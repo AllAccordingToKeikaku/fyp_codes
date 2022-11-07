@@ -197,6 +197,41 @@ include("delete_item_data.php");
                 }      
             }   
         }
+
+        function searchCurrentPromos(){
+            var viewArrays = '<?php echo json_encode($promoArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");;
+            var viewarray = viewArrays.split('].');
+            var viewArray1 = [];
+            var totalViewArray = [];
+            var x;
+            var y;
+            var tempString = "";
+            for (x=0;x<viewarray.length;x++)
+            {
+                viewArray1.push(viewarray[x]);
+            }
+            for (x=0;x<viewArray1.length;x++){
+                tempString = String(viewArray1[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                totalViewArray.push(tempString);
+            }
+            for (x=0; x<totalViewArray.length; x++)
+            {
+                if(String(totalViewArray[x][0]) == document.getElementById("updateSearchCoupon").value){
+                    document.getElementById("displayUpdateCoupon").style.display = "block";
+                    document.getElementById("updateCouponName").value = totalViewArray[x][1];
+                    document.getElementById("updateCouponDiscount").value = totalViewArray[x][2];
+                    document.getElementById("updateCouponValidFrom").value = totalViewArray[x][4];
+                    document.getElementById("updateCouponValidTo").value = totalViewArray[x][5];
+                    document.getElementById("updateCouponDescription").value = totalViewArray[x][6];
+                    document.getElementById("previousCouponImage").value = totalViewArray[x][3];
+                    break;
+                }
+                else{
+                    document.getElementById("displayUpdate").style.display = "none";
+                }
+            }
+        }
     </script>
     <style>
         .mouseOverEffects{
@@ -417,7 +452,7 @@ include("delete_item_data.php");
                                     <input type="file" id="updateItemMyImage" name="updateItemMyImage" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
                                 <text style="display:inline-block;font-size:20px;color:red;margin-left:100px">Leave picture link empty if change is not needed</text></br></br>
                                 <label style="width:150px;display:inline-block">Stock: </label><input type="text" id="updateItemStock" name="updateItemStock" style="margin-top:5px;margin-left:30px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
-                                <input type="submit" name="updateSubmit" class="buttonHoverEffect" style="display:inline-block;width:585px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create item">
+                                <input type="submit" name="updateSubmit" class="buttonHoverEffect" style="display:inline-block;width:585px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Update item">
                             </div>
                         </div>
                         </form>
@@ -464,19 +499,40 @@ include("delete_item_data.php");
                     </div>  
                     
                     <div style="float:left;margin-left:200px;">
+                    <form method="POST" action="delete_coupon_data.php" enctype="multipart/form-data">
                         <div class="sideBar" id="deleteCouponCodeDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 Delete coupon code                              
                             </text></br></br></br>
+                            <input type="text" id="deleteSearchCoupon" name="deleteSearchCoupon" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter coupon ID">
+                            <input type="submit" name="deleteCoupon" class="buttonHoverEffect" value="Delete" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                         </div>
+                    </form>
                     </div>    
 
                     <div style="float:left;margin-left:200px;">
-                        <div class="sideBar" id="searchCouponCodeDIV" style="display:none;width:800px;">
+                        <form method="POST" action="update_coupon_data.php" enctype="multipart/form-data">
+                        <div class="sideBar" id="updateCouponCodeDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 Update coupon code                            
                             </text></br></br></br>
+                            <input type="text" id="updateSearchCoupon" name="updateSearchCoupon" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter keywords">
+                            <input type="button" class="buttonHoverEffect" value="Search" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" onclick="searchCurrentPromos()"></br></br>
+                            <div id="displayUpdateCoupon" style="display:none">
+                                <label style="width:150px;display:inline-block">Coupon name: </label><input type="text" id="updateCouponName" name="updateCouponName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" placeholder="Leave empty if Dine-in exclusive"></br></br>
+                                <label style="width:150px;display:inline-block">Discount rate: </label><input type="text" id="updateCouponDiscount" name="updateCouponDiscount" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" placeholder="25"></br></br>
+                                <label style="width:150px;display:inline-block">Valid from: </label><input type="date" id="updateCouponValidFrom" name="updateCouponValidFrom" style="margin-top:5px;margin-left:30px;width:auto;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" placeholder="Click to select date"></br></br>
+                                <label style="width:150px;display:inline-block">Valid to: </label><input type="date" id="updateCouponValidTo" name="updateCouponValidTo" style="margin-top:5px;margin-left:30px;width:auto;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" placeholder="Click to select date"></br></br>
+                                <label style="width:150px;display:inline-block">Coupon description: </label><input type="text" id="updateCouponDescription" name="updateCouponDescription" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" placeholder="on all orders - Dine-in Exclusive"></br></br>
+                                <label style="width:150px;display:inline-block">Previous link: </label>
+                                    <input type="text" id="previousCouponImage" name="previousCouponImage" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" disabled></br></br>
+                                <label style="width:150px;display:inline-block">Picture link: </label>
+                                    <input type="file" id="udpate_coupon_image" name="update_coupon_image" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
+                                <text style="display:inline-block;font-size:20px;color:red;margin-left:100px">Leave picture link empty if change is not needed</text></br></br>
+                                <input type="submit" name="updateCouponSubmit" class="buttonHoverEffect" style="display:inline-block;width:585px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Create coupon">
+                            </div>
                         </div>
+                        </form>
                     </div>
                 </div>
 
