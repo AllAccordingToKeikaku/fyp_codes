@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 02, 2022 at 04:51 PM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Host: 127.0.0.1:3306
+-- Generation Time: Nov 07, 2022 at 05:46 AM
+-- Server version: 10.5.16-MariaDB-cll-lve
+-- PHP Version: 7.2.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `id19649955_fyp2022`
+-- Database: `u683387266_fyp_2022`
 --
 
 -- --------------------------------------------------------
@@ -31,16 +31,19 @@ CREATE TABLE `promocodes` (
   `promoID` int(255) NOT NULL,
   `codeName` varchar(999) NOT NULL,
   `discountRate` varchar(999) NOT NULL,
-  `imgFile` varchar(999) NOT NULL
+  `imgFile` varchar(999) NOT NULL,
+  `fromDate` varchar(999) NOT NULL,
+  `toDate` varchar(999) NOT NULL,
+  `promoDescription` varchar(999) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `promocodes`
 --
 
-INSERT INTO `promocodes` (`promoID`, `codeName`, `discountRate`, `imgFile`) VALUES
-(1, 'moshiqq50', '50', '../MoshiQ2 IMG Assets/Promo code 1.png'),
-(3, 'moshiqq30', '30', '../MoshiQ2 IMG Assets/Promo code 2.png');
+INSERT INTO `promocodes` (`promoID`, `codeName`, `discountRate`, `imgFile`, `fromDate`, `toDate`, `promoDescription`) VALUES
+(1, 'moshiqq50', '50', '../MoshiQ2 IMG Assets/Promo code 1.png', '2022-11-01', '2023-11-25', 'OFF on all orders - Grand Opening Exclusive'),
+(3, '', '30', '../MoshiQ2 IMG Assets/Promo code 2.png', '2022-11-02', '2023-11-26', 'OFF on Fresh MoshiQ2 Beverages - Dine-in Exclusive');
 
 --
 -- Indexes for dumped tables
