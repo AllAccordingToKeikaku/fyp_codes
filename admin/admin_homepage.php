@@ -712,10 +712,10 @@ require_once("accountDB.php");
                         <div id="createAccount" style="font-size:20px;display:block">
                             <label style="width:120px;display:inline-block">Profile type: </label>
                             <select id="create" name="input_profile" style="margin-left:25px;width:304px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
-                                <option value="Admin">Admin</option>
-                                <option value="Staff">Staff</option>
-                                <option value="Owner">Owner</option>
-                                <option value="Customer">Customer</option>
+                                <option value="admin">Admin</option>
+                                <option value="staff">Staff</option>
+                                <option value="owner">Owner</option>
+                                <option value="customer">Customer</option>
                             </select>
                             </br></br>
                             <div id="miscType" style="display:none">
@@ -810,18 +810,18 @@ require_once("accountDB.php");
                         <div id="updateList" style="font-size:20px;display:none">
                             <label style="width:160px;display:inline-block">Select profile type: </label>
                             <select id="updateDetails" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" onchange="checkProfileType(this.id)" onclick="checkProfileType(this.id)">
-                                <option value="Admin">Admin</option>
-                                <option value="Staff">Staff</option>
-                                <option value="Owner">Owner</option>
-                                <option value="Customer">Customer</option>
+                                <option value="admin">Admin</option>
+                                <option value="staff">Staff</option>
+                                <option value="owner">Owner</option>
+                                <option value="customer">Customer</option>
                             </select></br></br>
                             <div id="updateMiscType" style="display:none">
                                 <label style="width:150px;display:inline-block">Password: </label><input type="text" id="updateAccountPassword" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"></br></br>
                                 <label style="width:150px;display:inline-block">Description: </label><input type="text" id="updateAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
                                 <label style="width:160px;display:inline-block">Select status type: </label>
                                 <select id="miscStatus" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer">
-                                    <option value="Active">Active</option>
-                                    <option value="Suspended">Suspended</option>
+                                    <option value="active">Active</option>
+                                    <option value="suspended">Suspended</option>
                                 </select></br></br>
                                 <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Update profile" onclick="updateMiscAccount()">
                             </div>
@@ -832,8 +832,8 @@ require_once("accountDB.php");
                                 <label style="width:150px;display:inline-block">Description: </label><input type="text" id="updateCustomerAccountDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px" placeholder="Enter description"></br></br>
                                 <label style="width:160px;display:inline-block">Select status type: </label>
                                 <select id="customerStatus" style="margin-left:15px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer">
-                                    <option value="Active">Active</option>
-                                    <option value="Suspended">Suspended</option>
+                                    <option value="active">Active</option>
+                                    <option value="suspended">Suspended</option>
                                 </select></br></br>
                                 <input type="button" class="buttonHoverEffect" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Update profile" onclick="updateCustomerAccount()">
                             </div>

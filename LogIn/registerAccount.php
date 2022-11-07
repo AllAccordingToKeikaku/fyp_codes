@@ -70,7 +70,7 @@ require_once("accountDB.php");
                     email:email,
                     accountPassword:accountPassword,
                     phoneNumber:phoneNumber,
-                    accountStatus: "Active",
+                    accountStatus: "active",
                     accountDescription: "Created by customer"
                 },
                 success: function(data){

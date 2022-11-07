@@ -6,7 +6,7 @@ require_once('../dbConnection.php');
 if(isset($_POST['email'])){
     $email = $_POST['email'];
     $profileID = $_POST['profileID'];
-    $UPDATE = "UPDATE `account` SET accountStatus='Suspended' WHERE email= '" . $email . "'" .  " AND profileID='" . $profileID . "'";
+    $UPDATE = "UPDATE `account` SET accountStatus='suspended' WHERE email= '" . $email . "'" .  " AND profileID='" . $profileID . "'";
     $stmt = $conn->prepare($UPDATE);
     $stmt -> execute();
     if($stmt){
