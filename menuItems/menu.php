@@ -332,20 +332,23 @@ require_once("promoCodesDB.php");
         function createItemListing(menu_item_ID, item_name, item_picture, item_price, item_stock){
             var checkItemAvailability = false;
             var listingValueColor;
-            if (item_stock == "Available"){
+            var stockAvailability;
+            if (parseInt(item_stock) > 0){
                 listingValueColor = "#C3E3A2";
                 checkItemAvailability = true;
+                stockAvailability = "Available";
             }
             else{
                 listingValueColor = "#E09E9999";
-                checkItemAvailability = false;
+                checkItemAvailability = true;
+                stockAvailability = "Unavailable";
             }
 
             var listing='<td><img src="' + item_picture + '" style="width:200px;height:200px">'+
                             '</br><text>' + item_name + '</text></br></br>' +
                             '<div style="float:left;">' +
                                 '<b><text>$' + item_price + '</text></b></br>' +
-                                '<input type="button" value="' + item_stock + '" style="background-color:' + listingValueColor + ';border:1px;border-radius:10px;margin-top:10px;font-weight:bold">' +
+                                '<input type="button" value="' + stockAvailability + '" style="background-color:' + listingValueColor + ';border:1px;border-radius:10px;margin-top:10px;font-weight:bold">' +
                             '</div>' +
                             '<input class="addButton" id="' + menu_item_ID + '" type="button" value="View" onclick="addFunction(this.id, ' + checkItemAvailability + ')"></td>';
 

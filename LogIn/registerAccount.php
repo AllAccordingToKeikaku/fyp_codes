@@ -43,7 +43,7 @@ require_once("accountDB.php");
 
         function registerFunction(){
             fullName = document.getElementById("nameInput").value;
-            email = document.getElementById("emailInput").value;
+            email = document.getElementById("emailInput").value.toLowerCase();
             accountPassword = document.getElementById("passwordInput").value;
             retypePassword = document.getElementById("retypeInput").value;
             phoneNumber = document.getElementById("contactInput").value;
@@ -142,7 +142,7 @@ require_once("accountDB.php");
             }
             for (x=0;x<actualAccountArray.length;x++)
             {
-                if(document.getElementById("emailInput").value == actualAccountArray[x][3]){
+                if(document.getElementById("emailInput").value.toLowerCase() == actualAccountArray[x][3].toLowerCase() && actualAccountArray[x][1].toLowerCase() == "customer"){
                     document.getElementById("emailError").innerHTML = "Email already used!";
                     errorType2 = true;
                     break;
@@ -282,10 +282,10 @@ require_once("accountDB.php");
                 <input type="email" id="emailInput" name="emailInput" style="background-color:#D9D9D9;border-radius:15px;border:0px;font-size:15px;padding:10px;height:40px;width:300px" onkeyup="checkEmail();checkRegister()" required></br>
                 <text id="emailError" name="emailError" style="color:red;margin-left:45%;margin-right:auto;width:300px;font-size:15px;display:block"></text></br>
                 <text id="passwordText" name="passwordText" style="margin-left:26%;float:left;margin-top:15px;margin-right:auto;width:150px;display:block">Password</text>
-                <input type="text" id="passwordInput" name="passwordInput" style="background-color:#D9D9D9;border-radius:15px;border:0px;font-size:15px;padding:10px;height:40px;width:300px" onkeyup="checkPassword();checkRegister()" required></br>
+                <input type="password" id="passwordInput" name="passwordInput" style="background-color:#D9D9D9;border-radius:15px;border:0px;font-size:15px;padding:10px;height:40px;width:300px" onkeyup="checkPassword();checkRegister()" required></br>
                 <text id="passwordError" name="passwordError" style="color:red;margin-left:45%;margin-right:auto;width:300px;font-size:15px;display:block"></text></br>
                 <text id="retypeText" name="retypeText" style="margin-left:26%;float:left;margin-top:15px;margin-right:auto;width:150px;display:block">Retype Password</text>
-                <input type="text" id="retypeInput" name="retypeInput" style="background-color:#D9D9D9;border-radius:15px;border:0px;font-size:15px;padding:10px;height:40px;width:300px" onkeyup="checkPassword();checkRegister()" required></br>
+                <input type="password" id="retypeInput" name="retypeInput" style="background-color:#D9D9D9;border-radius:15px;border:0px;font-size:15px;padding:10px;height:40px;width:300px" onkeyup="checkPassword();checkRegister()" required></br>
                 <text id="retypeError" name="retypeError" style="color:red;margin-left:45%;margin-right:auto;width:300px;font-size:15px;display:block"></text></br>
                 <text id="contactText" name="contactText" style="margin-left:26%;float:left;margin-top:15px;margin-right:auto;width:150px;display:block">Contact No.</text>
                 <input type="text" id="contactInput" name="contactInput" style="background-color:#D9D9D9;border-radius:15px;border:0px;font-size:15px;padding:10px;height:40px;width:300px" onkeyup="checkContact();checkRegister()" onkeypress="return /[0-9]/i.test(event.key)" required></br>

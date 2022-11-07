@@ -191,62 +191,117 @@ require_once("accountDB.php");
         }
 
         function createMiscAccount(){
-            $.ajax({
-                type: "POST",
-                url: "create_account_data.php",
-                data:{
-                    input_email1:document.getElementById("createAccountEmail1").value.toLowerCase(),
-                    input_profile: document.getElementById("create").value,
-                    input_password1: document.getElementById("createAccountPassword1").value,
-                    input_description1: document.getElementById("createAccountDescription1").value
-                },
-                success: function(data){
-                    Swal.fire({
-                        'title': 'Successfully created account!',
-                        'text': data,
-                        'type': 'success'
-                    }).then(setTimeout(function(){window.location.replace("admin_homepage.php");}, 2000))
-                },
-                error: function(data){
-                    Swal.fire({
-                        'title': 'Errors',
-                        'text': 'There were errors in creating account, please refresh the page and try again.'
-                    })
+            actualAccountArray = [];
+            var slotArrays = '<?php echo json_encode($accountDataArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+            var slotArray = slotArrays.split('].');
+            var accountArray = [];
+            var x;
+            var tempString = "";
+            var exists = false;
+            for (x=0;x<slotArray.length;x++){
+                accountArray.push(slotArray[x]);
+            }
+            for (x=0;x<accountArray.length;x++){
+                tempString = String(accountArray[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                actualAccountArray.push(tempString);
+            }
+            for (x=0;x<actualAccountArray.length;x++){
+                if(actualAccountArray[x][1] == document.getElementById("create").value && 
+                actualAccountArray[x][3] == document.getElementById("createAccountEmail1").value.toLowerCase()){
+                    exists = true;
+                    break;
                 }
-            });
+            }  
+            if(exists == false){
+                $.ajax({
+                    type: "POST",
+                    url: "create_account_data.php",
+                    data:{
+                        input_email1:document.getElementById("createAccountEmail1").value.toLowerCase(),
+                        input_profile: document.getElementById("create").value,
+                        input_password1: document.getElementById("createAccountPassword1").value,
+                        input_description1: document.getElementById("createAccountDescription1").value
+                    },
+                    success: function(data){
+                        Swal.fire({
+                            'title': 'Successfully created account!',
+                            'text': data,
+                            'type': 'success'
+                        }).then(setTimeout(function(){window.location.replace("admin_homepage.php");}, 2000))
+                    },
+                    error: function(data){
+                        Swal.fire({
+                            'title': 'Errors',
+                            'text': 'There were errors in creating account, please refresh the page and try again.'
+                        })
+                    }
+                });
+            }  
+            else{
+                alert("Account with this profile type already exists! Try another.");
+            }       
         }
 
         function createCustomerAccount(){
-            $.ajax({
-                type: "POST",
-                url: "create_account_data.php",
-                data:{
-                    input_email2:document.getElementById("createAccountEmail2").value.toLowerCase(),
-                    input_profile: document.getElementById("create").value,
-                    input_fullname2: document.getElementById("createAccountName2").value,
-                    input_password2: document.getElementById("createAccountPassword2").value,
-                    input_phone2: document.getElementById("createAccountNumber2").value,
-                    input_description2: document.getElementById("createAccountDescription2").value
-                },
-                success: function(data){
-                    Swal.fire({
-                        'title': 'Successfully created account!',
-                        'text': data,
-                        'type': 'success'
-                    }).then(setTimeout(function(){window.location.replace("admin_homepage.php");}, 2000))
-                },
-                error: function(data){
-                    Swal.fire({
-                        'title': 'Errors',
-                        'text': 'There were errors in creating account, please refresh the page and try again.'
-                    })
+            actualAccountArray = [];
+            var slotArrays = '<?php echo json_encode($accountDataArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+            var slotArray = slotArrays.split('].');
+            var accountArray = [];
+            var x;
+            var tempString = "";
+            var exists = false;
+            for (x=0;x<slotArray.length;x++){
+                accountArray.push(slotArray[x]);
+            }
+            for (x=0;x<accountArray.length;x++){
+                tempString = String(accountArray[x]).replaceAll('[','').replaceAll(']','');
+                tempString = tempString.split(',');
+                actualAccountArray.push(tempString);
+            }
+            
+            for (x=0;x<actualAccountArray.length;x++){
+                if(actualAccountArray[x][1] == document.getElementById("create").value && 
+                actualAccountArray[x][3] == document.getElementById("createAccountEmail2").value.toLowerCase()){
+                    exists = true;
+                    break;
                 }
-            });
+            }  
+            if(exists == false){
+                $.ajax({
+                    type: "POST",
+                    url: "create_account_data.php",
+                    data:{
+                        input_email2:document.getElementById("createAccountEmail2").value.toLowerCase(),
+                        input_profile: document.getElementById("create").value,
+                        input_fullname2: document.getElementById("createAccountName2").value,
+                        input_password2: document.getElementById("createAccountPassword2").value,
+                        input_phone2: document.getElementById("createAccountNumber2").value,
+                        input_description2: document.getElementById("createAccountDescription2").value
+                    },
+                    success: function(data){
+                        Swal.fire({
+                            'title': 'Successfully created account!',
+                            'text': data,
+                            'type': 'success'
+                        }).then(setTimeout(function(){window.location.replace("admin_homepage.php");}, 2000))
+                    },
+                    error: function(data){
+                        Swal.fire({
+                            'title': 'Errors',
+                            'text': 'There were errors in creating account, please refresh the page and try again.'
+                        })
+                    }
+                });
+            }
+            else{
+                alert("Account with this profile type already exists! Try another.");
+            }
         }
 
         function checkProfileType(createOrUpdate){
             if(createOrUpdate == "create"){
-                if(document.getElementById("create").value == "Customer"){
+                if(document.getElementById("create").value == "customer"){
                     document.getElementById("customerType").style.display = "block";
                     document.getElementById("miscType").style.display = "none";
                 }           
@@ -256,7 +311,7 @@ require_once("accountDB.php");
                 }
             }
             else{
-                if(document.getElementById("updateDetails").value == "Customer"){
+                if(document.getElementById("updateDetails").value == "customer"){
                     document.getElementById("updateCustomerType").style.display = "block";
                     document.getElementById("updateMiscType").style.display = "none";
                     for(var x=0; x<actualAccountArray.length; x++){

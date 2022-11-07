@@ -52,7 +52,7 @@ require_once("accountDB.php");
                     document.getElementById("selectProfile").value.toLowerCase() == actualAccountArray[x][1].toLowerCase()){
                     checkTOF = true;
                     if (actualAccountArray[x][6].toLowerCase() != "suspended"){
-                        var emailCookieText = document.getElementById("inputEmail").value;
+                        var emailCookieText = document.getElementById("inputEmail").value.toLowerCase();
                         setCookie("email", emailCookieText, 1);
 
                         var passwordCookieText = document.getElementById("inputPassword").value;
@@ -180,7 +180,7 @@ require_once("accountDB.php");
                 <text id="emailText" name="emailText" style="margin-left:auto;margin-right:auto;width:250px;font-size:15px;display:block">Email Address</text>
                 <input type="text" id="inputEmail" name="inputEmail" style="background-color:#D9D9D9;border-radius:15px;border:0px;margin-left:auto;margin-right:auto;width:250px;height:30px;padding:20px;font-size:15px;display:block" placeholder="Enter your email"></br>
                 <text id="passwordText" name="passwordText" style="margin-left:auto;margin-right:auto;width:250px;font-size:15px;display:block">Password</text>
-                <input type="text" id="inputPassword" name="inputPassword" style="background-color:#D9D9D9;border-radius:15px;border:0px;margin-left:auto;margin-right:auto;width:250px;height:30px;padding:20px;font-size:15px;display:block" placeholder="Enter your password"></br></br>
+                <input type="password" id="inputPassword" name="inputPassword" style="background-color:#D9D9D9;border-radius:15px;border:0px;margin-left:auto;margin-right:auto;width:250px;height:30px;padding:20px;font-size:15px;display:block" placeholder="Enter your password"></br></br>
                 <input type="button" class="buttonEffects" id="logInButton" name="logInButton" value="Log In" onclick="checkLogIn()"></br>
                 <text id="orText" name="orText" style="margin-left:auto;margin-right:auto;width:20px;display:block">OR</text></br>
                 <input type="button" class="buttonEffects" id="signUpButton" name="signUpButton" value="Sign Up" onclick="signUpFunction()"></br>
