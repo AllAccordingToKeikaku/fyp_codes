@@ -53,7 +53,7 @@
             $em = "unknown error occurred!";
             header("Location: staff_homepage.php?error=$em");
         }
-    
-    }else {
+    }
+    else {
         header("Location: staff_homepage.php");
     }
