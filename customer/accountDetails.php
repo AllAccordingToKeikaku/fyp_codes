@@ -56,52 +56,13 @@ require_once("reservationDB.php");
                     var getD = new Date(actualOrderArray[x][2]);
                     dayArray.push(weekday[getD.getDay()]);
 
-                    for(var y=7; y<=18; y++){
-                        var itemName;
-                        switch(y){
-                            case 7:
-                                itemName = "HAWAIIAN SALMON";
-                                break;
-                            case 8:
-                                itemName = "COLOURFUL GODDESS";
-                                break;
-                            case 9:
-                                itemName = "SPICY MIXED SALMON";
-                                break;
-                            case 10:
-                                itemName = "SHOYU TUNA SPECIAL";
-                                break;
-                            case 11:
-                                itemName = "FULL VEGGIELICIOUS";
-                                break;
-                            case 12:
-                                itemName = "AVOCADO SUPREME";
-                                break;
-                            case 13:
-                                itemName = "SUMMER FLING";
-                                break;
-                            case 14:
-                                itemName = "CHOC SWEET";
-                                break;
-                            case 15:
-                                itemName = "CARAMEL NUTTIN";
-                                break;
-                            case 16:
-                                itemName = "INCREDIBLE HULK";
-                                break;
-                            case 17:
-                                itemName = "ORANGE MADNESS";
-                                break;
-                            case 18:
-                                itemName = "SPIDEY SENSES";
-                                break;
-                        }
-                        if(actualOrderArray[x][y] != 0){
-                            tempItemsArray.push(actualOrderArray[x][y] + "x " + itemName);
-                        }
+                    console.log(actualOrderArray[x][10]);
+                    var splitList = actualOrderArray[x][10].split("~~");
+                    for(var y=0; y<splitList.length;y++){
+                        tempItemsArray.push(splitList[y]);
                     }
-                    tempItemArray.push(tempItemsArray);
                 }
+                tempItemArray.push(tempItemsArray);
             }
             
             var x;

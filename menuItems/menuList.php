@@ -21,7 +21,7 @@ require_once("deliveryOrderDB.php");
         isCartClicked = false;
         var getMenuArray;
         var deliveryPrice = 6;
-        var item_1 = 0;
+        /*var item_1 = 0;
         var item_2 = 0;
         var item_3 = 0;
         var item_4 = 0;
@@ -32,11 +32,13 @@ require_once("deliveryOrderDB.php");
         var item_9 = 0;
         var item_10 = 0;
         var item_11 = 0;
-        var item_12 = 0;
+        var item_12 = 0;*/
         var orderPromocode = "None";
         var deliveryNumber = 0;
         var itemList = "";
         var currentDate;
+        var orderArrayList = [];
+        var orderDescription = "";
 
         function clickedDrop(){
             document.getElementById("accountDrop").style.display= "none";
@@ -534,8 +536,9 @@ require_once("deliveryOrderDB.php");
             subTotalPrice = 0;
             entireListArray = [];
             itemList = "";
+            orderArrayList = [];
             for (var x=0; x<tempCartArray.length; x++){
-                switch(tempCartArray[x]){
+                /*switch(tempCartArray[x]){
                     case "HAWAIIAN SALMON":
                         item_1 = countCart[tempCartArray[x]];
                         break;
@@ -572,7 +575,8 @@ require_once("deliveryOrderDB.php");
                     case "SPIDEY SENSES":
                         item_12 = countCart[tempCartArray[x]];
                         break;
-                }
+                }*/
+                orderArrayList.push([tempCartArray[x], countCart[tempCartArray[x]]]);
                 var getDisplayElement = document.getElementById('displayListedItem' + String(x));
                 getDisplayElement.innerHTML = displayCartItems(tempCartArray[x] , tempPriceArray[x], countCart[tempCartArray[x]], x);
                 var plus = document.getElementById("plusA" + x);
@@ -663,7 +667,6 @@ require_once("deliveryOrderDB.php");
                 tempCartGetAmount = startingValue;
                 num.innerText = startingValue;
             });
-            
         }
 
         function displayCartItems(itemName, itemPrice, itemAmount, itemID){    
@@ -815,15 +818,7 @@ require_once("deliveryOrderDB.php");
 
         function displayCCdetails(){
             document.getElementById("ccPaymentMethod").style.display = 'block';
-            document.getElementById("gpPaymentMethod").style.display = 'none';
-            document.getElementById("grabPay").checked = false;
             getTotalDelivery();
-        }
-
-        function displayGrabPay(){
-            document.getElementById("ccPaymentMethod").style.display = 'none';
-            document.getElementById("gpPaymentMethod").style.display = 'block';
-            document.getElementById("creditCard").checked = false;
         }
 
         function cc_PaymentMethod(){
@@ -843,6 +838,18 @@ require_once("deliveryOrderDB.php");
                 var addressDetails = getCookie("area") + " " + getCookie("addressDetails") + ", s(" + getCookie("postalCode") + ")";
                 getTotalDelivery();
 
+                orderDescription = "";
+                for(var x=0; x<orderArrayList.length; x++){
+                    if(x+1 == orderArrayList.length){
+                        orderDescription += orderArrayList[x][1] + "x " + orderArrayList[x][0];
+                    }
+                    else{
+                        orderDescription += orderArrayList[x][1] + "x " + orderArrayList[x][0] + "<br>";
+                    }
+                }
+                console.log(orderDescription.replaceAll("<br>", "~~"));
+                console.log(orderDescription);
+
                 $.ajax({
                     type: "POST",
                     url: "order_details_data.php",
@@ -854,18 +861,8 @@ require_once("deliveryOrderDB.php");
                         order_status:orderStatus,
                         order_promocode:orderPromocode,
                         order_address:addressDetails,
-                        HAWAIIAN_SALMON:item_1,
-                        COLOURFUL_GODDESS:item_2,
-                        SPICY_MIXED_SALMON:item_3,
-                        SHOYU_TUNA_SPECIAL:item_4,
-                        FULL_VEGGIELICIOUS:item_5,
-                        AVOCADO_SUPREME:item_6,
-                        SUMMER_FLING:item_7,
-                        CHOC_SWEET:item_8,
-                        CARAMEL_NUTTIN:item_9,
-                        INCREDIBLE_HULK:item_10,
-                        ORANGE_MADNESS:item_11,
-                        SPIDEY_SENSES:item_12
+                        order_description:orderDescription.replaceAll("<br>", "~~"),
+                        order_payment:"CC"
                     },
                     success: function(data){
                     Swal.fire({
@@ -934,7 +931,7 @@ require_once("deliveryOrderDB.php");
                     addressDetails: addressDetails,
                     promoCode: orderPromocode,
                     totalPrice: orderPrice,
-                    itemList: itemList
+                    itemList: orderDescription
                 };
 
                 //Send email
@@ -954,7 +951,7 @@ require_once("deliveryOrderDB.php");
                     addressDetails: addressDetails,
                     promoCode: orderPromocode,
                     totalPrice: orderPrice,
-                    itemList: itemList
+                    itemList: orderDescription
                 };
 
                 //Send email
@@ -1553,27 +1550,6 @@ require_once("deliveryOrderDB.php");
                                 <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Pay" onclick="cc_PaymentMethod()"></br></br>
                             </div>
                         </div>
-                        <!--div style="width:100%;height:auto;display:block;border:1px solid black;border-radius:10px;background-color:#BDBDBD26;margin-top:20px">
-                            <div style="width:auto;height:40px;display:block;">
-                                <input type="radio" id="grabPay" name="grabPay" value="grabPay" style="float:left;margin-top:12px" onclick="displayGrabPay()">
-                                <img src="../MoshiQ2 IMG Assets/Payment/grabpay.png" style="height:30px;width:auto;float:left;display:block;margin-top:4px">
-                                <text style="height:30px;width:auto;float:left;display:block;margin-top:7px;margin-left:20px;color:grey">GrabPay</text>
-                            </div>
-                            <div id="gpPaymentMethod" style="margin-left:20px;margin-top:20px;display:none">
-                                <text style="color:grey">Name on Card</text></br>
-                                <input type="text" id="gpName" name="gpName" style="font-size:30px;border-radius:5px;width:93%;border:1px solid grey;padding-left:10px" placeholder="Aaron Bobby Cecil Drake"></br></br>
-                                <text style="color:grey">Card number</text></br>
-                                <input type="text" id="gpNum" name="gpNum" style="font-size:30px;border-radius:5px;width:93%;border:1px solid grey;padding-left:10px" placeholder="1111 2222 3333 4444"></br></br>
-                                <div>
-                                    <text style="color:grey;float:left">Expiry date</text>
-                                    <text style="color:grey;float:right;margin-right:200px">CVC/CVV</text></br>
-                                    <input type="text" id="gpExpiry" name="gpExpiry" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:left;" placeholder="mm/yy">  
-                                    <input type="text" id="gpDigits" name="gpDigits" style="font-size:30px;border-radius:5px;width:15%;border:1px solid grey;text-align:center;float:right;margin-right:190px" placeholder="xxx"></br></br>
-                                </div></br>
-                                <img src="../MoshiQ2 IMG Assets/Payment/Pay.png" style="float:left;position:absolute;width:60px;height:auto;margin-left:250px;cursor:pointer">
-                                <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Pay" onclick="grab_PaymentMethod()"></br></br>
-                            </div>
-                        </div-->
                     </div>
                     </span>
                 </div>
