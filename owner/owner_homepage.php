@@ -71,6 +71,29 @@ require_once("accountDB.php");
         }
 
         function generateMyReport(){
+            var fromDate = document.getElementById("fromDateReport").value;
+            var toDate = document.getElementById("toDateReport").value;
+            var laterDate;
+            var earlierDate;
+            if(parseInt(fromDate.replaceAll("-", "")) > parseInt(toDate.replaceAll("-", ""))){
+                laterDate = fromDate;
+            }
+            else{
+                laterDate = toDate;
+            }
+            if(parseInt(fromDate.replaceAll("-", "")) < parseInt(toDate.replaceAll("-", ""))){
+                earlierDate = fromDate;
+            }
+            else{
+                earlierDate = toDate;
+            }
+            var selectType = document.getElementById("selectReportType").value;
+            console.log(earlierDate);
+            console.log(laterDate);
+            console.log(selectType);
+        }
+
+        function viewMyRecords(){
             $("#displayRecordsTable tr").remove();
             var viewArrays = '<?php echo json_encode($accountArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");;
             var viewarray = viewArrays.split('].');
@@ -216,7 +239,7 @@ require_once("accountDB.php");
                         </text></br></br></br>
                         <div>
                             <label style="width:150px;display:inline-block;font-size:30px">Date from: </label><input type="date" id="fromDateReport" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter date"></br></br>
-                            <label style="width:150px;display:inline-block;font-size:30px">Date to: </label><input type="date" id="fromDateReport" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter date"></br></br>
+                            <label style="width:150px;display:inline-block;font-size:30px">Date to: </label><input type="date" id="toDateReport" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter date"></br></br>
                             <label style="width:145px;display:inline-block;font-size:30px">Select type: </label>
                                 <select id="selectReportType" style="width:305px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;">
                                     <option value="Orders">Orders</option>
@@ -254,7 +277,7 @@ require_once("accountDB.php");
                         </text></br></br></br>
                         <div>
                             <input type="text" id="searchRecords" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter keywords">
-                            <input type="button" class="buttonHoverEffect" style="margin-left:20px;width:100px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="search" onclick="generateMyReport();">
+                            <input type="button" class="buttonHoverEffect" style="margin-left:20px;width:100px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="search" onclick="viewMyRecords();">
                         </div></br>
                         <div class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;">
                             <div style="background-color:#3280F466;">
