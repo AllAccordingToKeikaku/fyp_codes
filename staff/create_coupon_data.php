@@ -9,8 +9,7 @@
         $error = $_FILES['coupon_image']['error'];
         if ($error === 0) {
             if ($img_size > 125000000000000) {
-                $em = "Sorry, your file is too large.";
-                header("Location: staff_homepage.php?error=$em");
+                header('Location: staff_homepage.php?error');
             }
             else {
                 $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
@@ -37,23 +36,21 @@
                     $stmt-> bind_param("ssssss", $codeName, $discountRate, $imgFile, $fromDate, $toDate, $promoDescription);
                     $stmt->execute();
                     if($stmt){
-                        header("Location: staff_homepage.php?successfullyCreatedCoupon");
+                        header("Location: staff_homepage.php#viewCouponCode");
                     }
                     else
                     {
-                        header("Location: staff_homepage.php?failedToCreateCoupon");
+                        header('Location: staff_homepage.php?error');
                     }
                 }
                 else {
-                    $em = "You can't upload files of this type";
-                    header("Location: staff_homepage.php?error=$em");
+                    header('Location: staff_homepage.php?error');
                 }
             }
         }else {
-            $em = "unknown error occurred!";
-            header("Location: staff_homepage.php?error=$em");
+            header('Location: staff_homepage.php?error');
         }
     }
     else {
-        header("Location: staff_homepage.php");
+        header('Location: staff_homepage.php?error');
     }

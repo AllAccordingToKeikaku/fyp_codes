@@ -18,11 +18,11 @@
         $stmt= $conn->prepare($sqlCommand1);
         $stmt->execute();
         if($stmt){
-            header("Location: staff_homepage.php?successfullyupdated");
+            header("Location: staff_homepage.php#viewMenuItem");
         }
         else
         {
-            header("Location: staff_homepage.php?failedToupdate");
+            header('Location: staff_homepage.php?error');
         }
     }
 
@@ -33,8 +33,7 @@
         $error = $_FILES['updateItemMyImage']['error'];
         if ($error === 0) {
             if ($img_size > 125000000000000) {
-                $em = "Sorry, your file is too large.";
-                header("Location: staff_homepage.php?error=$em");
+                header('Location: staff_homepage.php?error');
             }else {
                 $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
                 $img_ex_lc = strtolower($img_ex);
@@ -67,27 +66,25 @@
                     $stmt->execute();
 
                     if($stmt){
-                        header("Location: staff_homepage.php?successfullyupdated");
+                        header("Location: staff_homepage.php#viewMenuItem");
                     }
                     else
                     {
-                        header("Location: staff_homepage.php?failedToupdate");
+                        header('Location: staff_homepage.php?error');
                     }
                 }
                 else {
-                    $em = "You can't upload files of this type";
-                    header("Location: staff_homepage.php?error=$em");
+                    header('Location: staff_homepage.php?error');
                 }
             }
         }
         else {
-            $em = "unknown error occurred!";
-            header("Location: staff_homepage.php?error=$em");
+            header('Location: staff_homepage.php?error');
         }
     
     }
     
     else {
-        header("Location: staff_homepage.php");
+        header('Location: staff_homepage.php?error');
     }
 ?>

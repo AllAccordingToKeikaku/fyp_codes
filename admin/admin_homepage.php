@@ -213,34 +213,40 @@ require_once("accountDB.php");
                     break;
                 }
             }  
-            if(exists == false){
-                $.ajax({
-                    type: "POST",
-                    url: "create_account_data.php",
-                    data:{
-                        input_email1:document.getElementById("createAccountEmail1").value.toLowerCase(),
-                        input_profile: document.getElementById("create").value,
-                        input_password1: document.getElementById("createAccountPassword1").value,
-                        input_description1: document.getElementById("createAccountDescription1").value
-                    },
-                    success: function(data){
-                        Swal.fire({
-                            'title': 'Successfully created account!',
-                            'text': data,
-                            'type': 'success'
-                        }).then(setTimeout(function(){window.location.replace("admin_homepage.php");}, 2000))
-                    },
-                    error: function(data){
-                        Swal.fire({
-                            'title': 'Errors',
-                            'text': 'There were errors in creating account, please refresh the page and try again.'
-                        })
-                    }
-                });
-            }  
+            if(document.getElementById("createAccountEmail1").value != "" && document.getElementById("create").value != "" &&
+                document.getElementById("createAccountPassword1").value != "" && document.getElementById("createAccountDescription1").value != ""){
+                if(exists == false){
+                    $.ajax({
+                        type: "POST",
+                        url: "create_account_data.php",
+                        data:{
+                            input_email1:document.getElementById("createAccountEmail1").value.toLowerCase(),
+                            input_profile: document.getElementById("create").value,
+                            input_password1: document.getElementById("createAccountPassword1").value,
+                            input_description1: document.getElementById("createAccountDescription1").value
+                        },
+                        success: function(data){
+                            Swal.fire({
+                                'title': 'Successfully created account!',
+                                'text': data,
+                                'type': 'success'
+                            }).then(setTimeout(function(){window.location.replace("admin_homepage.php");}, 2000))
+                        },
+                        error: function(data){
+                            Swal.fire({
+                                'title': 'Errors',
+                                'text': 'There were errors in creating account, please refresh the page and try again.'
+                            })
+                        }
+                    });
+                }  
+                else{
+                    alert("Account with this profile type already exists! Try another.");
+                }      
+            }
             else{
-                alert("Account with this profile type already exists! Try another.");
-            }       
+                alert("There are some missing fields!");
+            }
         }
 
         function createCustomerAccount(){
@@ -267,35 +273,42 @@ require_once("accountDB.php");
                     break;
                 }
             }  
-            if(exists == false){
-                $.ajax({
-                    type: "POST",
-                    url: "create_account_data.php",
-                    data:{
-                        input_email2:document.getElementById("createAccountEmail2").value.toLowerCase(),
-                        input_profile: document.getElementById("create").value,
-                        input_fullname2: document.getElementById("createAccountName2").value,
-                        input_password2: document.getElementById("createAccountPassword2").value,
-                        input_phone2: document.getElementById("createAccountNumber2").value,
-                        input_description2: document.getElementById("createAccountDescription2").value
-                    },
-                    success: function(data){
-                        Swal.fire({
-                            'title': 'Successfully created account!',
-                            'text': data,
-                            'type': 'success'
-                        }).then(setTimeout(function(){window.location.replace("admin_homepage.php");}, 2000))
-                    },
-                    error: function(data){
-                        Swal.fire({
-                            'title': 'Errors',
-                            'text': 'There were errors in creating account, please refresh the page and try again.'
-                        })
-                    }
-                });
+            if(document.getElementById("createAccountEmail2").value != "" && document.getElementById("create").value != "" &&
+                document.getElementById("createAccountPassword2").value != "" && document.getElementById("createAccountName2").value != "" &&
+                document.getElementById("createAccountNumber2").value != "" && document.getElementById("createAccountDescription2").value != ""){
+                if(exists == false){
+                    $.ajax({
+                        type: "POST",
+                        url: "create_account_data.php",
+                        data:{
+                            input_email2:document.getElementById("createAccountEmail2").value.toLowerCase(),
+                            input_profile: document.getElementById("create").value,
+                            input_fullname2: document.getElementById("createAccountName2").value,
+                            input_password2: document.getElementById("createAccountPassword2").value,
+                            input_phone2: document.getElementById("createAccountNumber2").value,
+                            input_description2: document.getElementById("createAccountDescription2").value
+                        },
+                        success: function(data){
+                            Swal.fire({
+                                'title': 'Successfully created account!',
+                                'text': data,
+                                'type': 'success'
+                            }).then(setTimeout(function(){window.location.replace("admin_homepage.php");}, 2000))
+                        },
+                        error: function(data){
+                            Swal.fire({
+                                'title': 'Errors',
+                                'text': 'There were errors in creating account, please refresh the page and try again.'
+                            })
+                        }
+                    });
+                }
+                else{
+                    alert("Account with this profile type already exists! Try another.");
+                }
             }
             else{
-                alert("Account with this profile type already exists! Try another.");
+                alert("There are some missing fields!");
             }
         }
 
@@ -808,7 +821,7 @@ require_once("accountDB.php");
                 <div style="float:left;margin-left:200px;">
                     <div id="suspendUserAccountDisplay" style="display:none;width:600px;">
                         <text style="color:#437E96;font-size:30px;">
-                            Suspend user profile                            
+                            Suspend user account                           
                         </text></br></br>
                         <div>
                             <input type="text" id="searchSuspendEmail" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter email address">
@@ -856,7 +869,7 @@ require_once("accountDB.php");
                 <div style="float:left;margin-left:200px;">
                     <div id="updateUserAccountDisplay" style="display:none;width:600px;">
                         <text style="color:#437E96;font-size:30px;">
-                            Update user profile                            
+                            Update user account                           
                         </text></br></br>
                         <div>
                             <input type="text" id="searchUpdateEmail" style="width:300px;height:30px;display:inline-block;font-size:20px;background-color:#A8A1A166;border:none;border-radius:5px;" placeholder="Enter email address">

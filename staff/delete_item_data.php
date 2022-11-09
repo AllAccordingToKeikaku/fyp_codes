@@ -15,11 +15,14 @@ if(isset($_POST['delete']))
 
     if($result==true)
     {
-        header('Location: staff_homepage.php?successfullyDeletedItem');
+        header("Location: staff_homepage.php#viewMenuItem");
     }
     else 
     {
-        header('Location: staff_homepage.php?failedToDeleteItem');
+        header('Location: staff_homepage.php?error');
     }
+}
+else{
+    header('Location: staff_homepage.php?error');
 }
 ?>

@@ -1,6 +1,5 @@
 <?php
     include('../dbConnection.php');
-    $em = "";
     if(isset($_POST['updateOrder']))
         {
         //get INPUT data from the form 
@@ -14,15 +13,17 @@
             $stmt = $conn->prepare($UPDATE);
             $stmt -> execute();
             if($stmt){
-                $em= 'Order successfully updated!';
+                header("Location: staff_homepage.php#viewOrder");
             }
             else{
-                $em = 'Error updating order';
+                header('Location: staff_homepage.php?error');
             }
         }
         else{
-            $em = "Could not send data";
+            header('Location: staff_homepage.php?error');
         }
-        header('Location: staff_homepage.php?'.$em);
+    }
+    else{
+        header('Location: staff_homepage.php?error');
     }
 ?>

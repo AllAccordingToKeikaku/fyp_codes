@@ -14,11 +14,15 @@ if(isset($_POST['deleteReservation']))
 
     if($result==true)
     {
-        header('Location: staff_homepage.php?successfullyDeletedReservation');
+        header("Location: staff_homepage.php#viewReservation");
     }
     else 
     {
-        header('Location: staff_homepage.php?failedToDeleteReservation');
+        header('Location: staff_homepage.php?error');
     }
+}
+else 
+{
+    header('Location: staff_homepage.php?error');
 }
 ?>

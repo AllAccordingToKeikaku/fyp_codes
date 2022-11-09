@@ -394,7 +394,7 @@ require_once("reservationDB.php");
                                     <option value="Orders">Orders</option>
                                     <option value="Reservations">Reservations</option>
                                 </select></br></br>
-                            <input type="button" class="buttonHoverEffect" style="width:455px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Search" onclick="generateMyReport();">
+                            <input type="button" class="buttonHoverEffect" style="width:455px;height:40px;display:inline-block;font-size:20px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Generate report" onclick="generateMyReport();">
                         </div></br>
                         <div id="displayReportOrder" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:none">
                             <div style="background-color:#3280F466;">

@@ -15,11 +15,14 @@ if(isset($_POST['deleteCoupon']))
 
     if($result==true)
     {
-        header('Location: staff_homepage.php?successfullyDeletedPromo');
+        header("Location: staff_homepage.php#viewCouponCode");
     }
     else 
     {
-        header('Location: staff_homepage.php?failedToDeletePromo');
+        header('Location: staff_homepage.php?error');
     }
+}
+else{
+    header('Location: staff_homepage.php?error');
 }
 ?>

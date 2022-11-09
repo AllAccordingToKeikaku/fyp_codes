@@ -48,6 +48,25 @@ include("delete_item_data.php");
             console.log(document.cookie);
             var tempLogInName = getCookie("fullName");
             document.getElementById('accountNameDetails').innerHTML = tempLogInName;
+            if(window.location.href.includes('#viewMenuItem')){
+                changeTab('viewMenuItem');
+                searchItems();
+            }
+            if(window.location.href.includes('#viewCouponCode')){
+                changeTab('viewCouponCode');
+                searchPromos();
+            }
+            if(window.location.href.includes('#viewReservation')){
+                changeTab('viewReservation');
+                searchReservations();
+            }
+            if(window.location.href.includes('#viewOrder')){
+                changeTab('viewOrder');
+                searchOrder();
+            }
+            if(window.location.href.includes('error')){
+                alert("There was an error, please try again");
+            }
         }
 
         function getCookie(name){
@@ -570,7 +589,7 @@ include("delete_item_data.php");
                     </div>  
                     
                     <div style="float:left;margin-left:200px;">
-                        <form method="POST" action="delete_item_data.php" enctype="multipart/form-data">
+                        <form method="POST" action="delete_item_data.php" enctype="multipart/form-data" onsubmit="return confirm('Do you really want to delete item?');">
                         <div class="sideBar" id="deleteMenuItemDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 Delete menu item                               
@@ -615,7 +634,7 @@ include("delete_item_data.php");
                 
                 <div id="couponTab">
                     <div style="float:left;margin-left:200px;">
-                    <form method="POST" action="create_coupon_data.php" enctype="multipart/form-data">
+                    <form method="POST" action="create_coupon_data.php" enctype="multipart/form-data" onsubmit="return confirm('Do you really want to create coupon?');">
                         <div class="sideBar" id="createCouponCodeDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 Create coupon code                               
@@ -653,7 +672,7 @@ include("delete_item_data.php");
                     </div>  
                     
                     <div style="float:left;margin-left:200px;">
-                    <form method="POST" action="delete_coupon_data.php" enctype="multipart/form-data">
+                    <form method="POST" action="delete_coupon_data.php" enctype="multipart/form-data" onsubmit="return confirm('Do you really want to delete coupon?');">
                         <div class="sideBar" id="deleteCouponCodeDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 Delete coupon code                              
@@ -715,7 +734,7 @@ include("delete_item_data.php");
                     </div>  
                     
                     <div style="float:left;margin-left:200px;">
-                    <form method="POST" action="delete_reservation_data.php" enctype="multipart/form-data">
+                    <form method="POST" action="delete_reservation_data.php" enctype="multipart/form-data" onsubmit="return confirm('Do you really want to delete reservation?');">
                         <div class="sideBar" id="deleteReservationDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 Delete reservation                              
@@ -751,7 +770,7 @@ include("delete_item_data.php");
                     </div>  
                     
                     <div style="float:left;margin-left:200px;">
-                    <form method="POST" action="delete_order_data.php" enctype="multipart/form-data">
+                    <form method="POST" action="delete_order_data.php" enctype="multipart/form-data" onsubmit="return confirm('Do you really want to delete order?');">
                         <div class="sideBar" id="deleteOrderDIV" style="display:none;width:800px;">
                             <text style="color:#437E96;font-size:40px;">
                                 Delete order                             
