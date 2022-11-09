@@ -64,7 +64,7 @@ include("delete_item_data.php");
                 changeTab('viewOrder');
                 searchOrder();
             }
-            if(window.location.href.includes('error')){
+            if(window.location.href.includes('ilili')){
                 alert("There was an error, please try again");
             }
         }
@@ -595,7 +595,7 @@ include("delete_item_data.php");
                                 Delete menu item                               
                             </text></br></br></br>
                             <input type="number" id="deleteSearchItem" name="deleteSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
-                            <input type="submit" name="delete" class="buttonHoverEffect" value="Delete" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
+                            <input type="submit" name="deleteItem" class="buttonHoverEffect" value="Delete" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                         </div>
                         </form>
                     </div>    

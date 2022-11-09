@@ -6,23 +6,26 @@ if(isset($_POST['deleteOrder']))
 {
     $orderID = $_POST['deleteSearchOrder'];
 
-    $sqlCommand = "DELETE FROM delivery_orders WHERE orderID = '$orderID'";
+    if($orderID != ""){
+        $sqlCommand = "DELETE FROM delivery_orders WHERE orderID = '$orderID'";
 
-    echo $sqlCommand;
+        echo $sqlCommand;
 
 
-    $result = mysqli_query($conn, $sqlCommand);
+        $result = mysqli_query($conn, $sqlCommand);
 
-    if($result==true)
-    {
-        header("Location: staff_homepage.php#viewOrder");
+        if($result==true)
+        {
+            header("Location: staff_homepage.php#viewOrder");
+        }
+        else 
+        {
+            header('Location: staff_homepage.php?ililiem2c');
+        }
     }
     else 
-    {
-        header('Location: staff_homepage.php?error');
-    }
-}
-else{
-    header('Location: staff_homepage.php?error');
+        {
+            header('Location: staff_homepage.php?ililiem2c');
+        }
 }
 ?>

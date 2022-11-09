@@ -8,7 +8,7 @@
         $error = $_FILES['my_image']['error'];
         if ($error === 0) {
             if ($img_size > 125000000000000) {
-                header('Location: staff_homepage.php?error');
+                header('Location: staff_homepage.php?ililiem5');
             }else {
                 $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
                 $img_ex_lc = strtolower($img_ex);
@@ -41,18 +41,18 @@
                     }
                     else
                     {
-                        header('Location: staff_homepage.php?error');
+                        header('Location: staff_homepage.php?ililiem4');
                     }
                 }
                 else {
-                    header('Location: staff_homepage.php?error');
+                    header('Location: staff_homepage.php?ililiem3');
                 }
             }
         }else {
-            header('Location: staff_homepage.php?error');
+            header('Location: staff_homepage.php?ililiem12');
         }
     
     }else {
-        header('Location: staff_homepage.php?error');
+        header('Location: staff_homepage.php?ililiem11');
     }
 ?>

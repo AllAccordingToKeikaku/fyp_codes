@@ -22,7 +22,7 @@
         }
         else
         {
-            header('Location: staff_homepage.php?error');
+            header('Location: staff_homepage.php?ililiem6');
         }
     }
 
@@ -33,7 +33,7 @@
         $error = $_FILES['updateItemMyImage']['error'];
         if ($error === 0) {
             if ($img_size > 125000000000000) {
-                header('Location: staff_homepage.php?error');
+                header('Location: staff_homepage.php?em5');
             }else {
                 $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
                 $img_ex_lc = strtolower($img_ex);
@@ -70,21 +70,21 @@
                     }
                     else
                     {
-                        header('Location: staff_homepage.php?error');
+                        header('Location: staff_homepage.php?ililiem4');
                     }
                 }
                 else {
-                    header('Location: staff_homepage.php?error');
+                    header('Location: staff_homepage.php?ililiem3');
                 }
             }
         }
         else {
-            header('Location: staff_homepage.php?error');
+            header('Location: staff_homepage.php?ililiem2');
         }
     
     }
     
     else {
-        header('Location: staff_homepage.php?error');
+        header('Location: staff_homepage.php?ililiem1');
     }
 ?>

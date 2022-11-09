@@ -5,24 +5,26 @@ include('../dbConnection.php');
 if(isset($_POST['deleteCoupon']))
 {
     $promoID = $_POST['deleteSearchCoupon'];
+    if($promoID != ""){
 
-    $sqlCommand = "DELETE FROM promocodes WHERE promoID = '$promoID'";
+        $sqlCommand = "DELETE FROM promocodes WHERE promoID = '$promoID'";
 
-    echo $sqlCommand;
+        echo $sqlCommand;
 
 
-    $result = mysqli_query($conn, $sqlCommand);
+        $result = mysqli_query($conn, $sqlCommand);
 
-    if($result==true)
-    {
-        header("Location: staff_homepage.php#viewCouponCode");
+        if($result==true)
+        {
+            header("Location: staff_homepage.php#viewCouponCode");
+        }
+        else 
+        {
+            header('Location: staff_homepage.php?ililiem21');
+        }
     }
-    else 
-    {
-        header('Location: staff_homepage.php?error');
+    else{
+        header('Location: staff_homepage.php?ililiem22');
     }
-}
-else{
-    header('Location: staff_homepage.php?error');
 }
 ?>

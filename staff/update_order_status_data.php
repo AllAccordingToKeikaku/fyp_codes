@@ -16,14 +16,14 @@
                 header("Location: staff_homepage.php#viewOrder");
             }
             else{
-                header('Location: staff_homepage.php?error');
+                header('Location: staff_homepage.php?ililiem3');
             }
         }
         else{
-            header('Location: staff_homepage.php?error');
+            header('Location: staff_homepage.php?ililiem2');
         }
     }
     else{
-        header('Location: staff_homepage.php?error');
+        header('Location: staff_homepage.php?ililiem1');
     }
 ?>

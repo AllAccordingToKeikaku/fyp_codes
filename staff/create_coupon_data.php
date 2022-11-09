@@ -9,7 +9,7 @@
         $error = $_FILES['coupon_image']['error'];
         if ($error === 0) {
             if ($img_size > 125000000000000) {
-                header('Location: staff_homepage.php?error');
+                header('Location: staff_homepage.php?ilili5');
             }
             else {
                 $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
@@ -40,17 +40,17 @@
                     }
                     else
                     {
-                        header('Location: staff_homepage.php?error');
+                        header('Location: staff_homepage.php?ililia4');
                     }
                 }
                 else {
-                    header('Location: staff_homepage.php?error');
+                    header('Location: staff_homepage.php?ililib3');
                 }
             }
         }else {
-            header('Location: staff_homepage.php?error');
+            header('Location: staff_homepage.php?ililia2');
         }
     }
     else {
-        header('Location: staff_homepage.php?error');
+        header('Location: staff_homepage.php?ilili11');
     }
