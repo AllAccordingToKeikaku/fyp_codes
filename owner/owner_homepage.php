@@ -1,5 +1,7 @@
 <?php
 require_once("accountDB.php");
+require_once("ordersDB.php");
+require_once("reservationDB.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -42,7 +44,6 @@ require_once("accountDB.php");
         }
         
         function profileDetails(){
-            console.log(document.cookie);
             var tempLogInName = getCookie("fullName");
             document.getElementById('accountNameDetails').innerHTML = tempLogInName;
         }
@@ -71,6 +72,8 @@ require_once("accountDB.php");
         }
 
         function generateMyReport(){
+            $("#displayReportOrderTable tr").remove();
+            $("#displayReportReservationTable tr").remove();
             var fromDate = document.getElementById("fromDateReport").value;
             var toDate = document.getElementById("toDateReport").value;
             var laterDate;
@@ -88,9 +91,154 @@ require_once("accountDB.php");
                 earlierDate = toDate;
             }
             var selectType = document.getElementById("selectReportType").value;
-            console.log(earlierDate);
-            console.log(laterDate);
-            console.log(selectType);
+            if(selectType == "Orders"){
+                document.getElementById("displayReportOrder").style.display = "block";
+                document.getElementById("displayReportReservation").style.display = "none";
+
+                var viewArrays = '<?php echo json_encode($ordersArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");;
+                var viewarray = viewArrays.split('].');
+                var viewArray1 = [];
+                var totalViewArray = [];
+                var x;
+                var y=0;
+                var tempString = "";
+                for (x=0;x<viewarray.length;x++)
+                {
+                    viewArray1.push(viewarray[x]);
+                }
+                for (x=0;x<viewArray1.length;x++){
+                    tempString = String(viewArray1[x]).replaceAll('[','').replaceAll(']','');
+                    tempString = tempString.split(',');
+                    totalViewArray.push(tempString);
+                }
+                var table = document.getElementById("displayReportOrderTable");
+                for (x=0; x<totalViewArray.length; x++)
+                {
+                    if(parseInt(totalViewArray[x][2].replaceAll("-", "")) >= parseInt(earlierDate.replaceAll("-", "")) &&
+                    parseInt(totalViewArray[x][2].replaceAll("-", "")) <= parseInt(laterDate.replaceAll("-", "")) &&
+                    earlierDate != "" && laterDate != ""){
+                        var row = table.insertRow(y);
+                        var cell = row.insertCell(0);
+                        cell.innerHTML = '<text id="viewReportOrderID' + String(x) + '" style="width:100px;display:block;padding:10px;text-align:center"></text>';
+                        document.getElementById("viewReportOrderID"+String(x)).innerHTML = totalViewArray[x][0];  
+                        var cell = row.insertCell(1);
+                        cell.innerHTML = '<text id="viewReportOrderPrice' + String(x) + '" style="width:100px;display:block;padding:10px;text-align:center"></text>';
+                        document.getElementById("viewReportOrderPrice"+String(x)).innerHTML = totalViewArray[x][4];  
+                        var cell = row.insertCell(2);
+                        cell.innerHTML = '<text id="viewReportOrderStatus' + String(x) + '" style="width:100px;display:block;padding:10px;text-align:center"></text>';
+                        document.getElementById("viewReportOrderStatus"+String(x)).innerHTML = totalViewArray[x][5];
+                        var cell = row.insertCell(3);
+                        cell.innerHTML = '<text id="viewReportOrderPromo' + String(x) + '" style="width:150px;display:block;padding:10px;text-align:center"></text>';
+                        document.getElementById("viewReportOrderPromo"+String(x)).innerHTML = totalViewArray[x][6];
+                        var cell = row.insertCell(4);
+                        cell.innerHTML = '<text id="viewReportOrderTransactionTime' + String(x) + '" style="width:150px;display:block;padding-right:15px;padding-left:15px;text-align:center"></text>';
+                        document.getElementById("viewReportOrderTransactionTime"+String(x)).innerHTML = totalViewArray[x][3];  
+                        var cell = row.insertCell(5);
+                        cell.innerHTML = '<text id="viewReportOrderTransactionDate' + String(x) + '" style="width:150px;display:block;padding:10px;text-align:center"></text>';
+                        document.getElementById("viewReportOrderTransactionDate"+String(x)).innerHTML = totalViewArray[x][2];     
+                        y++;
+                    }
+                }
+            }
+            else{
+                document.getElementById("displayReportOrder").style.display = "none";
+                document.getElementById("displayReportReservation").style.display = "block";
+
+                var viewArrays = '<?php echo json_encode($reservationsArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");;
+                var viewarray = viewArrays.split('].');
+                var viewArray1 = [];
+                var totalViewArray = [];
+                var x;
+                var y=0;
+                var tempString = "";
+                for (x=0;x<viewarray.length;x++)
+                {
+                    viewArray1.push(viewarray[x]);
+                }
+                for (x=0;x<viewArray1.length;x++){
+                    tempString = String(viewArray1[x]).replaceAll('[','').replaceAll(']','');
+                    tempString = tempString.split(',');
+                    totalViewArray.push(tempString);
+                }
+                var table = document.getElementById("displayReportReservationTable");
+                for (x=0; x<totalViewArray.length; x++)
+                {
+                    if(parseInt(totalViewArray[x][6].replaceAll("-", "")) >= parseInt(earlierDate.replaceAll("-", "")) &&
+                    parseInt(totalViewArray[x][6].replaceAll("-", "")) <= parseInt(laterDate.replaceAll("-", "")) &&
+                    earlierDate != "" && laterDate != ""){
+                        var tempTimeSlot;
+                        var tempSeats = "";
+                        switch(totalViewArray[x][7]){
+                            case "timeSlot1":
+                                tempTimeSlot = "11:00";
+                                break;
+                            case "timeSlot2":
+                                tempTimeSlot = "12:00";
+                                break;
+                            case "timeSlot3":
+                                tempTimeSlot = "13:00";
+                                break;
+                            case "timeSlot4":
+                                tempTimeSlot = "14:00";
+                                break;
+                            case "timeSlot5":
+                                tempTimeSlot = "15:00";
+                                break;
+                            case "timeSlot6":
+                                tempTimeSlot = "16:00";
+                                break;
+                            case "timeSlot7":
+                                tempTimeSlot = "17:00";
+                                break;
+                            case "timeSlot8":
+                                tempTimeSlot = "18:00";
+                                break;
+                            case "timeSlot9":
+                                tempTimeSlot = "19:00";
+                                break;
+                            case "timeSlot10":
+                                tempTimeSlot = "20:00";
+                                break;
+                        }
+
+                        for(var z=0; z<totalViewArray[x][9].length; z++){
+                            if(z+1 == totalViewArray[x][9].length){
+                                tempSeats += totalViewArray[x][9][z];
+                            }
+                            else{
+                                tempSeats += totalViewArray[x][9][z] + ", ";
+                            }
+                        }
+
+                        var row = table.insertRow(y);
+                        var cell = row.insertCell(0);
+                        cell.innerHTML = '<text id="viewReportReservationID' + String(x) + '" style="width:40px;display:block;padding:5px;text-align:center"></text>';
+                        document.getElementById("viewReportReservationID"+String(x)).innerHTML = totalViewArray[x][0];  
+                        var cell = row.insertCell(1);
+                        cell.innerHTML = '<text id="viewReportReservationEmail' + String(x) + '" style="width:230px;display:block;padding:5px;text-align:center"></text>';
+                        document.getElementById("viewReportReservationEmail"+String(x)).innerHTML = totalViewArray[x][3];  
+                        var cell = row.insertCell(2);
+                        cell.innerHTML = '<text id="viewReportReservationNumber' + String(x) + '" style="width:100px;display:block;padding:5px;text-align:center"></text>';
+                        document.getElementById("viewReportReservationNumber"+String(x)).innerHTML = totalViewArray[x][4];
+                        var cell = row.insertCell(3);
+                        cell.innerHTML = '<text id="viewReportReservationDate' + String(x) + '" style="width:100px;display:block;padding:5px;text-align:center"></text>';
+                        document.getElementById("viewReportReservationDate"+String(x)).innerHTML = totalViewArray[x][6];
+                        var cell = row.insertCell(4);
+                        cell.innerHTML = '<text id="viewReportReservationTime' + String(x) + '" style="width:80px;display:block;padding:5px;text-align:center"></text>';
+                        document.getElementById("viewReportReservationTime"+String(x)).innerHTML = tempTimeSlot;  
+                        var cell = row.insertCell(5);
+                        cell.innerHTML = '<text id="viewReportReservationLocation' + String(x) + '" style="width:130px;display:block;padding:5px;text-align:center"></text>';
+                        document.getElementById("viewReportReservationLocation"+String(x)).innerHTML = totalViewArray[x][5];   
+                        var cell = row.insertCell(6);
+                        cell.innerHTML = '<text id="viewReportReservationPax' + String(x) + '" style="width:30px;display:block;padding:5px;text-align:center"></text>';
+                        document.getElementById("viewReportReservationPax"+String(x)).innerHTML = totalViewArray[x][8];   
+                        var cell = row.insertCell(7);
+                        cell.innerHTML = '<text id="viewReportReservationSeats' + String(x) + '" style="width:90px;display:block;padding:5px;text-align:center"></text>';
+                        document.getElementById("viewReportReservationSeats"+String(x)).innerHTML = tempSeats;     
+                        y++;
+                    }
+                }
+            }
         }
 
         function viewMyRecords(){
@@ -120,7 +268,7 @@ require_once("accountDB.php");
                     String(totalViewArray[x][5]).toLowerCase().includes(checkValue) ||
                     String(totalViewArray[x][3]).toLowerCase().includes(checkValue) ||
                     String(totalViewArray[x][6]).toLowerCase().includes(checkValue) ||
-                    String(totalViewArray[x][7]).toLowerCase().includes(checkValue)){
+                    String(totalViewArray[x][7]).toLowerCase().includes(checkValue)){                        
                         var row = table.insertRow(y);
                         var cell = row.insertCell(0);
                         cell.innerHTML = '<text id="viewRecordsProfile' + String(x) + '" style="width:80px;display:block;padding:5px;text-align:center"></text>';
@@ -249,20 +397,26 @@ require_once("accountDB.php");
                         </div></br>
                         <div id="displayReportOrder" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:none">
                             <div style="background-color:#3280F466;">
-                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px">Order ID</text>
-                                <text style="margin-left:100px;margin-right:auto;display:inline-block;font-size:20px;width:200px;">Name</text>
-                                <text style="margin-left:10px;margin-right:auto;display:inline-block;font-size:20px;width:200px;">Number</text>
-                                <text style="margin-left:10px;margin-right:auto;display:inline-block;font-size:20px;width:200px;">Email</text>
-                                <text style="margin-left:10px;margin-right:auto;display:inline-block;font-size:20px;width:200px;">Transaction date</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px;text-align:center;padding:10px;">ID</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px;text-align:center;padding:10px;">Price</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px;text-align:center;padding:10px;">Status</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:150px;text-align:center;padding:10px;">Promo code</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:140px;text-align:center;padding:10px;">Transaction time</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:150px;text-align:center;padding-left:15px;">Transaction date</text>
                             </div>
-                            <table id="displayReportOrderTable">
+                            <table id="displayReportOrderTable" rules="all">
                             </table>
                         </div>
                         <div id="displayReportReservation" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:none">
                             <div style="background-color:#3280F466;">
-                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px">Status</text>
-                                <text style="margin-left:100px;margin-right:auto;display:inline-block;font-size:20px;width:400px;">Description</text>
-                                <text style="margin-left:10px;margin-right:auto;display:inline-block;font-size:20px;width:200px;">Date</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:40px;padding:5px;text-align:center">ID</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:230px;padding:5px;text-align:center">Email</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px;padding:5px;text-align:center">Number</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px;padding:5px;text-align:center">Date</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:80px;padding-right:5px;text-align:center">Time</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:130px;padding-right:7px;text-align:center">Location</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:30px;text-align:center">Pax</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:90px;padding-left:10px;text-align:center">Seats</text>
                             </div>
                             <table id="displayReportReservationTable" style="background-color:#A8A1A166;" rules="all">
                             </table>

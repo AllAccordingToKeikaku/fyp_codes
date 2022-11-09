@@ -29,5 +29,4 @@ if ($num_rows > 0) {
     $accountArray[]=array($accountID, $profileID, $fullName, $email, $accountPassword, $phoneNumber, $accountStatus, $accountDescription);
     }
 }
-mysqli_close($conn);
 ?>
