@@ -1487,7 +1487,7 @@ require_once("deliveryOrderDB.php");
                     <div style="margin-top:30px;margin:auto;display:block">
                         <input type="button" value="x" style="display:block;position:absolute;margin-left:64%;float:left;top:10px" onclick="closePopupDateTime()">
                         <b><u><text>Select date and time</text></u></b></br></br>
-                        <text>Date : </text><input id="dateSelect" type="date" onchange="getDateTime();checkDateTimeFunction()" min="<?= date('Y-m-d'); ?>"><br><br>
+                        <text>Date: </text><input id="dateSelect" type="date" onchange="getDateTime();checkDateTimeFunction()" min="<?= date('Y-m-d'); ?>"><br><br>
                         <text>Time slot: </text><select id="timeSelect" style="width:60px;text-align:center" onchange="checkDateTimeFunction()">
                             <option value="11:00" id="11:00">11:00</option>
                             <option value="12:00" id="12:00">12:00</option>

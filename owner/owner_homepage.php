@@ -69,6 +69,7 @@ require_once("reservationDB.php");
         function viewRecords(){
             document.getElementById("reportDisplay").style.display = "none";
             document.getElementById("recordsDisplay").style.display = "block";
+            viewMyRecords();
         }
 
         function generateMyReport(){

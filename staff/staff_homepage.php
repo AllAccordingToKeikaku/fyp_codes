@@ -472,7 +472,7 @@ include("delete_item_data.php");
                             <input type="button" id="createMenuItem" name="createMenuItem" value="Create menu item" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="viewMenuItem" name="viewMenuItem" value="View menu item list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
+                            <input type="button" id="viewMenuItem" name="viewMenuItem" value="View menu item list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);searchItems()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
                             <input type="button" id="deleteMenuItem" name="deleteMenuItem" value="Delete menu item" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
@@ -488,7 +488,7 @@ include("delete_item_data.php");
                             <input type="button" id="createCouponCode" name="createCouponCode" value="Create coupon code" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="viewCouponCode" name="viewCouponCode" value="View coupon code list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
+                            <input type="button" id="viewCouponCode" name="viewCouponCode" value="View coupon code list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);searchPromos()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
                             <input type="button" id="deleteCouponCode" name="deleteCouponCode" value="Delete coupon code" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
@@ -501,7 +501,7 @@ include("delete_item_data.php");
                     <text style="color:#437E96;font-size:30px;">Reservation</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="viewReservation" name="viewReservation" value="View reservation list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
+                            <input type="button" id="viewReservation" name="viewReservation" value="View reservation list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);searchReservations()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
                             <input type="button" id="deleteReservation" name="deleteReservation" value="Delete reservation" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
@@ -511,7 +511,7 @@ include("delete_item_data.php");
                     <text style="color:#437E96;font-size:30px;">Order</text></br>
                     <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
                         <div class="mouseOverEffects" style="width:150px">
-                            <input type="button" id="viewOrder" name="viewOrder" value="View order list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
+                            <input type="button" id="viewOrder" name="viewOrder" value="View order list" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id);searchOrder()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:150px">
                             <input type="button" id="deleteOrder" name="deleteOrder" value="Delete order" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="changeTab(this.id)"></br>
@@ -524,7 +524,7 @@ include("delete_item_data.php");
 
                 <div id="menuTab">
                     <div style="float:left;margin-left:200px;">
-                    <form method="POST" action="create_item_data.php" enctype="multipart/form-data">
+                    <form method="POST" action="create_item_data.php" enctype="multipart/form-data" onsubmit="return confirm('Do you really want to create item?');">
                         <div class="sideBar" id="createMenuItemDIV" style="display:none;width:auto">
                             <text style="color:#437E96;font-size:40px;">
                                 Create menu item                               
@@ -575,7 +575,7 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Delete menu item                               
                             </text></br></br></br>
-                            <input type="text" id="deleteSearchItem" name="deleteSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
+                            <input type="number" id="deleteSearchItem" name="deleteSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
                             <input type="submit" name="delete" class="buttonHoverEffect" value="Delete" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                         </div>
                         </form>
@@ -587,7 +587,7 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Update menu item                               
                             </text></br></br></br>
-                            <input type="text" id="updateSearchItem" name="updateSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
+                            <input type="number" id="updateSearchItem" name="updateSearchItem" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
                             <input type="button" class="buttonHoverEffect" value="Search" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" onclick="searchCurrentItems()"></br></br>
                             <div id="displayUpdate" style="display:none">
                                 <label style="width:150px;display:inline-block">Name: </label><input type="text" id="updateItemName" name="updateItemName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;"></br></br>
@@ -658,7 +658,7 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Delete coupon code                              
                             </text></br></br></br>
-                            <input type="text" id="deleteSearchCoupon" name="deleteSearchCoupon" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
+                            <input type="number" id="deleteSearchCoupon" name="deleteSearchCoupon" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
                             <input type="submit" name="deleteCoupon" class="buttonHoverEffect" value="Delete" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                         </div>
                     </form>
@@ -670,7 +670,7 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Update coupon code                            
                             </text></br></br></br>
-                            <input type="text" id="updateSearchCoupon" name="updateSearchCoupon" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
+                            <input type="number" id="updateSearchCoupon" name="updateSearchCoupon" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
                             <input type="button" class="buttonHoverEffect" value="Search" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" onclick="searchCurrentPromos()"></br></br>
                             <div id="displayUpdateCoupon" style="display:none">
                                 <label style="width:150px;display:inline-block">Coupon name: </label><input type="text" id="updateCouponName" name="updateCouponName" style="margin-top:5px;margin-left:30px;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px;cursor:pointer" placeholder="Leave empty if Dine-in exclusive"></br></br>
@@ -720,7 +720,7 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Delete reservation                              
                             </text></br></br></br>
-                            <input type="text" id="deleteSearchReservation" name="deleteSearchReservation" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
+                            <input type="number" id="deleteSearchReservation" name="deleteSearchReservation" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
                             <input type="submit" name="deleteReservation" class="buttonHoverEffect" value="Delete" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                         </div>
                     </form>
@@ -756,7 +756,7 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Delete order                             
                             </text></br></br></br>
-                            <input type="text" id="deleteSearchOrder" name="deleteSearchOrder" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
+                            <input type="number" id="deleteSearchOrder" name="deleteSearchOrder" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID">
                             <input type="submit" name="deleteOrder" class="buttonHoverEffect" value="Delete" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
                         </div>
                     </form>
@@ -768,7 +768,7 @@ include("delete_item_data.php");
                             <text style="color:#437E96;font-size:40px;">
                                 Update order status                         
                             </text></br></br></br>
-                            <input type="text" id="updateSearchOrder" name="updateSearchOrder" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID"></br></br>
+                            <input type="number" id="updateSearchOrder" name="updateSearchOrder" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter ID"></br></br>
                             <select id="updateOrderStatus" name="updateOrderStatus" style="margin-top:5px;width:405px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px;cursor:pointer">
                                 <option value="Delivered">Delivered</option>
                                 <option value="In-progress">In-progress</option>

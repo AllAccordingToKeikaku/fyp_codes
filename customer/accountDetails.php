@@ -253,13 +253,13 @@ require_once("reservationDB.php");
         function cancelReservation(reservationID){
             $.ajax({
                 type: "POST",
-                url: "deleteAccount_details.php",
+                url: "delete_reservation_details.php",
                 data:{
                     cancel_link_1:reservationID
                 },
                 success: function(data){
                     Swal.fire({
-                        'title': 'Successfully cancelled reservation details!',
+                        'title': 'Successfully cancelled reservation!',
                         'text': data,
                         'type': 'success'
                     }).then(setTimeout(function(){window.location.replace("../customer/accountDetails.php");}, 2000))

@@ -48,6 +48,18 @@ require_once("menuItems/deliveryOrderDB.php");
             var preparationTimeColor;
             var reservationAvailability = "Available";
             var reservationColor;
+            var restaurantOpenClose = "Open";
+            var restaurantOpenCloseImg;
+            var restaurantOpenCloseColor;
+
+            if(restaurantOpenClose == "Open"){
+                restaurantOpenCloseImg = "Smiley.png";
+                restaurantOpenCloseColor = "green";
+            }
+            else{
+                restaurantOpenCloseImg = "Sad.png";
+                restaurantOpenCloseColor = "red";
+            }
 
             waitingTime = deliveryNumber*5+20;
             preparationTime = deliveryNumber*5+10;
@@ -77,7 +89,8 @@ require_once("menuItems/deliveryOrderDB.php");
             }
 
             document.getElementById("descriptionBox").innerHTML = '<input type="button" value="x" style="cursor:pointer;float:right;position:absolute;margin-left:90%;display:block;top:10px" onclick="returnFunction()">' +
-                                                                    '<b><center><text style="font-size:30px;">Restaurant status: <text style="color:green">Open</text></text></center></b></br></br></br>'+
+                                                                    '<b><center><text style="font-size:30px;">Restaurant status: <text style="color:' + restaurantOpenCloseColor + '">' + restaurantOpenClose + '</text></text></center></b></br></br>' +
+                                                                    '<center><img src="MoshiQ2 IMG Assets/' + restaurantOpenCloseImg +'"></br></br></center>'+
                                                                     '<center><div style="display:inline-block;width:auto;"><text style="font-size:30px;">Delivery wait time: <text style="color:' + waitingTimeColor + '">~' + waitingTime + 'mins</text></text></br>' + 
                                                                     '<text style="font-size:30px;">Reservation booking: <text style="color:' + reservationColor + '">' + reservationAvailability + '</text></text></br>' +
                                                                     '<text style="font-size:30px;">Preparation time: <text style="color:' + preparationTimeColor + '">~' + preparationTime + 'mins</text></text></br></div></center>';

@@ -723,7 +723,7 @@ require_once("accountDB.php");
                             <input type="button" id="createUserAccountButton" name="createUserAccountButton" value="Create user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="createUserAccountFunction()"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:auto">
-                            <input type="button" id="viewUserAccountButton" name="viewUserAccountButton" value="View user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="viewUserAccountFunction()"></br>
+                            <input type="button" id="viewUserAccountButton" name="viewUserAccountButton" value="View user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="viewUserAccountFunction();checkAccounts('view')"></br>
                         </div>
                         <div class="mouseOverEffects" style="width:auto">
                             <input type="button" id="suspendUserAccountButton" name="suspendUserAccountButton" value="Suspend user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="suspendUserAccountFunction()"></br>

@@ -529,7 +529,8 @@ require_once('promoDB.php');
       var requiredField7 = document.getElementById('pax').value;
       var requiredField8 = seatingArea;
 
-      if(requiredField1 == "" || requiredField2 == "" || requiredField3 == "" || requiredField4 == "" || requiredField5 == "" || 
+      if(requiredField1 == "" || requiredField2 == "" || !requiredField2.includes("@") || requiredField3 == "" || requiredField3.length != 8 || 
+        requiredField4 == "" || requiredField5 == "" || 
         requiredField6 == "" || requiredField7 == "" || requiredField8 == null || requiredField8 == ""){
           document.getElementById('submitDetails').disabled = true;
           document.getElementById('submitDetails').style.cursor = "default";
