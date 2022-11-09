@@ -254,7 +254,7 @@ include("delete_item_data.php");
                 totalViewArray.push(tempString);
             }
             var table = document.getElementById("displayReservationsTable");
-            var y = 0;
+            var y = 0; 
             for (x=0; x<totalViewArray.length; x++)
             {
                 if(totalViewArray[x][0].toLowerCase().includes(document.getElementById("viewSearchReservation").value.toLowerCase()) ||
@@ -264,6 +264,15 @@ include("delete_item_data.php");
                     totalViewArray[x][5].toLowerCase().includes(document.getElementById("viewSearchReservation").value.toLowerCase()) ||
                     totalViewArray[x][6].toLowerCase().includes(document.getElementById("viewSearchReservation").value.toLowerCase()) ||
                     String(totalViewArray[x][8]).toLowerCase().includes(document.getElementById("viewSearchReservation").value.toLowerCase())){
+                    var totalSeats = "";
+                    for(var z=0; z<totalViewArray[x][9].length; z++){
+                        if(z+1 == totalViewArray[x][9].length){
+                            totalSeats += totalViewArray[x][9][z];
+                        }
+                        else{
+                            totalSeats += totalViewArray[x][9][z] + ", ";
+                        }
+                    }
                     var row = table.insertRow(y);
                     var cell = row.insertCell(0);
                     cell.innerHTML = '<text id="viewReservationID' + String(x) + '" style="width:30px;display:block;padding:5px"></text>';
@@ -275,8 +284,8 @@ include("delete_item_data.php");
                     cell.innerHTML = '<text id="viewReservationNumber' + String(x) + '" style="width:90px;display:block;padding:5px"></text>';
                     document.getElementById("viewReservationNumber"+String(x)).innerHTML = totalViewArray[x][4];
                     var cell = row.insertCell(3);
-                    cell.innerHTML = '<text id="viewReservationSeating' + String(x) + '" style="width:80px;display:block;padding:5px"></text>';
-                    document.getElementById("viewReservationSeating"+String(x)).innerHTML = totalViewArray[x][9];    
+                    cell.innerHTML = '<text id="viewReservationSeating' + String(x) + '" style="width:70px;display:block;padding:5px"></text>';
+                    document.getElementById("viewReservationSeating"+String(x)).innerHTML = totalSeats;    
                     var cell = row.insertCell(4);
                     cell.innerHTML = '<text id="viewReservationPax' + String(x) + '" style="width:30px;display:block;padding:5px"></text>';
                     document.getElementById("viewReservationPax"+String(x)).innerHTML = totalViewArray[x][8];  
@@ -367,23 +376,23 @@ include("delete_item_data.php");
             {
                 var row = table.insertRow(x);
                 var cell = row.insertCell(0);
-                cell.innerHTML = '<text id="viewOrderID' + String(x) + '" style="width:30px;display:block;padding:5px"></text>';
-                document.getElementById("viewOrderID"+String(x)).innerHTML = totalViewArray[x][0];  
+                cell.innerHTML = '<text id="updateOrderID' + String(x) + '" style="width:30px;display:block;padding:5px"></text>';
+                document.getElementById("updateOrderID"+String(x)).innerHTML = totalViewArray[x][0];  
                 var cell = row.insertCell(1);
-                cell.innerHTML = '<text id="viewOrderDate' + String(x) + '" style="width:100px;display:block;padding:5px"></text>';
-                document.getElementById("viewOrderDate"+String(x)).innerHTML = totalViewArray[x][2];
+                cell.innerHTML = '<text id="updateOrderDate' + String(x) + '" style="width:100px;display:block;padding:5px"></text>';
+                document.getElementById("updateOrderDate"+String(x)).innerHTML = totalViewArray[x][2];
                 var cell = row.insertCell(2);
-                cell.innerHTML = '<text id="viewOrderTime' + String(x) + '" style="width:50px;display:block;padding:5px"></text>';
-                document.getElementById("viewOrderTime"+String(x)).innerHTML = totalViewArray[x][3];
+                cell.innerHTML = '<text id="updateOrderTime' + String(x) + '" style="width:50px;display:block;padding:5px"></text>';
+                document.getElementById("updateOrderTime"+String(x)).innerHTML = totalViewArray[x][3];
                 var cell = row.insertCell(3);
-                cell.innerHTML = '<text id="viewOrderPrice' + String(x) + '" style="width:70px;display:block;padding:5px"></text>';
-                document.getElementById("viewOrderPrice"+String(x)).innerHTML = totalViewArray[x][4];    
+                cell.innerHTML = '<text id="updateOrderPrice' + String(x) + '" style="width:70px;display:block;padding:5px"></text>';
+                document.getElementById("updateOrderPrice"+String(x)).innerHTML = totalViewArray[x][4];    
                 var cell = row.insertCell(4);
-                cell.innerHTML = '<text id="viewOrderCoupon' + String(x) + '" style="width:133px;display:block;padding:5px"></text>';
-                document.getElementById("viewOrderCoupon"+String(x)).innerHTML = totalViewArray[x][6];    
+                cell.innerHTML = '<text id="updateOrderCoupon' + String(x) + '" style="width:133px;display:block;padding:5px"></text>';
+                document.getElementById("updateOrderCoupon"+String(x)).innerHTML = totalViewArray[x][6];    
                 var cell = row.insertCell(5);
-                cell.innerHTML = '<text id="viewOrderStatus' + String(x) + '" style="width:120px;display:block;padding:5px"></text>';
-                document.getElementById("viewOrderStatus"+String(x)).innerHTML = totalViewArray[x][5];    
+                cell.innerHTML = '<text id="updateOrderStatus' + String(x) + '" style="width:120px;display:block;padding:5px"></text>';
+                document.getElementById("updateOrderStatus"+String(x)).innerHTML = totalViewArray[x][5];    
             }   
         }
     </script>

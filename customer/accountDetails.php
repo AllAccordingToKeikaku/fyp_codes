@@ -6,6 +6,9 @@ require_once("reservationDB.php");
 ?>
 <!DOCTYPE html>
 <html>
+    <script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
         isProfileClicked = false;
@@ -214,6 +217,15 @@ require_once("reservationDB.php");
 
             var j=0;
             for (x=reservationArrays.length-1; x>=0; x--){
+                var tempTotalSeats= "";
+                for(y=0; y<seatsArray[x].length; y++){
+                    if(y+1 == seatsArray[x].length){
+                        tempTotalSeats += seatsArray[x][y];
+                    }
+                    else{
+                        tempTotalSeats += seatsArray[x][y] + ", ";
+                    }
+                }
                 document.getElementById("reservation"+String(j)).innerHTML = '<text style="border-radius:15px;background-color:#A0D5EB;border:0px;margin-top:2px;width:550px;padding:5px;display:inline-block">' +
                                                         '<div style="float:right;display:inline-block;text-align:right;">' +
                                                         '<b><u><text id="' + idArray[x] + '" style="cursor:pointer" onclick="editReservation(this.id)">Edit reservation</text></u></b></br></br>' + 
@@ -221,18 +233,44 @@ require_once("reservationDB.php");
                                                         '<b>Reservation ID:</b> ' + idArray[x] + '</br></br>' +
                                                         '<b>Date & Time:</b> '+ dayArray[x] + ', ' + dateArray[x] + ', ' + timeArray[x] + '</br></br>' +
                                                         '<b>Pax amount:</b> ' + paxArray[x] + '</br></br>' +
-                                                        '<b>Seating area(s):</b> ' + seatsArray[x] + '</text></br>'
-                                                        ;     
+                                                        '<b>Seating area(s):</b> ' + tempTotalSeats + '</text></br>';     
                 j++;           
             }
         }
 
         function editReservation(reservationID){
-            alert("Edit reservation ID: " + reservationID);
+            setCookie("reservationID", reservationID, 1);
+            window.location.replace("edit_reservation.php");
+        }
+
+        function setCookie(nameCookie, valueCookie, timeCookie){
+            const date = new Date();
+            date.setTime(date.getTime() +  (timeCookie * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + date.toUTCString();
+            document.cookie = `${nameCookie}=${valueCookie}; ${expires}; path=/`
         }
 
         function cancelReservation(reservationID){
-            alert("Cancelled reservation ID: " + reservationID);
+            $.ajax({
+                type: "POST",
+                url: "deleteAccount_details.php",
+                data:{
+                    cancel_link_1:reservationID
+                },
+                success: function(data){
+                    Swal.fire({
+                        'title': 'Successfully cancelled reservation details!',
+                        'text': data,
+                        'type': 'success'
+                    }).then(setTimeout(function(){window.location.replace("../customer/accountDetails.php");}, 2000))
+                    },
+                    error: function(data){
+                    Swal.fire({
+                        'title': 'Errors',
+                        'text': 'There were errors in your order, please refresh the page and try again.'
+                    })
+                }
+            });
         }
 
         function accountFunction(){

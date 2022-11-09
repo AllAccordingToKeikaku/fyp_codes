@@ -45,6 +45,11 @@ require_once('promoDB.php');
     var timerCounter;
     var reservationNumID;
     var preorderList = [];
+    var checkSeat = [];
+    var editPax;
+    var checkDate;
+    var checkTime;
+    var checkLocation;
 
     $(function(){
       //Set date to current date + 4, prevent user from selecting previous dates
@@ -63,6 +68,9 @@ require_once('promoDB.php');
     function selectedPax(){
       uncheckElements();
       pax = document.getElementById("pax").value;
+      var tempDate = document.getElementById("dateSelect").value;
+      var tempTime = document.getElementById("timeSelect").value;
+      var tempLocation = document.getElementById("outletLocation").value;
       for (var i=0; i<allButtons.length;i++){
         document.getElementById(allButtons[i]).disabled = true;
         if (pax == "1" || pax =="2"){
@@ -133,21 +141,33 @@ require_once('promoDB.php');
         document.getElementById("I").disabled = true;
         document.getElementById("J").disabled = true;
       }
+
+      if(pax == editPax && tempDate == checkDate && tempTime == checkTime && tempLocation == checkLocation){
+        for(var z=0;z<checkSeat.length;z++){
+            seatingCluster = document.getElementsByClassName("seat"+checkSeat[z]);
+            document.getElementById(checkSeat[z]).disabled = false;
+            document.getElementById(checkSeat[z]).checked = true;
+            for(var j=0;j<seatingCluster.length;j++){
+                seatingCluster[j].style.backgroundColor = '#7FFF00';
+            }
+        }
+    }
       countDown();
     }
 
     var actualBookedArray = [];
+    var boolCheck = false;
     function checkSlots(){
       actualBookedArray = [];
-      var slotArrays = '<?php echo json_encode($dataArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+      var slotArrays = '<?php echo json_encode($reservationsArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
       var slotArray = slotArrays.split('].');
       var bookedArray = [];
       var x;
       var tempString = "";
       var tempString1 = "";
       var tempLocation = document.getElementById("outletLocation").value;
-      var tempDate = document.getElementById("dateSelect").value;;
-      var tempTime = document.getElementById("timeSelect").value;;
+      var tempDate = document.getElementById("dateSelect").value;
+      var tempTime = document.getElementById("timeSelect").value;
       for (x=0;x<slotArray.length;x++)
       {
         bookedArray.push(slotArray[x]);
@@ -159,8 +179,8 @@ require_once('promoDB.php');
       }
       for (x=0;x<actualBookedArray.length;x++)
       {
-        if (actualBookedArray[x][6] == tempDate && actualBookedArray[x][7] == tempTime && actualBookedArray[x][5]==tempLocation)
-        {        
+        if (actualBookedArray[x][6] == tempDate && actualBookedArray[x][7] == tempTime && 
+        actualBookedArray[x][5]==tempLocation && actualBookedArray[x][0]!=String(document.getElementById("accountReservationID").value)){        
           var seating = actualBookedArray[x][9];
           var seatingCluster;
           for (var i=0; i<seating.length; i++){
@@ -217,21 +237,23 @@ require_once('promoDB.php');
             } 
           }
         }
+    
         if(seating[i].checked){
-          seatings += seating[i].value;
-          seatingCluster = document.getElementsByClassName("seat"+seating[i].value);
-          for(var j=0;j<seatingCluster.length;j++){
-            seatingCluster[j].style.backgroundColor = '#7FFF00';
-          }
+            seatings += seating[i].value;
+            seatingCluster = document.getElementsByClassName("seat"+seating[i].value);
+            for(var j=0;j<seatingCluster.length;j++){
+                seatingCluster[j].style.backgroundColor = '#7FFF00';
+            }
         }
         else{
-          seatingCluster = document.getElementsByClassName("seat"+seating[i].value);
-          for(var j=0;j<seatingCluster.length;j++){
-            seatingCluster[j].style.backgroundColor = '';
-          }
+            seatingCluster = document.getElementsByClassName("seat"+seating[i].value);
+            for(var j=0;j<seatingCluster.length;j++){
+                seatingCluster[j].style.backgroundColor = '';
+            }
         }
-      }
+    }
       seatingArea = seatings;
+      console.log(seatingArea);
       checkSlots();
       countDown();
     }
@@ -262,7 +284,7 @@ require_once('promoDB.php');
       } 
 
       document.getElementById('displaySubjectType').innerHTML = "Reservation";
-      document.getElementById('displayCustomerID').innerHTML = customerID;
+      document.getElementById('displayReservationID').innerHTML = parseInt(document.getElementById("accountReservationID").value);
       document.getElementById('displayCustomerName').innerHTML = customerName;
       document.getElementById('displayCustomerEmailAddress').innerHTML = emailAddress;
       document.getElementById('displayCustomerPhoneNumber').innerHTML = phoneNumber;
@@ -297,9 +319,9 @@ require_once('promoDB.php');
 
       $.ajax({
         type: "POST",
-        url: "reservation_details_data.php",
+        url: "edit_reservation_details.php",
         data:{
-          displayCustomerID:customerID,
+          displayReservationID:parseInt(document.getElementById("accountReservationID").value),
           displayCustomerName:customerName,
           displayCustomerEmailAddress:emailAddress,
           displayCustomerPhoneNumber:phoneNumber,
@@ -410,22 +432,14 @@ require_once('promoDB.php');
         tempPax = paxAmount;
       }
 
-      // Update inbox description
-      var inboxStatus = "Reservation";
-      if(actualBookedArray.length != 0 && actualBookedArray[actualBookedArray.length-1] != ""){
-        reservationNumID = parseInt(actualBookedArray[actualBookedArray.length-1][0])+1;
-      }
-      else{
-        reservationNumID = 1;
-      }
-      var inboxDescription = "R" + String(parseInt(reservationNumID)) +
+      reservationNumID = document.getElementById('displayReservationID').value;
+      
+      var inboxDescription = "(Edited)R" + String(parseInt(reservationNumID)) +
                               ": Reservation for " + customerName +
                               "~~ at " + dateSlot.replaceAll('-','/')+ 
                               "~~ " + tempTiming + "~~ for " + tempPax +
                               "(" + tempSeatArea.replaceAll(",", "~~") + ")";
       var inboxDate = String(new Date().toJSON().slice(0,10).replace(/-/g,'/'));
-      
-      console.log(inboxDescription);
 
       $.ajax({
         type: "POST",
@@ -500,9 +514,9 @@ require_once('promoDB.php');
     }
 
     function profileDetails(){
-        console.log(document.cookie);
-        var tempLogInID = getCookie("accountID");
-        document.getElementById("accountIdText").value = tempLogInID;
+        var tempLogInID = getCookie("reservationID");
+        document.getElementById("accountReservationID").value = tempLogInID;
+        inputAllFields();
         countDown();
     }
 
@@ -517,6 +531,70 @@ require_once('promoDB.php');
             }
         })
         return result;
+    }
+
+    function inputAllFields(){
+        var slotArrays = '<?php echo json_encode($reservationsArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+        var slotArray = slotArrays.split('].');
+        var bookedArray = [];
+        var x;
+        var tempString = "";
+        var tempString1 = "";
+        var tempArray = [];
+        var tempLocation = document.getElementById("outletLocation").value;
+        var tempDate = document.getElementById("dateSelect").value;;
+        var tempTime = document.getElementById("timeSelect").value;;
+        for (x=0;x<slotArray.length;x++)
+        {
+            bookedArray.push(slotArray[x]);
+        }
+        for (x=0;x<bookedArray.length;x++){
+            tempString = String(bookedArray[x]).replaceAll('[','').replaceAll(']','');
+            tempString = tempString.split(',');
+            tempArray.push(tempString);
+        }
+        for (x=0;x<tempArray.length;x++){
+            if(String(tempArray[x][0]) == String(document.getElementById("accountReservationID").value)){
+                document.getElementById('name').value = tempArray[x][2];
+                document.getElementById('emailAddress').value = tempArray[x][3];
+                document.getElementById('phoneNumber').value = tempArray[x][4];
+                document.getElementById('outletLocation').value = tempArray[x][5];
+                document.getElementById('dateSelect').value = tempArray[x][6];
+                document.getElementById('timeSelect').value = tempArray[x][7];
+                document.getElementById('pax').value = tempArray[x][8];
+                document.getElementById('applyPromo').value = tempArray[x][10];
+                
+                editPax = tempArray[x][8];
+                checkDate = tempArray[x][6];
+                checkTime = tempArray[x][7];
+                checkLocation = tempArray[x][5];
+                var seating = tempArray[x][9];
+                var seatingCluster;
+                for (var i=0; i<seating.length; i++){
+                    seatingCluster = document.getElementsByClassName("seat"+seating[i]);
+                    //document.getElementById(seating[i]).disabled = true;
+                    checkSeat.push(seating[i]);
+                    /*for (var j=0; j<seatingCluster.length; j++){
+                    seatingCluster[j].style.backgroundColor = '#7FFF00';
+                    }*/
+                }
+                for(var z=0;z<checkSeat.length;z++){
+                    seatingCluster = document.getElementsByClassName("seat"+checkSeat[z]);
+                    document.getElementById(checkSeat[z]).disabled = false;
+                    document.getElementById(checkSeat[z]).checked = true;
+                    for(var j=0;j<seatingCluster.length;j++){
+                        seatingCluster[j].style.backgroundColor = '#7FFF00';
+                    }
+                }
+                for(var z=11; z<=15;z++){
+                  if(tempArray[x][z] != "none"){
+                    document.getElementById("item"+String(z-10)).checked = true;
+                  }
+                }
+                break;
+            }    
+        }
+        selectedArea();
     }
 
     function enableSubmitButton(){
@@ -562,7 +640,7 @@ require_once('promoDB.php');
       }
       for (x=0;x<actualPromoCodeArray.length;x++)
       {
-        if (actualPromoCodeArray[x][0] == tempPromoCode && tempPromoCode != "")
+        if (actualPromoCodeArray[x][0] == tempPromoCode)
         {        
           checkDiscount = actualPromoCodeArray[x][0];
           document.getElementById("validityText").innerHTML = "Valid";
@@ -588,7 +666,7 @@ require_once('promoDB.php');
     var actualBookedArray1 = [];
     function countTotalReservations(){
       
-      var slotArrays = '<?php echo json_encode($dataArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
+      var slotArrays = '<?php echo json_encode($reservationsArray);?>'.replaceAll('[[','[').replaceAll(']]',']').replaceAll('],',']].').replaceAll('"',"");
       var slotArray = slotArrays.split('].');
       var bookedArray = [];
       var x;
@@ -629,7 +707,7 @@ require_once('promoDB.php');
         display.textContent = minutes + ":" + seconds;
 
         if (--timer < 0) {
-          window.location.href = "reservation_details.php";
+          window.location.href = "edit_reservation.php";
         }
       }, 1000);
     }
@@ -642,7 +720,7 @@ require_once('promoDB.php');
     }
 
     function backButton(){
-      window.location.href = "../customer/customer_landingPage.php";
+      window.location.href = "../customer/accountDetails.php";
     }
   </script>
 
@@ -668,14 +746,14 @@ require_once('promoDB.php');
         <p style="margin-left:15%;font-size:20px;background-color:#C3E3A2;width:69%;padding:5px;border-radius:5px">Your page will be refreshed when inactive in...  <text id="reservationTimer" name="reservationTimer" style="float:right;">05:00</text></p>
         <p style="text-align:center;"><b>Reserve a place! Enjoy the ambience!</b></p>
       </div>
-    <form action="reservation_details_data.php/" method="POST">
+    <form action="edit_reservation_details.php/" method="POST">
       <fieldset style="width:454px;margin:auto;">
       <fieldset style="width:434px">
         <legend style="color:black">Enter personal details</legend>
-        <text style="color:black">Account ID<span style="margin-left:18px"></span>: </text><input id="accountIdText" type="text" style="display:inline-block" disabled><br>
-        <text style="color:black">Name<span style="margin-left:55px"></span>: </text><input id="name" style="margin-top:5px" type="text" onchange="enableSubmitButton()" onkeyup="enableSubmitButton()" onkeydown="enableSubmitButton()"><br>
-        <text style="color:black">Email address<span style="margin-left:3px"></span>: </text><input id="emailAddress" style="margin-top:5px" type="email" onchange="enableSubmitButton()" onkeyup="enableSubmitButton()" onkeydown="enableSubmitButton()"><br>
-        <text style="color:black">Phone number: </text><input id="phoneNumber" style="margin-top:5px" type="text" onkeypress="return /[0-9]/i.test(event.key)" onchange="enableSubmitButton()" onkeyup="enableSubmitButton()" onkeydown="enableSubmitButton()"><br>
+        <text style="color:black;width:100px;display:inline-block">Reservation ID</text><span style="margin-left:10px;display:inline-block">:</span><input id="accountReservationID" type="text" style="display:inline-block;margin-left:10px" disabled><br>
+        <text style="color:black;width:100px;display:inline-block">Name</text><span style="margin-left:10px;display:inline-block">:</span><input id="name" style="margin-top:5px;margin-left:10px" type="text" onchange="enableSubmitButton()" onkeyup="enableSubmitButton()" onkeydown="enableSubmitButton()"><br>
+        <text style="color:black;width:100px;display:inline-block">Email address</text><span style="margin-left:10px;display:inline-block">:</span><input id="emailAddress" style="margin-top:5px;margin-left:10px" type="email" onchange="enableSubmitButton()" onkeyup="enableSubmitButton()" onkeydown="enableSubmitButton()"><br>
+        <text style="color:black;width:100px;display:inline-block">Phone number</text><span style="margin-left:10px;display:inline-block">:</span><input id="phoneNumber" style="margin-top:5px;margin-left:10px" type="text" onkeypress="return /[0-9]/i.test(event.key)" onchange="enableSubmitButton()" onkeyup="enableSubmitButton()" onkeydown="enableSubmitButton()"><br>
       </fieldset><br>
 
       <fieldset style="width:434px">
@@ -715,16 +793,16 @@ require_once('promoDB.php');
 
       <fieldset style="width:434px">
         <legend style="color:black">Please select seating area(s)</legend>
-        <input type="checkbox" id="A" class="seatingArea" name="A" value="A" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="A" onchange="enableSubmitButton()">A</label><br>
-        <input type="checkbox" id="B" class="seatingArea" name="B" value="B" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="B" onchange="enableSubmitButton()">B</label><br>
-        <input type="checkbox" id="C" class="seatingArea" name="C" value="C" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="C" onchange="enableSubmitButton()">C</label><br>
-        <input type="checkbox" id="D" class="seatingArea" name="D" value="D" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="D" onchange="enableSubmitButton()">D</label><br>
-        <input type="checkbox" id="E" class="seatingArea" name="E" value="E" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="E" onchange="enableSubmitButton()">E</label><br>
-        <input type="checkbox" id="F" class="seatingArea" name="F" value="F" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="F" onchange="enableSubmitButton()">F</label><br>
-        <input type="checkbox" id="G" class="seatingArea" name="G" value="G" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="G" onchange="enableSubmitButton()">G</label><br>
-        <input type="checkbox" id="H" class="seatingArea" name="H" value="H" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="H" onchange="enableSubmitButton()">H</label><br>
-        <input type="checkbox" id="I" class="seatingArea" name="I" value="I" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="I" onchange="enableSubmitButton()">I</label><br>
-        <input type="checkbox" id="J" class="seatingArea" name="J" value="J" onclick="selectedArea();enableSubmitButton()" disabled="true"/><label for="J" onchange="enableSubmitButton()">J</label><br>
+        <input type="checkbox" id="A" class="seatingArea" name="A" value="A" onclick="selectedArea();enableSubmitButton()"/><label for="A" onchange="enableSubmitButton()">A</label><br>
+        <input type="checkbox" id="B" class="seatingArea" name="B" value="B" onclick="selectedArea();enableSubmitButton()"/><label for="B" onchange="enableSubmitButton()">B</label><br>
+        <input type="checkbox" id="C" class="seatingArea" name="C" value="C" onclick="selectedArea();enableSubmitButton()"/><label for="C" onchange="enableSubmitButton()">C</label><br>
+        <input type="checkbox" id="D" class="seatingArea" name="D" value="D" onclick="selectedArea();enableSubmitButton()"/><label for="D" onchange="enableSubmitButton()">D</label><br>
+        <input type="checkbox" id="E" class="seatingArea" name="E" value="E" onclick="selectedArea();enableSubmitButton()"/><label for="E" onchange="enableSubmitButton()">E</label><br>
+        <input type="checkbox" id="F" class="seatingArea" name="F" value="F" onclick="selectedArea();enableSubmitButton()"/><label for="F" onchange="enableSubmitButton()">F</label><br>
+        <input type="checkbox" id="G" class="seatingArea" name="G" value="G" onclick="selectedArea();enableSubmitButton()"/><label for="G" onchange="enableSubmitButton()">G</label><br>
+        <input type="checkbox" id="H" class="seatingArea" name="H" value="H" onclick="selectedArea();enableSubmitButton()"/><label for="H" onchange="enableSubmitButton()">H</label><br>
+        <input type="checkbox" id="I" class="seatingArea" name="I" value="I" onclick="selectedArea();enableSubmitButton()"/><label for="I" onchange="enableSubmitButton()">I</label><br>
+        <input type="checkbox" id="J" class="seatingArea" name="J" value="J" onclick="selectedArea();enableSubmitButton()"/><label for="J" onchange="enableSubmitButton()">J</label><br>
       </fieldset><br>
 
       <fieldset style="width:434px">
@@ -852,7 +930,7 @@ require_once('promoDB.php');
       
       <p hidden>
         <br><text id="displaySubjectType" name="displaySubjectType"></text>
-        <br><text id="displayCustomerID" name="displayCustomerID"></text>
+        <br><text id="displayReservationID" name="displayReservationID"></text>
         <br><text id="displayCustomerName" name="displayCustomerName"></text>
         <br><text id="displayCustomerEmailAddress" name="displayCustomerEmailAddress"></text>
         <br><text id="displayCustomerPhoneNumber" name="displayCustomerPhoneNumber"></text>
@@ -868,7 +946,7 @@ require_once('promoDB.php');
         <br><text id="item_4" name="item_4"></text>
         <br><text id="item_5" name="item_5"></text>
       </p>
-      <br><input type="button" style="float:left;margin-left:15%;width:30%;cursor:pointer" value="Back" onclick="backButton()"><input type="button" name="submitDetails" id="submitDetails" value="Reserve a Table" style="float:right;margin-right:15%;width:30%;" onclick="submittedDetails();return confirm('Are you sure?');">
+      <br><input type="button" style="float:left;margin-left:15%;width:30%;cursor:pointer" value="Back" onclick="backButton()"><input type="button" name="submitDetails" id="submitDetails" value="Update reservation" style="float:right;margin-right:15%;width:30%;" onclick="submittedDetails();return confirm('Are you sure?');">
     </form>
     </fieldset>
     </div>

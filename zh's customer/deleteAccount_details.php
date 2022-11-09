@@ -14,8 +14,7 @@ $form_res_id = $_POST['cancel_link_1'];
 $sqlCommand = "DELETE FROM reservation WHERE reservation_ID = '$form_res_id'"; 
                             
 $result = mysqli_query($conn, $sqlCommand);
-
-
 }
+header('Location: customer/accountDetails.php?');
 
 ?>

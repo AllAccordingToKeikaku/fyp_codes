@@ -21,18 +21,6 @@ require_once("deliveryOrderDB.php");
         isCartClicked = false;
         var getMenuArray;
         var deliveryPrice = 6;
-        /*var item_1 = 0;
-        var item_2 = 0;
-        var item_3 = 0;
-        var item_4 = 0;
-        var item_5 = 0;
-        var item_6 = 0;
-        var item_7 = 0;
-        var item_8 = 0;
-        var item_9 = 0;
-        var item_10 = 0;
-        var item_11 = 0;
-        var item_12 = 0;*/
         var orderPromocode = "None";
         var deliveryNumber = 0;
         var itemList = "";
