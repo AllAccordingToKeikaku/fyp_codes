@@ -108,6 +108,26 @@ require_once("menuItems/deliveryOrderDB.php");
             let expires = "expires=" + date.toUTCString();
             document.cookie = `${nameCookie}=${valueCookie}; ${expires}; path=/`
         }
+
+        var picNum = 1;
+        function displayImage(){  
+            if(picNum >3){
+                picNum = 1;
+            }
+            for(var x=1; x<=3; x++){
+                if(x==picNum){
+                    document.getElementById("img"+String(picNum)).style.display = "block";
+                }
+                else{
+                    document.getElementById("img"+String(x)).style.display = "none";
+                }
+            }
+            picNum++; 
+        }
+
+        var intervalId = window.setInterval(function(){
+            displayImage();
+        }, 2000);
     </script>
     <style>
         .mouseOverEffects:hover{
@@ -142,7 +162,7 @@ require_once("menuItems/deliveryOrderDB.php");
             border-radius: 9.84086px;
         }
     </style>
-    <body style="background-color:#FEF2E5;" onload="trafficFunction()">
+    <body style="background-color:#FEF2E5;" onload="trafficFunction();displayImage()">
         <form>
             <div style="width:1200px;margin-left:auto;margin-right:auto;background-color:#FEF2E5;">
                 <a href="index.php"><img src="MoshiQ2 IMG Assets/Logo.png" style="float:left;margin-left:0px;width:500px;height:200px;display:block"></a>
@@ -164,7 +184,11 @@ require_once("menuItems/deliveryOrderDB.php");
                     </span>
                 </div>
                 <div>
-                    <center><img src="MoshiQ2 IMG Assets/homePage.PNG" style="display:block;width:80%;height:auto;padding:50px"></center>
+                    <center>
+                        <img id="img1" src="MoshiQ2 IMG Assets/2.jpg" style="display:none;width:80%;height:auto;padding:50px">
+                        <img id="img2" src="MoshiQ2 IMG Assets/3.jpg" style="display:none;width:80%;height:auto;padding:50px">
+                        <img id="img3" src="MoshiQ2 IMG Assets/4.jpg" style="display:none;width:80%;height:auto;padding:50px">
+                    </center>
                 </div>
 
                 <div id="aboutUs" style="height:700px;width:auto;background-color:#F1FFB7;">

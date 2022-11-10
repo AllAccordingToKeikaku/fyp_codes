@@ -526,44 +526,6 @@ require_once("deliveryOrderDB.php");
             itemList = "";
             orderArrayList = [];
             for (var x=0; x<tempCartArray.length; x++){
-                /*switch(tempCartArray[x]){
-                    case "HAWAIIAN SALMON":
-                        item_1 = countCart[tempCartArray[x]];
-                        break;
-                    case "COLOURFUL GODDESS":
-                        item_2 = countCart[tempCartArray[x]];
-                        break;
-                    case "SPICY MIXED SALMON":
-                        item_3 = countCart[tempCartArray[x]];
-                        break;
-                    case "SHOYU TUNA SPECIAL":
-                        item_4 = countCart[tempCartArray[x]];
-                        break;
-                    case "FULL VEGGIELICIOUS":
-                        item_5 = countCart[tempCartArray[x]];
-                        break;
-                    case "AVOCADO SUPREME":
-                        item_6 = countCart[tempCartArray[x]];
-                        break;
-                    case "SUMMER FLING":
-                        item_7 = countCart[tempCartArray[x]];
-                        break;
-                    case "CHOC SWEET":
-                        item_8 = countCart[tempCartArray[x]];
-                        break;
-                    case "CARAMEL NUTTIN":
-                        item_9 = countCart[tempCartArray[x]];
-                        break;
-                    case "INCREDIBLE HULK":
-                        item_10 = countCart[tempCartArray[x]];
-                        break;
-                    case "ORANGE MADNESS":
-                        item_11 = countCart[tempCartArray[x]];
-                        break;
-                    case "SPIDEY SENSES":
-                        item_12 = countCart[tempCartArray[x]];
-                        break;
-                }*/
                 orderArrayList.push([tempCartArray[x], countCart[tempCartArray[x]]]);
                 var getDisplayElement = document.getElementById('displayListedItem' + String(x));
                 getDisplayElement.innerHTML = displayCartItems(tempCartArray[x] , tempPriceArray[x], countCart[tempCartArray[x]], x);
@@ -806,6 +768,8 @@ require_once("deliveryOrderDB.php");
 
         function displayCCdetails(){
             document.getElementById("ccPaymentMethod").style.display = 'block';
+            document.getElementById("cash").checked = false;
+            document.getElementById("cashPaymentMethod").style.display = "none";
             getTotalDelivery();
         }
 
@@ -1021,6 +985,145 @@ require_once("deliveryOrderDB.php");
 
         function backButton(){
             window.location.href = "../customer/customer_landingPage.php";
+        }
+
+        function displayCashDetails(){
+            document.getElementById("creditCard").checked = false;
+            document.getElementById("ccPaymentMethod").style.display = "none";
+            document.getElementById("cashPaymentMethod").style.display = "block";
+        }
+
+        function cashPaymentMethod(){
+            var accountID = getCookie("accountID");
+            var orderDate = getCookie("date");
+            var orderTime = getCookie("time");
+            var orderPrice = "$" + String(totalPrice.toFixed(2));
+            var orderStatus = "In-progress";
+            var cc_number = document.getElementById("ccNum").value;
+            var addressDetails = getCookie("area") + " " + getCookie("addressDetails") + ", s(" + getCookie("postalCode") + ")";
+            getTotalDelivery();
+
+            orderDescription = "";
+            for(var x=0; x<orderArrayList.length; x++){
+                if(x+1 == orderArrayList.length){
+                    orderDescription += orderArrayList[x][1] + "x " + orderArrayList[x][0];
+                }
+                else{
+                    orderDescription += orderArrayList[x][1] + "x " + orderArrayList[x][0] + "<br>";
+                }
+            }
+            console.log(orderDescription.replaceAll("<br>", "~~"));
+            console.log(orderDescription);
+
+            $.ajax({
+                type: "POST",
+                url: "order_details_data.php",
+                data:{
+                    accountID:accountID,
+                    order_date:orderDate,
+                    order_time:orderTime,
+                    order_price:orderPrice,
+                    order_status:orderStatus,
+                    order_promocode:orderPromocode,
+                    order_address:addressDetails,
+                    order_description:orderDescription.replaceAll("<br>", "~~"),
+                    order_payment:"Cash"
+                },
+                success: function(data){
+                Swal.fire({
+                    'title': 'Successfully submitted order details!',
+                    'text': data,
+                    'type': 'success'
+                }).then(setTimeout(function(){window.location.replace("../customer/accountDetails.php");}, 2000))
+                },
+                error: function(data){
+                Swal.fire({
+                    'title': 'Errors',
+                    'text': 'There were errors in your order, please refresh the page and try again.'
+                })
+                }
+            });
+            
+            var inboxStatus = "Delivery";
+            var inboxDescription = "D" + String(deliveryNumber) +
+                                    ": Delivery for " + getCookie("fullName") +
+                                    "~~ at " + orderDate.replaceAll('-','/')+ 
+                                    "~~ " + orderTime;
+            var inboxDate = String(orderDate);
+
+            $.ajax({
+                type: "POST",
+                url: "delivery_inbox_data.php",
+                data:{
+                inboxStatus:inboxStatus,
+                inboxDescription:inboxDescription,
+                inboxDate:inboxDate
+                }
+            });
+
+            const serviceID = "service_f6ewb26";
+            const templateID = "template_8xfm0mh";
+            var displaySubjectType = "Order";
+            var orderHours;
+            var orderMins;
+            var tempTimeArray = String(orderTime).split(":");
+            orderHours = parseInt(tempTimeArray[0])*60;
+            orderMins = parseInt(tempTimeArray[1]);
+            var timingType;
+            trafficFunction();
+
+            if(currentDate == orderDate){
+                if(getCookie("clickedCurrentTime") == "true"){
+                    timingType = parseInt(getCookie("waitingTiming"));
+                }
+                else{
+                    timingType = parseInt(getCookie("preparationTiming"));
+                }
+            }
+            else{
+                timingType = 0;
+            }
+            var deliveryETA = timeConvert1(orderHours + orderMins + timingType );
+            
+            var params = {
+                displaySubjectType: displaySubjectType,
+                deliveryID: deliveryNumber,
+                deliveryETA: deliveryETA,
+                customerName: getCookie("fullName"),
+                emailAddress: getCookie("email"),
+                dateSlot: getCookie("date"),
+                timeSlot: orderTime,
+                addressDetails: addressDetails,
+                promoCode: orderPromocode,
+                totalPrice: orderPrice,
+                itemList: orderDescription
+            };
+
+            //Send email
+            emailjs.send(serviceID, templateID, params).then(res=>{
+                console.log(res);
+            })
+            .catch(err=>console.log(err));
+
+            var params = {
+                displaySubjectType: displaySubjectType,
+                deliveryID: deliveryNumber,
+                deliveryETA: deliveryETA,
+                customerName: getCookie("fullName"),
+                emailAddress: "fyp22s3@gmail.com",
+                dateSlot: getCookie("date"),
+                timeSlot: orderTime,
+                addressDetails: addressDetails,
+                promoCode: orderPromocode,
+                totalPrice: orderPrice,
+                itemList: orderDescription
+            };
+
+            //Send email
+            emailjs.send(serviceID, templateID, params).then(res=>{
+                console.log(res);
+            })
+            .catch(err=>console.log(err));
         }
     </script>
     <style>
@@ -1536,6 +1639,15 @@ require_once("deliveryOrderDB.php");
                                 </div></br>
                                 <img src="../MoshiQ2 IMG Assets/Payment/Pay.png" style="float:left;position:absolute;width:60px;height:auto;margin-left:250px;cursor:pointer">
                                 <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Pay" onclick="cc_PaymentMethod()"></br></br>
+                            </div>
+                        </div></br>
+                        <div style="width:100%;height:autopx;display:block;border:1px solid black;border-radius:10px;background-color:#BDBDBD26">
+                            <div style="width:auto;height:40px;display:block;">
+                                <input type="radio" id="cash" name="cash" value="Cash" style="float:left;margin-top:12px" onclick="displayCashDetails()">
+                                <text style="height:30px;width:auto;float:left;display:block;margin-top:7px;margin-left:80px;color:grey">Cash</text>
+                            </div>
+                            <div id="cashPaymentMethod" style="margin-left:20px;margin-top:20px;display:none">
+                                <input class="payEffects" type="button" style="width:95%;height:40px;border-radius:10px;background-color:#437E96;color:white;font-size:20px" value="Order now" onclick="cashPaymentMethod()"></br></br>
                             </div>
                         </div>
                     </div>
