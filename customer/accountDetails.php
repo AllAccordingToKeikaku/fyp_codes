@@ -468,6 +468,32 @@ require_once("reservationDB.php");
         function goToReservation(){
             window.location.replace("../reservation/reservation_details.php");
         }
+
+        function updateAccountFunction(){
+            $.ajax({
+                type: "POST",
+                url: "updateAccount_details.php",
+                data:{
+                    input_update_email_1: document.getElementById("updateAccountEmail").value,
+                    input_update_name_1: document.getElementById("updateAccountName").value,
+                    input_update_num_1: document.getElementById("updateAccountNumber").value,
+                    input_update_pass_1: document.getElementById("updateAccountPassword").value
+                },
+                success: function(data){
+                    Swal.fire({
+                        'title': 'Successfully updated account!',
+                        'text': data,
+                        'type': 'success'
+                    }).then(setTimeout(function(){window.location.replace("../customer/accountDetails.php");}, 2000))
+                    },
+                    error: function(data){
+                    Swal.fire({
+                        'title': 'Errors',
+                        'text': 'There were errors in updating your account, please refresh the page and try again.'
+                    })
+                }
+            });
+        }
     </script>
     <style>
         .mouseOverEffects:hover{
@@ -574,8 +600,9 @@ require_once("reservationDB.php");
                         </div>                
                     </div>
 
-                    <form action='updateAccount_details.php' method="POST" enctype="multipart/form-data">
+                    
                     <div id="accountDisplay" style="display:none;width:600px;">
+                        <form action='updateAccount_details.php' method="POST" enctype="multipart/form-data" onsubmit="return confirm('Do you really want to delete your account?');">
                         <div id="accountCustomerTab" style="display:block">
                             <text style="color:#437E96;font-size:30px;">
                                 Account - Customer                         
@@ -589,11 +616,11 @@ require_once("reservationDB.php");
 
                             <input type="button" class="buttonEffects" style="font-size:15px;width:150px;padding:10px;background-color:#5BBDE4CC;border-radius:10px;cursor:pointer" value="Update account" onclick="goToUpdateFunction()">
                             
-                            <input type="submit" class="buttonEffects" style="margin-left:50px;font-size:15px;width:150px;padding:10px;background-color:#F80000CC;border-radius:10px;cursor:pointer" value="Delete account" onclick="deleteAccountFunction()"
-                            name = "delete_button_1">
+                            <input type="submit" class="buttonEffects" style="margin-left:50px;font-size:15px;width:150px;padding:10px;background-color:#F80000CC;border-radius:10px;cursor:pointer" value="Delete account" name = "delete_button_1">
                         </div>
+                        </form>
 
-                        
+                        <form action='updateAccount_details.php' method="POST" enctype="multipart/form-data" onsubmit="return confirm('Do you really want to update your account?');">
                         <div id="updateAccountTab" style="display:none">
                             <text style="color:#437E96;font-size:30px;">
                                 Update account                          
@@ -611,9 +638,9 @@ require_once("reservationDB.php");
                             <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Password: </label><input type="text" id="updateAccountPassword" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"
                             name= "input_update_pass_1"></br></br>
 
-                            <input type="button" class="buttonEffects" style="font-size:15px;width:150px;padding:10px;background-color:#5BBDE4CC;border-radius:10px;cursor:pointer" value="Back" onclick="returnToFunction()" name="">
+                            <input type="button" class="buttonEffects" style="font-size:15px;width:150px;padding:10px;background-color:#5BBDE4CC;border-radius:10px;cursor:pointer" value="Back" onclick="returnToFunction()">
 
-                            <input type="submit" class="buttonEffects" style="margin-left:50px;font-size:15px;width:150px;padding:10px;background-color:#F80000CC;border-radius:10px;cursor:pointer" value="Update account" onclick="updateAccountFunction()" 
+                            <input type="button" class="buttonEffects" style="margin-left:50px;font-size:15px;width:150px;padding:10px;background-color:#F80000CC;border-radius:10px;cursor:pointer" value="Update account" onclick="updateAccountFunction()" 
                             name= "input_update_button_1">
                         </div>
                         </form>

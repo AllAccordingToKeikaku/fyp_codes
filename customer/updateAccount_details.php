@@ -1,7 +1,7 @@
 <?php
     include('../dbConnection.php');
 
-    if(isset($_POST['input_update_button_1']))
+    if(isset($_POST['input_update_email_1']))
         {
         //get INPUT data from the form 
         $profile = 'Customer';
@@ -35,7 +35,6 @@
         else{
             echo "Error! Could not send data";
         }
-        header('Location: accountDetails.php');
     }
 
     if(isset($_POST['delete_button_1']))
