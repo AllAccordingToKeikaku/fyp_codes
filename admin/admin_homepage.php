@@ -9,6 +9,14 @@ require_once("accountDB.php");
     <script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+    (function(){
+        emailjs.init("78fm3oeYmqkwn06vd");
+    })();
+  </script>
     <script>
         var isProfileClicked = false;
         
@@ -18,6 +26,7 @@ require_once("accountDB.php");
             document.getElementById("viewUserAccountDisplay").style.display = 'none';
             document.getElementById("suspendUserAccountDisplay").style.display = 'none';
             document.getElementById("updateUserAccountDisplay").style.display = 'none';
+            document.getElementById("calendarInviteDisplay").style.display="none";
         }
 
         function createUserAccountFunction(){
@@ -26,6 +35,7 @@ require_once("accountDB.php");
             document.getElementById("viewUserAccountDisplay").style.display = 'none';
             document.getElementById("suspendUserAccountDisplay").style.display = 'none';
             document.getElementById("updateUserAccountDisplay").style.display = 'none';
+            document.getElementById("calendarInviteDisplay").style.display="none";
         }
 
         function viewUserAccountFunction(){
@@ -34,6 +44,7 @@ require_once("accountDB.php");
             document.getElementById("viewUserAccountDisplay").style.display = 'block';
             document.getElementById("suspendUserAccountDisplay").style.display = 'none';
             document.getElementById("updateUserAccountDisplay").style.display = 'none';
+            document.getElementById("calendarInviteDisplay").style.display="none";
         }
 
         function suspendUserAccountFunction(){
@@ -42,6 +53,7 @@ require_once("accountDB.php");
             document.getElementById("viewUserAccountDisplay").style.display = 'none';
             document.getElementById("suspendUserAccountDisplay").style.display = 'block';
             document.getElementById("updateUserAccountDisplay").style.display = 'none';
+            document.getElementById("calendarInviteDisplay").style.display="none";
         }
 
         function updateUserAccountFunction(){
@@ -50,6 +62,16 @@ require_once("accountDB.php");
             document.getElementById("viewUserAccountDisplay").style.display = 'none';
             document.getElementById("suspendUserAccountDisplay").style.display = 'none';
             document.getElementById("updateUserAccountDisplay").style.display = 'block';
+            document.getElementById("calendarInviteDisplay").style.display="none";
+        }
+
+        function calendarInviteFunction(){
+            document.getElementById("emailDisplay").style.display = 'none';
+            document.getElementById("createUserAccountDisplay").style.display = 'none';
+            document.getElementById("viewUserAccountDisplay").style.display = 'none';
+            document.getElementById("suspendUserAccountDisplay").style.display = 'none';
+            document.getElementById("updateUserAccountDisplay").style.display = 'none';
+            document.getElementById("calendarInviteDisplay").style.display="block";
         }
 
         function clickedDrop(){
@@ -651,6 +673,29 @@ require_once("accountDB.php");
                 }           
             }        
         }
+
+        function sendCalendarInvite(){
+            var eventName = document.getElementById("eventName").value;
+            var emailDetails = document.getElementById("emailDescription").value;
+            var emailAddress = document.getElementById("emailAddress").value;
+            var inviteLink = document.getElementById("eventLink").value;
+            var acceptButton = '<a target="_blank" href="'+inviteLink+'"><input type="button" value="Accept"></a>';
+            var params = {
+                eventName: eventName,
+                emailDetails: emailDetails,
+                emailAddress: emailAddress,
+                acceptButton: acceptButton
+            };
+
+            const serviceID = "service_s95qq4x";
+            const templateID = "template_l4x96o7";
+
+            //Send email
+            emailjs.send(serviceID, templateID, params).then(res=>{
+                console.log(res);
+            })
+            .catch(err=>console.log(err));
+        }
     </script>
     <style>
         .mouseOverEffects{
@@ -743,6 +788,13 @@ require_once("accountDB.php");
                         </div>
                         <div class="mouseOverEffects" style="width:auto">
                             <input type="button" id="updateUserAccountButton" name="updateUserAccountButton" value="Update user account" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="updateUserAccountFunction()"></br>
+                        </div></br></br>
+                    </div></br>
+
+                    <text style="color:#437E96;font-size:30px">Calendar invite</text></br>
+                    <div style="float:left;margin-left:40px;margin-top:30px;display:inline-block">
+                        <div class="mouseOverEffects" style="width:auto">
+                            <input type="button" id="calendarInviteButton" name="calendarInviteButton" value="Calendar invite" style="padding:10px;border:0px;background-color:transparent;cursor:pointer" onclick="calendarInviteFunction();"></br>
                         </div></br></br>
                     </div></br>
                 </div>
@@ -907,7 +959,22 @@ require_once("accountDB.php");
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
+
+                <div style="float:left;margin-left:200px;">
+                    <div id="calendarInviteDisplay" style="display:none;width:900px;">
+                        <text style="color:#437E96;font-size:40px;">
+                            Calendar invites                         
+                        </text></br></br></br>
+                        <div>
+                            <label style="width:150px;display:inline-block">Event name:</label><input type="text" id="eventName" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
+                            <label style="width:150px;display:inline-block">Event link:</label><input type="text" id="eventLink" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
+                            <label style="width:150px;display:inline-block">Email address:</label></label><input type="text" id="emailAddress" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></br></br>
+                            <label style="width:150px;display:inline-block">Description:</label></label><textarea id="emailDescription" style="margin-left:30px;width:300px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:20px"></textarea></br></br>
+                            <input type="button" style="display:inline-block;width:485px;height:40px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px" value="Send invite" onclick="sendCalendarInvite()">
+                        </div>
+                    </div>
+                </div>    
             </div>
         </form>
     </body>

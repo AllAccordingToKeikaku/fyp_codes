@@ -458,7 +458,7 @@ require_once('promoDB.php');
 
       const serviceID = "service_f6ewb26";
       const templateID = "template_0rrz30s";
-
+      
       //Send email
       emailjs.send(serviceID, templateID, params).then(res=>{
           console.log(res);
