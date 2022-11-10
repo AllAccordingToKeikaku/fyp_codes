@@ -351,22 +351,26 @@ include("delete_item_data.php");
                     var row = table.insertRow(y);
                     var cell = row.insertCell(0);
                     cell.innerHTML = '<text id="viewOrderID' + String(x) + '" style="width:30px;display:block;padding:5px"></text>';
-                    document.getElementById("viewOrderID"+String(x)).innerHTML = totalViewArray[x][0];  
+                    document.getElementById("viewOrderID"+String(x)).innerHTML = totalViewArray[x][0];
                     var cell = row.insertCell(1);
+                    cell.innerHTML = '<text id="viewOrderItems' + String(x) + '" style="width:150px;display:block;padding:5px"></text>';
+                    document.getElementById("viewOrderItems"+String(x)).innerHTML = totalViewArray[x][10].replaceAll("~~", "</br>");     
+                    var cell = row.insertCell(2);
                     cell.innerHTML = '<text id="viewOrderDate' + String(x) + '" style="width:100px;display:block;padding:5px"></text>';
                     document.getElementById("viewOrderDate"+String(x)).innerHTML = totalViewArray[x][2];
-                    var cell = row.insertCell(2);
+                    var cell = row.insertCell(3);
                     cell.innerHTML = '<text id="viewOrderTime' + String(x) + '" style="width:50px;display:block;padding:5px"></text>';
                     document.getElementById("viewOrderTime"+String(x)).innerHTML = totalViewArray[x][3];
-                    var cell = row.insertCell(3);
+                    var cell = row.insertCell(4);
                     cell.innerHTML = '<text id="viewOrderPrice' + String(x) + '" style="width:70px;display:block;padding:5px"></text>';
                     document.getElementById("viewOrderPrice"+String(x)).innerHTML = totalViewArray[x][4];    
-                    var cell = row.insertCell(4);
-                    cell.innerHTML = '<text id="viewOrderCoupon' + String(x) + '" style="width:133px;display:block;padding:5px"></text>';
-                    document.getElementById("viewOrderCoupon"+String(x)).innerHTML = totalViewArray[x][6];    
                     var cell = row.insertCell(5);
-                    cell.innerHTML = '<text id="viewOrderStatus' + String(x) + '" style="width:120px;display:block;padding:5px"></text>';
+                    cell.innerHTML = '<text id="viewOrderCoupon' + String(x) + '" style="width:120px;display:block;padding:5px"></text>';
+                    document.getElementById("viewOrderCoupon"+String(x)).innerHTML = totalViewArray[x][6];    
+                    var cell = row.insertCell(6);
+                    cell.innerHTML = '<text id="viewOrderStatus' + String(x) + '" style="width:100px;display:block;padding:5px"></text>';
                     document.getElementById("viewOrderStatus"+String(x)).innerHTML = totalViewArray[x][5];    
+                     
                     y++
                 }      
             }   
@@ -664,7 +668,7 @@ include("delete_item_data.php");
                                 <text style="margin-right:auto;display:inline-block;font-size:20px;width:400px;padding:5px;text-align:center">Description</text>
                                 <text style="margin-right:auto;display:inline-block;font-size:20px;width:70px;padding:5px;text-align:center">Rate</text>
                             </div>
-                            <div id="displayCouponView" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:block">
+                            <div id="displayCouponView" class="example" style="font-size:20px;height:600px;overflow-y:auto;max-height:900px;display:block">
                                 <table id="displayCouponViewTable" style="background-color:#A8A1A166;" rules="all">
                                 </table>
                             </div>
@@ -726,7 +730,7 @@ include("delete_item_data.php");
                                 <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px;padding:2px;text-align:center">Location</text>
                                 <text style="margin-right:auto;display:inline-block;font-size:20px;width:150px;padding:2px;text-align:center">Date</text>
                             </div>
-                            <div id="displayReservations" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:block">
+                            <div id="displayReservations" class="example" style="font-size:20px;height:600px;overflow-y:auto;max-height:900px;display:block">
                                 <table id="displayReservationsTable" style="background-color:#A8A1A166;" rules="all">
                                 </table>
                             </div>
@@ -754,15 +758,16 @@ include("delete_item_data.php");
                             </text></br></br></br>
                             <input type="text" id="viewSearchOrder" name="viewSearchOrder" style="display:inline-block;width:400px;background-color:#A8A1A166;border:none;border-radius:5px;font-size:30px" placeholder="Enter keywords">
                             <input type="button" name="search" class="buttonHoverEffect" value="Search" onclick="searchOrder()" style="margin-left:20px;width:150px;height:40px;display:inline-block;font-size:30px;cursor:pointer;background-color:#5BBDE4CC;border-radius:10px"></br></br>
-                            <div style="background-color:#3280F466;width:580px">
+                            <div style="background-color:#3280F466;width:710px">
                                 <text style="display:inline-block;font-size:20px;width:30px;padding:5px;text-align:center">ID</text>
-                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px;padding:5px;text-align:center">Date</text>
-                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:50px;padding:5px;text-align:center">Time</text>
-                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:70px;padding:5px;text-align:center">Price</text>
-                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:130px;padding:5px;text-align:center">Promo Code</text>
-                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:120px;padding:5px;text-align:center">Status</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px;padding-left:30px;text-align:center">Items</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:100px;padding-left:30px;text-align:center">Date</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:50px;padding:10px;text-align:center">Time</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:70px;text-align:center">Price</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:120px;padding:5px;text-align:center">Promo Code</text>
+                                <text style="margin-right:auto;display:inline-block;font-size:20px;width:80px;text-align:center">Status</text>
                             </div>
-                            <div id="displayOrder" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:block">
+                            <div id="displayOrder" class="example" style="font-size:20px;height:600px;overflow-y:auto;max-height:900px;display:block">
                                 <table id="displayOrderTable" style="background-color:#A8A1A166;" rules="all">
                                 </table>
                             </div>
@@ -801,7 +806,7 @@ include("delete_item_data.php");
                                 <text style="margin-right:auto;display:inline-block;font-size:20px;width:130px;padding:5px;text-align:center">Promo Code</text>
                                 <text style="margin-right:auto;display:inline-block;font-size:20px;width:120px;padding:5px;text-align:center">Status</text>
                             </div>
-                            <div id="displayOrderUpdate" class="example" style="font-size:20px;height:300px;overflow-y:auto;max-height:600px;display:block">
+                            <div id="displayOrderUpdate" class="example" style="font-size:20px;height:600px;overflow-y:auto;max-height:900px;display:block">
                                 <table id="displayOrderUpdateTable" style="background-color:#A8A1A166;" rules="all">
                                 </table>
                             </div>

@@ -46,9 +46,10 @@ require_once("reservationDB.php");
                 tempString = tempString.split(',');
                 actualOrderArray.push(tempString);
             }
+            tempItemsArray = [];
+            var tempText;
             for (x=0;x<actualOrderArray.length;x++)
             {
-                tempItemsArray = [];
                 if(actualOrderArray[x][1] == getCookie("accountID")){
                     promoArrays.push("#" + actualOrderArray[x][0]);
                     dateArray.push(actualOrderArray[x][2]);
@@ -61,13 +62,14 @@ require_once("reservationDB.php");
 
                     console.log(actualOrderArray[x][10]);
                     var splitList = actualOrderArray[x][10].split("~~");
+                    tempText = "";
                     for(var y=0; y<splitList.length;y++){
-                        tempItemsArray.push(splitList[y]);
-                    }
-                }
-                tempItemArray.push(tempItemsArray);
+                        tempText += splitList[y]  + "</br>";
+                    }   
+                    tempItemsArray.push(tempText);
+                }  
+                
             }
-            
             var x;
             var y;
             var tempString = "";
@@ -86,20 +88,6 @@ require_once("reservationDB.php");
                 var cell = row.insertCell(0);
                 cell.innerHTML = '<text id="delivered' + String(x) + '"></text>';
             }
-
-            for (x=0; x<tempItemArray.length; x++){
-                tempString = "";
-                if(tempItemArray[x].length <= 1){
-                    tempString = tempItemArray[x] + '</br>';
-                    itemArray.push(tempString);
-                }
-                else{                    
-                    for (y=0;y<tempItemArray[x].length; y++){
-                        tempString += tempItemArray[x][y] + '</br>'; 
-                    }
-                    itemArray.push(tempString);
-                }
-            }
             var j=0;
             for (x=promoArrays.length-1; x>=0; x--){
                 if(orderStatusArray[x] == "In-progress"){
@@ -107,7 +95,7 @@ require_once("reservationDB.php");
                                                             '<b>Order ID:</b> '+ promoArrays[x] + '</br>' +
                                                             '<b>Date & Time:</b> '+ dateArray[x] + 
                                                             ' (' + dayArray[x] + '), ' + timeArray[x] +
-                                                            '</br></br>' + itemArray[x] + '</br>' +  
+                                                            '</br></br>' + tempItemsArray[x] + '</br>' +  
                                                             '<text><b><u>Total cost: </u></b></text>' +
                                                             '<b style="float:right;">' + priceArray[x] + 
                                                             '</b></text></br>';
@@ -117,11 +105,12 @@ require_once("reservationDB.php");
                                                             '<b>Order ID:</b> '+ promoArrays[x] + '</br>' +
                                                             '<b>Date & Time:</b> '+ dateArray[x] + 
                                                             ' (' + dayArray[x] + '), ' + timeArray[x] +
-                                                            '</br></br>' + itemArray[x] + '</br>' +  
+                                                            '</br></br>' + tempItemsArray[x] + '</br>' +  
                                                             '<text><b><u>Total cost: </u></b></text>' +
                                                             '<b style="float:right;">' + priceArray[x] + 
                                                             '</b></text></br>';
                 }
+                console.log(itemArray);
                 j++;
             }
         }
