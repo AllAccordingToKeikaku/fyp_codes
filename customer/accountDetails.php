@@ -417,9 +417,10 @@ require_once("reservationDB.php");
                 actualAccountArray.push(tempString);
             }
             for(x=0; x<actualAccountArray.length; x++){
-                if(actualAccountArray[x][3] == getCookie('email')){
+                if(actualAccountArray[x][3] == getCookie('email') && actualAccountArray[x][0] == getCookie('accountID')){
                     getName.value = actualAccountArray[x][2];
                     getNumber.value = actualAccountArray[x][5];
+                    break;
                 }
             }
         }
@@ -451,10 +452,11 @@ require_once("reservationDB.php");
                 actualAccountArray.push(tempString);
             }
             for(x=0; x<actualAccountArray.length; x++){
-                if(actualAccountArray[x][3] == getCookie('email')){
+                if(actualAccountArray[x][3] == getCookie('email') && actualAccountArray[x][0] == getCookie('accountID')){
                     getName.value = actualAccountArray[x][2];
                     getNumber.value = actualAccountArray[x][5];
                     getPassword.value = actualAccountArray[x][4];
+                    break;
                 }
             }
         }
