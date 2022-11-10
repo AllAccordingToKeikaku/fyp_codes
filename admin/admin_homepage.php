@@ -692,7 +692,8 @@ require_once("accountDB.php");
 
             //Send email
             emailjs.send(serviceID, templateID, params).then(res=>{
-                console.log(res);
+                alert("Email has been sent");
+                window.location.replace("admin_homepage.php");
             })
             .catch(err=>console.log(err));
         }
