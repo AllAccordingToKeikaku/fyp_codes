@@ -459,6 +459,7 @@ require_once("reservationDB.php");
                     break;
                 }
             }
+            checkUpdateFields();
         }
 
         function goToOrder(){
@@ -493,6 +494,19 @@ require_once("reservationDB.php");
                     })
                 }
             });
+        }
+
+        function checkUpdateFields(){
+            var inputName = document.getElementById("updateAccountName").value;
+            var inputNum = document.getElementById("updateAccountNumber").value;
+            var inputPass = document.getElementById("updateAccountPassword").value;
+            var inputEmail = document.getElementById("updateAccountEmail").value;
+            if(inputName === "" || inputNum === "" || inputPass === "" || inputEmail === "" || inputNum.length != 8){
+                document.getElementById("input_update_button_1").disabled = true;
+            }
+            else{
+                document.getElementById("input_update_button_1").disabled = false;
+            }
         }
     </script>
     <style>
@@ -628,20 +642,16 @@ require_once("reservationDB.php");
                             </br></br>                       
                             <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Email: </label><input type="text" id="updateAccountEmail" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" name= "input_update_email_1" readonly></br></br>
 
-                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Name: </label><input type="text" id="updateAccountName" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter name"
-                            name= "input_update_name_1"></br></br>
+                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Name: </label><input type="text" id="updateAccountName" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter name" name= "input_update_name_1" onchange="checkUpdateFields()"></br></br>
 
 
-                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Number: </label><input type="text" id="updateAccountNumber" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter number"
-                            name= "input_update_num_1"></br></br>
+                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Number: </label><input type="number" id="updateAccountNumber" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter number" name= "input_update_num_1" onchange="checkUpdateFields()"></br></br>
 
-                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Password: </label><input type="text" id="updateAccountPassword" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter password"
-                            name= "input_update_pass_1"></br></br>
+                            <label style="width:100px;display:inline-block;text-align:left;font-size:20px;background-color:#3280F466;padding-left:5px">Password: </label><input type="text" id="updateAccountPassword" style="margin-left:20px;background-color:#A8A1A166;display:inline-block;border:none;border-radius:5px;font-size:20px" placeholder="Enter password" name= "input_update_pass_1" onchange="checkUpdateFields()"></br></br>
 
                             <input type="button" class="buttonEffects" style="font-size:15px;width:150px;padding:10px;background-color:#5BBDE4CC;border-radius:10px;cursor:pointer" value="Back" onclick="returnToFunction()">
 
-                            <input type="button" class="buttonEffects" style="margin-left:50px;font-size:15px;width:150px;padding:10px;background-color:#F80000CC;border-radius:10px;cursor:pointer" value="Update account" onclick="updateAccountFunction()" 
-                            name= "input_update_button_1">
+                            <input type="button" class="buttonEffects" style="margin-left:50px;font-size:15px;width:150px;padding:10px;background-color:#F80000CC;border-radius:10px;cursor:pointer" value="Update account" onclick="updateAccountFunction()" id="input_update_button_1" name="input_update_button_1">
                         </div>
                         </form>
                     </div>
